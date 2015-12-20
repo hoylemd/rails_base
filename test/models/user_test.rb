@@ -42,4 +42,14 @@ class UserTest < ActiveSupport::TestCase
       assert @batman.valid?, "#{email} should be valid"
     end
   end
+
+  test "invalid emails should be rejected" do
+    emails = ["user@example,com", "user_at_foo.org", "user.name@example.",
+              "foo@bar_baz.com", "foo@bar+baz.com"]
+
+    emails.each do |email|
+      @batman.email = email
+      assert_not @batman.valid?, "#{email} should be invalid"
+    end
+  end
 end
