@@ -15,4 +15,11 @@ class UserTest < ActiveSupport::TestCase
     @batman.name = "      "
     assert_not @batman.valid?
   end
+
+  test "should have email" do
+    @batman.email = ""
+    assert_not @batman.valid?
+    @batman.email = "      "
+    assert_not @batman.valid?
+  end
 end
