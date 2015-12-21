@@ -69,4 +69,18 @@ class UserTest < ActiveSupport::TestCase
     @batman.save
     assert @batman.email = 'batman@wayneenterprises.com'
   end
+
+  test 'password should be present and non blank' do
+    @batman.password = nil
+    assert_not @batman.valid?, 'nil password should be invalid'
+    @batman.password = ''
+    assert_not @batman.valid?, 'empty password should be invalid'
+    @batman.password = '          '
+    assert_not @batman.valid?, 'whitespace password should be invalid'
+  end
+
+  test 'password should be at least 8 characters' do
+    @batman.password = '1234'
+    assert_not @batman.valid?, 'too-short password should be invalid'
+  end
 end
