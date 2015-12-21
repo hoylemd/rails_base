@@ -47,7 +47,7 @@ class UserTest < ActiveSupport::TestCase
 
   test 'invalid emails should be rejected' do
     emails = ['user@example,com', 'user_at_foo.org', 'user.name@example.',
-              'foo@bar_baz.com', 'foo@bar+baz.com']
+              'foo@bar_baz.com', 'foo@bar+baz.com', 'luke@sky..walk.er']
 
     emails.each do |email|
       @batman.email = email
