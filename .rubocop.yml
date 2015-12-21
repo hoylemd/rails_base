@@ -2,6 +2,7 @@ AllCops:
   Exclude:
     - 'db/**/*'
     - 'Guardfile'
+    - 'bin/*'
 
 Documentation:
   Enabled: false
