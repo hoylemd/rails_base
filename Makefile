@@ -18,6 +18,10 @@ server:
 lint:
 	rubocop > errors.rubocop
 
+deploy:
+	git co master
+	git push heroku master
+
 help:
 	cat .make_help
 
