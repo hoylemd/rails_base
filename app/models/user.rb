@@ -12,4 +12,14 @@ class User < ActiveRecord::Base
 
   has_secure_password
   validates :password, presence: true, length: { minimum: 8 }
+
+  # Returns the hash digest of the given string.
+  def self.digest(string)
+    if ActiveModel::SecurePassword.min_cost
+      cost = BCrypt::Engine::MIN_COST
+    else
+      BCrypt::Engine.cost
+    end
+    BCrypt::Password.create(string, cost: cost)
+  end
 end
