@@ -83,4 +83,11 @@ class UserTest < ActiveSupport::TestCase
     @batman.password = '1234'
     assert_not @batman.valid?, 'too-short password should be invalid'
   end
+
+  test 'digest should encrypt the given string' do
+    regex = /\$2a\$04\$.{53}$/
+    string = "that's not how the force works!"
+    hash = User.digest(string)
+    assert regex.match(hash), 'output should be a min-cost bcrypt hash'
+  end
 end
