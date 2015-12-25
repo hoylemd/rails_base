@@ -17,7 +17,7 @@ class SessionsHelperTest < ActionView::TestCase
   test 'current_user returns the current user or nil' do
     assert @current_user.nil?, '@current_user should be nil'
 
-    session[:user_id] = @kylo.id
+    log_in_as(@kylo)
     assert current_user == @kylo, 'current_user should return Kylo Ren'
     assert @current_user == @kylo, '@current_user should be Kylo Ren'
   end
@@ -27,12 +27,12 @@ class SessionsHelperTest < ActionView::TestCase
   test 'logged_in? tells if someone is logged in' do
     assert_not logged_in?, 'should not be logged in'
 
-    session[:user_id] = @kylo.id
+    log_in_as(@kylo)
     assert logged_in?, 'should be logged in'
   end
 
   test 'log_out clears user id from session' do
-    session[:user_id] = @kylo.id
+    log_in_as(@kylo)
 
     log_out
     assert session[:user_id].nil?, 'session should not contain user id'
