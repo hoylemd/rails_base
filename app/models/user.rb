@@ -30,12 +30,20 @@ class User < ActiveRecord::Base
   end
 
   def remember
+    # TODO: test
     self.remember_token = User.new_token
     update_attribute(:remember_digest, User.digest(remember_token))
   end
 
   # Returns true if the given token matches the digest.
   def authenticated?(remember_token)
+    # TODO: test
     BCrypt::Password.new(remember_digest).is_password?(remember_token)
+  end
+
+  # Forgets a user.
+  def forget
+    # TODO: test
+    update_attribute(:remember_digest, nil)
   end
 end

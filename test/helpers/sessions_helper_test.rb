@@ -27,10 +27,10 @@ class SessionsHelperTest < ActionView::TestCase
     assert logged_in?, 'should be logged in'
   end
 
-  test 'log_out clears session' do
+  test 'log_out clears user id from session' do
     session[:user_id] = @kylo.id
 
     log_out
-    assert session[:user_id].nil?
+    assert session[:user_id].nil?, 'session should not contain user id'
   end
 end
