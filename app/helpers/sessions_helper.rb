@@ -5,12 +5,6 @@ module SessionsHelper
     session[:user_id] = user.id
   end
 
-  def permanent_log_in(user)
-    # TODO: test
-    log_in user
-    remember user
-  end
-
   def log_out
     forget(current_user)
     session.delete(:user_id)
