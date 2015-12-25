@@ -2,8 +2,7 @@ require 'test_helper'
 
 class UsersHelperTest < ActionView::TestCase
   test 'gravatar_for generates corect html' do
-    user = User.new(email: 'peachesthefriendlyorc@gmail.com',
-                    name: 'Peaches the Friendly Orc')
+    user = users(:peaches)
 
     assert_equal(gravatar_for(user),
                  '<img alt="Peaches the Friendly Orc" class="gravatar" ' \
@@ -12,8 +11,7 @@ class UsersHelperTest < ActionView::TestCase
   end
 
   test 'gravatar_for accepts size parameter' do
-    user = User.new(email: 'peachesthefriendlyorc@gmail.com',
-                    name: 'Peaches the Friendly Orc')
+    user = users(:peaches)
 
     assert_equal(gravatar_for(user, size: 234),
                  '<img alt="Peaches the Friendly Orc" class="gravatar" ' \

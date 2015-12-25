@@ -1,4 +1,9 @@
- kylo:
-   name: Kylo Ren
-   email: vader_fan667@hotmail.com
-   password_digest: <%= User.digest('password') %>
+kylo:
+  name: Kylo Ren
+  email: vader_fan667@hotmail.com
+  password_digest: <%= User.digest('password') %>
+
+peaches:
+  name: 'Peaches the Friendly Orc'
+  email: 'peachesthefriendlyorc@gmail.com'
+  password_digest: <%= User.digest('password') %>
