@@ -1,5 +1,7 @@
 module SessionsHelper
-  def log_in(user)
+  def log_in(user, permanent = false)
+    # TODO: test the permanent flag
+    permanent ? remember(user) : forget(user)
     session[:user_id] = user.id
   end
 
