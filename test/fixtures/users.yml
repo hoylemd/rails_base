@@ -1,0 +1,4 @@
+ kylo:
+   name: Kylo Ren
+   email: vader_fan667@hotmail.com
+   password_digest: <%= User.digest('password') %>

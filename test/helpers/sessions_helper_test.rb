@@ -2,9 +2,7 @@ require 'test_helper'
 
 class SessionsHelperTest < ActionView::TestCase
   def setup
-    @kylo = User.create(name: 'Kylo Ren', email: 'vaderFan667@hotmail.com',
-                        password: 'starkiller',
-                        password_confirmation: 'starkiller')
+    @kylo = users(:kylo)
   end
 
   test 'log_in stores the passed user_id in the session' do
