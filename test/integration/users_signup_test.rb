@@ -27,5 +27,7 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
 
     assert_select 'div#error_explanation', false
     assert_select 'div.field_with_errors', false
+
+    assert logged_in?, 'User should be logged in'
   end
 end
