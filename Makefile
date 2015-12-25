@@ -17,6 +17,7 @@ server:
 
 lint:
 	rubocop > errors.rubocop
+	cat errors.rubocop
 
 deploy:
 	git co master
