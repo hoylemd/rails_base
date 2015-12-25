@@ -20,9 +20,11 @@ lint:
 	cat errors.rubocop
 
 deploy:
+	heroku maintenance:on
 	git co master
 	git push heroku master
 	heroku run rake db:migrate
+	heroku maintenance:off
 
 help:
 	cat .make_help
