@@ -85,9 +85,15 @@ class UserTest < ActiveSupport::TestCase
   end
 
   test 'digest should encrypt the given string' do
-    regex = /\$2a\$04\$.{53}$/
+    regex = /^\$2a\$04\$.{53}$/
     string = "that's not how the force works!"
     hash = User.digest(string)
     assert regex.match(hash), 'output should be a min-cost bcrypt hash'
+  end
+
+  test 'new_token' do
+    regex = /^[a-zA-Z0-9\-]{22}$/
+    token = User.new_token
+    assert regex.match(token), 'tokens should be 22-length base64 strings'
   end
 end
