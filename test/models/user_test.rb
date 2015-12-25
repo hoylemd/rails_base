@@ -96,4 +96,21 @@ class UserTest < ActiveSupport::TestCase
     token = User.new_token
     assert regex.match(token), 'tokens should be 22-length base64 strings'
   end
+
+  test 'authenticated? should return false for no token' do
+    assert_not @batman.authenticated?(''), 'should return false for empty token'
+    assert_not @batman.authenticated?(nil), 'should return false for nil token'
+  end
+
+  test 'authenticated? should return true for correct token' do
+    token = 'myparentsaredeaaaaad'
+    @batman[:remember_digest] = User.digest(token)
+    assert @batman.authenticated?(token), 'should return true cor correct token'
+  end
+
+  test 'authenticated? should return false for incorrect token' do
+    @batman[:remember_digest] = User.digest('myparentsaredeaaaaad')
+    assert_not @batman.authenticated?('thecapedcrusader'),
+               'should return false for incorrect token'
+  end
 end
