@@ -26,6 +26,14 @@ deploy:
 	heroku run rake db:migrate
 	heroku maintenance:off
 
+push:
+	dev_scripts/push_me
+
+merge:
+	dev_scripts/merge_me
+
+finish: merge deploy
+
 help:
 	cat .make_help
 

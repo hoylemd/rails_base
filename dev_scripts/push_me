@@ -1,0 +1,9 @@
+#! /bin/bash
+
+if [[ -z $(git status -s) ]]; then
+  branch=$(git rev-parse --abbrev-ref HEAD)
+  git push -u master $branch
+else
+  echo ""
+  echo "Unstaged or uncommited changes. Finish your work!"
+fi
