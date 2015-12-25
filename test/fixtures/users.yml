@@ -7,3 +7,8 @@ peaches:
   name: 'Peaches the Friendly Orc'
   email: 'peachesthefriendlyorc@gmail.com'
   password_digest: <%= User.digest('password') %>
+
+batman:
+  name: 'Batman'
+  email: 'batman@wayneenterprises.com'
+  password_digest: <%= User.digest('password') %>
