@@ -92,9 +92,10 @@ class UserTest < ActiveSupport::TestCase
   end
 
   test 'new_token' do
-    regex = /^[a-zA-Z0-9\-]{22}$/
+    regex = /^[a-zA-Z0-9\-_]{22}$/
     token = User.new_token
-    assert regex.match(token), 'tokens should be 22-length base64 strings'
+    assert regex.match(token),
+           "token (#{token}) should be 22-length base64 string"
   end
 
   test 'authenticated? should return false for no token' do
