@@ -22,7 +22,16 @@ class SessionsHelperTest < ActionView::TestCase
     assert @current_user == @kylo, '@current_user should be Kylo Ren'
   end
 
-  # TODO: 'log_in logs user in if they have correct remember_token'
+  test 'current_user returns right user when session is nil' do
+    remember(@kylo)
+    assert_equal @kylo, current_user
+    assert logged_in?
+  end
+
+  test 'current_user returns nil when remember digest is wrong' do
+    @kylo.update_attribute(:remember_digest, User.digest(User.new_token))
+    assert_nil current_user
+  end
 
   test 'logged_in? tells if someone is logged in' do
     assert_not logged_in?, 'should not be logged in'
