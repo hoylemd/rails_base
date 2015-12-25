@@ -3,12 +3,13 @@ require 'test_helper'
 class UsersLoginTest < ActionDispatch::IntegrationTest
   def setup
     @kylo = users(:kylo)
+    @nobody = User.new(email: '')
   end
 
   test 'login with invalid information' do
     get login_path
     assert_template 'sessions/new'
-    post login_path, session: { email: '', password: '' }
+    log_in_as @nobody, password: ''
     assert_template 'sessions/new'
     assert_not flash.empty?
     get root_path
@@ -17,7 +18,7 @@ class UsersLoginTest < ActionDispatch::IntegrationTest
 
   test 'login with valid information' do
     get login_path
-    post login_path, session: { email: @kylo.email, password: 'password' }
+    log_in_as @kylo
     assert logged_in?
     assert_redirected_to @kylo
     follow_redirect!
