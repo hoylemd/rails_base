@@ -1,6 +1,5 @@
 module SessionsHelper
   def log_in(user, permanent = false)
-    # TODO: test the permanent flag
     permanent ? remember(user) : forget(user)
     session[:user_id] = user.id
   end
@@ -12,7 +11,6 @@ module SessionsHelper
   end
 
   def current_user
-    # TODO: update test
     if (user_id = session[:user_id])
       @current_user ||= User.find_by(id: user_id)
     elsif (user_id = cookies.signed[:user_id])
@@ -30,7 +28,6 @@ module SessionsHelper
 
   # Remembers a user in a persistent session.
   def remember(user)
-    # TODO: test
     user.remember
     cookies.permanent.signed[:user_id] = user.id
     cookies.permanent[:remember_token] = user.remember_token
@@ -38,7 +35,6 @@ module SessionsHelper
 
   # Forgets a persistent session.
   def forget(user)
-    # TODO: test
     user.forget
     cookies.delete(:user_id)
     cookies.delete(:remember_token)

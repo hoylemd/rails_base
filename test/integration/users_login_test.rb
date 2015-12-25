@@ -35,4 +35,6 @@ class UsersLoginTest < ActionDispatch::IntegrationTest
     assert_select 'a[href=?]', logout_path, count: 0
     assert_select 'a[href=?]', user_path(@kylo), count: 0
   end
+
+  # TODO: 'login with valid info, and remembering'
 end

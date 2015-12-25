@@ -30,4 +30,6 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
 
     assert logged_in?, 'User should be logged in'
   end
+
+  # TODO: 'signup with valid info, and remembering'
 end

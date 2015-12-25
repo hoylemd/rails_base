@@ -12,6 +12,8 @@ class SessionsHelperTest < ActionView::TestCase
     assert session[:user_id], 'session should have a user id'
   end
 
+  # TODO: 'log_in stored remember digest if permanent flag'
+
   test 'current_user returns the current user or nil' do
     assert @current_user.nil?, '@current_user should be nil'
 
@@ -19,6 +21,8 @@ class SessionsHelperTest < ActionView::TestCase
     assert current_user == @kylo, 'current_user should return Kylo Ren'
     assert @current_user == @kylo, '@current_user should be Kylo Ren'
   end
+
+  # TODO: 'log_in logs user in if they have correct remember_token'
 
   test 'logged_in? tells if someone is logged in' do
     assert_not logged_in?, 'should not be logged in'
@@ -33,4 +37,7 @@ class SessionsHelperTest < ActionView::TestCase
     log_out
     assert session[:user_id].nil?, 'session should not contain user id'
   end
+
+  # TODO: 'remember generates and stores remember credentials'
+  # TODO: 'forget removes remember credentials'
 end

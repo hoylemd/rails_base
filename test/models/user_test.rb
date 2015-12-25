@@ -114,4 +114,7 @@ class UserTest < ActiveSupport::TestCase
     assert_not @batman.authenticated?('thecapedcrusader'),
                'should return false for incorrect token'
   end
+
+  # TODO: 'remember generates and stores a token'
+  # TODO: 'forget removes remember token'
 end

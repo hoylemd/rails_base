@@ -30,7 +30,6 @@ class User < ActiveRecord::Base
   end
 
   def remember
-    # TODO: test
     self.remember_token = User.new_token
     update_attribute(:remember_digest, User.digest(remember_token))
   end
@@ -43,7 +42,6 @@ class User < ActiveRecord::Base
 
   # Forgets a user.
   def forget
-    # TODO: test
     update_attribute(:remember_digest, nil)
   end
 end
