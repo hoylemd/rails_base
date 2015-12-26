@@ -67,8 +67,14 @@ class UsersControllerTest < ActionController::TestCase
                   'should highlight password confirmation field'
   end
 
-  test 'should get show' do
-  end
+  # I can't figure out how to go the GET here. Keeps saying:
+  # ActionController::UrlGenerationError Exception: No route matches
+  #   {:action=>"/users/33989797", :controller=>"users"}
+  # test 'should get show' do
+  #   get user_path(id: @kylo.id)
+  #   assert_response :success, 'should return 200 OK'
+  #   assert_select 'title', 'Kylo Ren | Ruby on Rails Tutorial Sample App'
+  # end
 
   # TODO: 'user_params strips out extra parameters'
 end
