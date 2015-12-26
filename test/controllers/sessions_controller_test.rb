@@ -15,10 +15,15 @@ class SessionsControllerTest < ActionController::TestCase
                   'one remember input should be present'
   end
 
-  test 'post to create, valid' do
+  test 'should redirect to profile on post valid credentials to create' do
     post :create, session: { email: @kylo.email, password: 'password' }
-    assert_redirected_to @kylo
+    assert_redirected_to @kylo, 'should be redirected '
   end
-  # TODO: 'post to create, invalid'
+
+  test 'should error on post invalid credentials to create' do
+    post :create, session: { email: @kylo.email, password: 'letmeinplease' }
+    assert_response :error
+  end
+
   # TODO: 'delete to destroy'
 end
