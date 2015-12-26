@@ -41,12 +41,16 @@ module ActiveSupport
       type = options[:type]
       expected = options[:expected]
 
-      if expected
-        assert_equal expected, flash[type],
-                     "Should see a #{type} flash with '#{expected}'"
-      else
+      if expected.nil?
         assert flash[type] && flash[type] != '',
                "Should see a #{type} flash"
+      else
+        if expected
+          assert_equal expected, flash[type],
+                       "Should see a #{type} flash with '#{expected}'"
+        else
+          assert_not flash[type], "Should not see a #{type} flash"
+        end
       end
     end
 
@@ -55,14 +59,22 @@ module ActiveSupport
       type = options[:type]
       expected = options[:expected]
 
-      message = 'Should see a '
-      message += type ? "#{type} flash" : 'flash'
-      message += ", expecting: <#{expected}>" if expected
-
       selector = '.alert'
       selector += "-#{type}" if type
+      message_object = type ? "#{type} flash" : 'flash'
 
-      assert_select selector, expected, message
+      if expected.nil?
+        message = "Should see a #{message_object}"
+        assert_select selector, true, message
+      else
+        # rubocop:disable Style/MultilineTernaryOperator
+        message = expected ?
+          "Should see a #{message_object}, expecting: <#{expected}>" :
+          "Should not see a #{message_object}"
+        # rubocop:enable Style/MultilineTernaryOperator
+
+        assert_select selector, expected, message
+      end
     end
 
     # assert that a flash message shows up
