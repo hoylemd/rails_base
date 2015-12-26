@@ -15,6 +15,7 @@ class UsersControllerTest < ActionController::TestCase
     assert_select 'title', 'Sign Up | Ruby on Rails Tutorial Sample App'
   end
 
+  # TODO: These should be moved to integration tests
   test 'should redirect on post to create with valid information' do
     post :create, user: { name: 'George Carlin',
                           email: 'george_carlin@example.com',
@@ -51,7 +52,7 @@ class UsersControllerTest < ActionController::TestCase
     assert_select '.field_with_errors input#user_email', 1,
                   'email field should be highlighted'
 
-    post :create, user: @test_info.merge(email: 'vader_fan667@hotmail.com')
+    post :create, user: @test_info.merge(email: @kylo.email)
     assert_response 422, 'should error on already-taken password'
     assert_select '.field_with_errors input#user_email', 1,
                   'email field should be highlighted'
