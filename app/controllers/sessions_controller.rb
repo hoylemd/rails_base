@@ -4,10 +4,10 @@ class SessionsController < ApplicationController
 
   def create
     parsed_params = login_params
-    user = User.find_by(email: parsed_params[:email])
-    if user && user.authenticate(parsed_params[:password])
-      log_in user, parsed_params[:remember_me]
-      redirect_to user
+    @user = User.find_by(email: parsed_params[:email])
+    if @user && @user.authenticate(parsed_params[:password])
+      log_in @user, parsed_params[:remember_me]
+      redirect_to @user
     else
       flash.now[:danger] = 'Invalid email/password combination'
       render 'new'
