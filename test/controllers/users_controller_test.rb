@@ -27,10 +27,19 @@ class UsersControllerTest < ActionController::TestCase
                   'name field should be highlighted'
   end
 
-  test 'should post create, invalid' do
+  test 'should error on post with invalid email' do
     post :create, user: test_user.merge(email: '')
     assert_response 422, 'should error on missing email'
+    assert_select '.field_with_errors input#user_email', 1,
+                  'email field should be highlighted'
 
+    post :create, user: test_user.merge(email: 'i am not an email address')
+    assert_response 422, 'should error on invalid email'
+    assert_select '.field_with_errors input#user_email', 1,
+                  'email field should be highlighted'
+  end
+
+  test 'should error on post with invalid information' do
     post :create, user: test_user.merge(password: '', password_confirmation: '')
     assert_response 422, 'should error on missing password and confirmation'
 
