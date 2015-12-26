@@ -88,17 +88,27 @@ module ActiveSupport
 
     # assert that some input fields are highlighted
     def assert_highlights(highlights)
-      highlights.each do |selector|
-        assert_select ".field_with_errors #{selector}", 1,
-                      "#{selector} should be highlighted"
+      if highlights == false
+        assert_select 'field_with_errors', false,
+                      'No fields should be highlighted'
+      else
+        highlights.each do |selector|
+          assert_select ".field_with_errors #{selector}", 1,
+                        "$('#{selector}') should be highlighted"
+        end
       end
     end
 
     # assert that some error explanations exist
     def assert_explanations(explanations)
-      explanations.each do |explanation|
-        assert_select '#error_explanation li', explanation,
-                      "Should see an explanation saying '#{explanation}'"
+      if explanations == false
+        assert_select '#error_explanation', false,
+                      'Should not see any explanations'
+      else
+        explanations.each do |explanation|
+          assert_select '#error_explanation li', explanation,
+                        "Should see an explanation saying '#{explanation}'"
+        end
       end
     end
 
@@ -110,6 +120,13 @@ module ActiveSupport
       assert_flash(type: 'danger', expected: options[:flash]) if options[:flash]
 
       assert_explanations(options[:explanations]) if options[:explanations]
+    end
+
+    # assert that no error messages are rendered
+    def assert_no_error_messages
+      assert_highlights(false)
+      assert_flash(type: 'danger', expected: false)
+      assert_explanations(false)
     end
   end
 end
