@@ -35,5 +35,43 @@ module ActiveSupport
     def integration_test?
       defined?(post_via_redirect)
     end
+
+    # assert that a flash message shows up in unit tests
+    def assert_flash_unit(options)
+      type = options[:type]
+      expected = options[:expected]
+
+      if expected
+        assert_equal expected, flash[type],
+                     "Should see a #{type} flash with '#{expected}'"
+      else
+        assert flash[type] && flash[type] != '',
+               "Should see a #{type} flash"
+      end
+    end
+
+    # assert that a flash message shows up in integration tests
+    def assert_flash_integration(options)
+      type = options[:type]
+      expected = options[:expected]
+
+      message = 'Should see a '
+      message += type ? "#{type} flash" : 'flash'
+      message += ", expecting: <#{expected}>" if expected
+
+      selector = '.alert'
+      selector += "-#{type}" if type
+
+      assert_select selector, expected, message
+    end
+
+    # assert that a flash message shows up
+    def assert_flash(options)
+      if integration_test?
+        assert_flash_integration options
+      else
+        assert_flash_unit options
+      end
+    end
   end
 end
