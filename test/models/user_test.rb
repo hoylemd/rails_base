@@ -3,8 +3,6 @@ require 'test_helper'
 class UserTest < ActiveSupport::TestCase
   def setup
     @batman = users(:batman)
-    @batman.password = 'password'
-    @batman.password_confirmation = 'password'
   end
 
   test 'should be valid' do
@@ -70,18 +68,34 @@ class UserTest < ActiveSupport::TestCase
     assert @batman.email = 'batman@wayneenterprises.com'
   end
 
-  test 'password should be present and non blank' do
+  test 'passwords should be absent or non blank and equal' do
+    assert @batman.valid?, 'absent passwords should be valid'
+
     @batman.password = nil
-    assert_not @batman.valid?, 'nil password should be invalid'
+    @batman.password_confirmation = nil
+    assert_not @batman.valid?, 'nil passwords should be invalid'
+
     @batman.password = ''
-    assert_not @batman.valid?, 'empty password should be invalid'
+    @batman.password_confirmation = ''
+    assert_not @batman.valid?, 'empty passwords should be invalid'
+
     @batman.password = '          '
+    @batman.password_confirmation = '          '
     assert_not @batman.valid?, 'whitespace password should be invalid'
+
+    @batman.password = 'password'
+    @batman.password_confirmation = 'hunter22'
+    assert_not @batman.valid?, 'mismatched passwords should be invalid'
+
+    @batman.password = 'hunter22'
+    @batman.password_confirmation = 'hunter22'
+    assert @batman.valid?, 'matching passwords should be valid'
   end
 
-  test 'password should be at least 8 characters' do
+  test 'passwords should be at least 8 characters' do
     @batman.password = '1234'
-    assert_not @batman.valid?, 'too-short password should be invalid'
+    @batman.password_confirmation = '1234'
+    assert_not @batman.valid?, 'too-short passwords should be invalid'
   end
 
   test 'digest should encrypt the given string' do
