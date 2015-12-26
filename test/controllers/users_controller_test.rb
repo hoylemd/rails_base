@@ -21,6 +21,16 @@ class UsersControllerTest < ActionController::TestCase
                           password: 'password',
                           password_confirmation: 'password' }
     assert_response :redirect, 'should redirect to user profile'
+
+    post :create, user: { name: 'Luke Skywlker',
+                          email: 'the_last_jedi@example.com',
+                          password: 'password',
+                          password_confirmation: 'password',
+                          id: 'so lonely :(' }
+    assert_response :redirect, 'should ignore extra parameters'
+    # This tests user_params - the id field will be stripped out, and not cause
+    # an error.  if it were not stripped out, an error would be raised, as ids
+    # are integers, not strings
   end
 
   test 'should error on post with missing name' do
@@ -75,6 +85,4 @@ class UsersControllerTest < ActionController::TestCase
   #   assert_response :success, 'should return 200 OK'
   #   assert_select 'title', 'Kylo Ren | Ruby on Rails Tutorial Sample App'
   # end
-
-  # TODO: 'user_params strips out extra parameters'
 end
