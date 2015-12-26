@@ -12,8 +12,6 @@ class SessionsHelperTest < ActionView::TestCase
     assert session[:user_id], 'session should have a user id'
   end
 
-  # TODO: 'log_in stored remember digest if permanent flag'
-
   test 'current_user returns the current user or nil' do
     assert @current_user.nil?, '@current_user should be nil'
 
@@ -47,6 +45,17 @@ class SessionsHelperTest < ActionView::TestCase
     assert session[:user_id].nil?, 'session should not contain user id'
   end
 
-  # TODO: 'remember generates and stores remember credentials'
+  test 'remember generates and stores remember credentials' do
+    assert cookies.permanent.signed[:user_id].nil?,
+           'cookies should not contain user_id'
+    assert cookies.permanent[:remember_token].nil?,
+           'cookies should not contain remember_token'
+
+    remember(@kylo)
+    assert_equal @kylo.id, cookies.permanent.signed[:user_id],
+                 'cookies should contain user_id'
+    assert_equal @kylo.remember_token, cookies.permanent[:remember_token],
+                 'cookies should contain remember_token'
+  end
   # TODO: 'forget removes remember credentials'
 end
