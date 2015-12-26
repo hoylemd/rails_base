@@ -26,8 +26,8 @@ deploy:
 	heroku run rake db:migrate
 	heroku maintenance:off
 
-push:
-	dev_scripts/push_me
+start:
+	dev_scripts/start_branch
 
 merge:
 	dev_scripts/merge_me

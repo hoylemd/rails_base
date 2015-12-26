@@ -1,0 +1,25 @@
+#! /bin/bash
+
+if [[ -z $(git status -s) ]]; then
+  while true; do
+    read -p "What should the new branch's name be? " branch
+    git check-ref-format --branch $branch
+    ok=$?
+
+    if [ "$ok" = "0" ]; then
+      git co -b $branch
+      ret=$?
+      if [ "$ret" != "0" ]; then exit $ret; fi
+
+      git push -u origin $branch
+      ret=$?
+      if [ "$ret" != "0" ]; then exit $ret; fi
+
+      exit 0
+    fi
+    echo "Sorry, '$branch' isn't allowed as a branch name."
+  done
+else
+  echo ""
+  echo "Unstaged or uncommited changes. Finish your work!"
+fi
