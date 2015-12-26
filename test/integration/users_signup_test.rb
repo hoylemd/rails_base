@@ -70,20 +70,31 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
   end
 
   test 'should error on post with invalid email' do
-    post users_path, user: @test_info.merge(email: '')
+    assert_no_difference 'User.count' do
+      post users_path, user: @test_info.merge(email: '')
+    end
     assert_response 422, 'should error on missing email'
-    assert_select '.field_with_errors input#user_email', 1,
-                  'email field should be highlighted'
+    assert_signup_failed highlights: ['input#user_email'],
+                         flash: 'The form contains 2 errors.',
+                         explanations: ['Email can\'t be blank',
+                                        'Email is invalid']
 
-    post users_path, user: @test_info.merge(email: 'i am not an email address')
+    assert_no_difference 'User.count' do
+      post users_path, user: @test_info.merge(email: 'i am not an email')
+    end
+
     assert_response 422, 'should error on invalid email'
-    assert_select '.field_with_errors input#user_email', 1,
-                  'email field should be highlighted'
+    assert_signup_failed highlights: ['input#user_email'],
+                         flash: 'The form contains 1 error.',
+                         explanations: ['Email is invalid']
 
-    post users_path, user: @test_info.merge(email: @kylo.email)
-    assert_response 422, 'should error on already-taken password'
-    assert_select '.field_with_errors input#user_email', 1,
-                  'email field should be highlighted'
+    assert_no_difference 'User.count' do
+      post users_path, user: @test_info.merge(email: @kylo.email)
+    end
+    assert_response 422, 'should error on already-taken email'
+    assert_signup_failed highlights: ['input#user_email'],
+                         flash: 'The form contains 1 error.',
+                         explanations: ['Email has already been taken']
   end
 
   test 'should error on post with invalid password or confirmation' do
