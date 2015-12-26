@@ -10,11 +10,20 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
   end
 
   def assert_signup_successful(name = nil)
-    assert_template 'users/show', 'should be on profile page'
-    assert_select '.alert-danger', false, 'flash should not contain errors'
-    flash_expected = name ? "Welcome, #{name}!" : 1
-    assert_select '.alert-success', flash_expected
+    assert_template 'users/show', 'Should be on profile page'
+    assert_flash type: 'danger', expected: false
+
+    assert_flash type: 'success', expected: name ? "Welcome, #{name}!" : nil
+
     assert logged_in?, 'User should be logged in'
+  end
+
+  def assert_signup_failed(errors)
+    assert_template 'users/new', 'Should be on signup page'
+
+    assert_error_messages errors
+
+    assert_not logged_in?, 'User should not be logged in'
   end
 
   test 'valid signup information is accepted' do
