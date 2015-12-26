@@ -120,5 +120,11 @@ class UserTest < ActiveSupport::TestCase
     assert_not @batman.remember_token.nil?, 'should have a remember_token'
     assert_not @batman.remember_digest.nil?, 'should have a remember_digest'
   end
-  # TODO: 'forget removes remember token'
+
+  test 'forget removes remember token' do
+    @batman.remember_digest = 'nananananananananana MEEEEEEE'
+
+    @batman.forget
+    assert @batman.remember_digest.nil?, 'remember_digest should be nil'
+  end
 end
