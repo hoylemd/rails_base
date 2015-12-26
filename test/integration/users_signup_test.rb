@@ -11,7 +11,8 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
 
   def assert_signup_successful(name = nil)
     assert_template 'users/show', 'Should be on profile page'
-    assert_flash type: 'danger', expected: false
+
+    assert_no_error_messages
 
     assert_flash type: 'success', expected: name ? "Welcome, #{name}!" : nil
 
