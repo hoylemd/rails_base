@@ -71,7 +71,6 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
     end
     assert_response 422, 'should error on missing name'
     assert_signup_failed highlights: ['input#user_name'],
-                         flash: 'The form contains 1 error.',
                          explanations: ['Name can\'t be blank']
   end
 
@@ -81,7 +80,6 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
     end
     assert_response 422, 'should error on missing email'
     assert_signup_failed highlights: ['input#user_email'],
-                         flash: 'The form contains 2 errors.',
                          explanations: ['Email can\'t be blank',
                                         'Email is invalid']
 
@@ -91,7 +89,6 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
 
     assert_response 422, 'should error on invalid email'
     assert_signup_failed highlights: ['input#user_email'],
-                         flash: 'The form contains 1 error.',
                          explanations: ['Email is invalid']
 
     assert_no_difference 'User.count' do
