@@ -63,17 +63,20 @@ class UsersEditTest < ActionDispatch::IntegrationTest
                   'Password confirmation field should be highlighted'
   end
 
-  test 'edit can change login credentials' do
+  test 'edit can change profile information' do
     new_email = 'i_am_so_powerful@livejournal.com'
     new_password = 'f34rm3l0zr'
+    new_name = 'Darth Ren'
 
     get edit_user_path(@kylo)
     assert_template 'users/edit'
-    patch user_path(@kylo), user: { name: @kylo.name,
-                                    email: new_email,
-                                    password: new_password,
-                                    password_confirmation: new_password }
-    assert_redirected_to @kylo, 'should be redirected to the profile page'
+    patch_via_redirect user_path(@kylo),
+                       user: { name: new_name,
+                               email: new_email,
+                               password: new_password,
+                               password_confirmation: new_password }
+    assert_equal 'Changes saved.', flash[:success]
+    assert_select '#user_name', new_name, 'should see new name'
 
     delete logout_path
 
