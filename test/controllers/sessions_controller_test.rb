@@ -25,5 +25,12 @@ class SessionsControllerTest < ActionController::TestCase
     assert_response 401, 'should report a 401 UNAUTHORIZED error'
   end
 
-  # TODO: 'delete to destroy'
+  test 'delete to destroy' do
+    log_in_as @kylo
+    assert_equal @kylo.id, session[:user_id], 'should be logged in'
+
+    delete :destroy
+    assert_redirected_to login_url, 'should redirect to login page'
+    assert session[:user_id].nil?, 'user id should be removed from session'
+  end
 end
