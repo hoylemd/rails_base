@@ -22,7 +22,7 @@ class SessionsControllerTest < ActionController::TestCase
 
   test 'should error on post invalid credentials to create' do
     post :create, session: { email: @kylo.email, password: 'letmeinplease' }
-    assert_response :error
+    assert_response 401, 'should report a 401 UNAUTHORIZED error'
   end
 
   # TODO: 'delete to destroy'
