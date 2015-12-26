@@ -22,6 +22,12 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
   def assert_signup_failed(errors)
     assert_template 'users/new', 'Should be on signup page'
 
+    unless errors[:flash]
+      explanations = errors[:explanations].length
+      noun = explanations == 1 ? 'error' : 'errors'
+      errors[:flash] = "The form contains #{explanations} #{noun}."
+    end
+
     assert_error_messages errors
 
     assert_not logged_in?, 'User should not be logged in'
