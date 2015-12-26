@@ -33,7 +33,7 @@ merge:
 	dev_scripts/merge_me
 
 todo:
-	ack '/TODO/i' ./*
+	ack -i --nomake 'todo'
 
 finish: merge deploy
 
