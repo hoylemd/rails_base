@@ -1,6 +1,10 @@
 require 'test_helper'
 
 class SessionsControllerTest < ActionController::TestCase
+  def setup
+    @kylo = users(:kylo)
+  end
+
   test 'should get new' do
     get :new
     assert_response :success
@@ -11,7 +15,10 @@ class SessionsControllerTest < ActionController::TestCase
                   'one remember input should be present'
   end
 
-  # TODO: 'post to create, valid'
+  test 'post to create, valid' do
+    post :create, session: { email: @kylo.email, password: 'password' }
+    assert_redirected_to @kylo
+  end
   # TODO: 'post to create, invalid'
   # TODO: 'delete to destroy'
 end
