@@ -115,6 +115,10 @@ class UserTest < ActiveSupport::TestCase
                'should return false for incorrect token'
   end
 
-  # TODO: 'remember generates and stores a token'
+  test 'remember generates and stores a token and digest' do
+    @batman.remember
+    assert_not @batman.remember_token.nil?, 'should have a remember_token'
+    assert_not @batman.remember_digest.nil?, 'should have a remember_digest'
+  end
   # TODO: 'forget removes remember token'
 end
