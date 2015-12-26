@@ -57,5 +57,19 @@ class SessionsHelperTest < ActionView::TestCase
     assert_equal @kylo.remember_token, cookies.permanent[:remember_token],
                  'cookies should contain remember_token'
   end
-  # TODO: 'forget removes remember credentials'
+
+  test 'forget removes remember credentials' do
+    cookies.permanent.signed[:user_id] = @kylo.id
+    cookies.permanent[:remember_token] = 'my lightsaber has a crossguard'
+
+    assert_not cookies[:user_id].nil?, 'cookies should not contain user_id'
+    assert_not cookies[:remember_token].nil?,
+               'cookies should not contain remember_token'
+
+    forget(@kylo)
+
+    assert cookies[:user_id].nil?, 'cookies should not contain user_id'
+    assert cookies[:remember_token].nil?,
+           'cookies should not contain remember_token'
+  end
 end
