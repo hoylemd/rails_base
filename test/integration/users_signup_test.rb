@@ -96,28 +96,35 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
     end
     assert_response 422, 'should error on already-taken email'
     assert_signup_failed highlights: ['input#user_email'],
-                         flash: 'The form contains 1 error.',
                          explanations: ['Email has already been taken']
   end
 
   test 'should error on post with invalid password or confirmation' do
-    post users_path, user: @test_info.merge(password: '',
-                                            password_confirmation: '')
+    assert_no_difference 'User.count' do
+      post users_path, user: @test_info.merge(password: '',
+                                              password_confirmation: '')
+    end
     assert_response 422, 'should error on missing password and confirmation'
-    assert_select '.field_with_errors input#user_password', 1,
-                  'should highlight password field'
+    assert_signup_failed highlights: ['input#user_password'],
+                         explanations: ['Password can\'t be blank']
 
-    post users_path, user: @test_info.merge(password: 'short',
-                                            password_confirmation: 'short')
+    assert_no_difference 'User.count' do
+      post users_path, user: @test_info.merge(password: 'short',
+                                              password_confirmation: 'short')
+    end
     assert_response 422, 'should error on too-short password'
-    assert_select '.field_with_errors input#user_password', 1,
-                  'should highlight password field'
+    assert_signup_failed highlights: ['input#user_password'],
+                         explanations: [
+                           'Password is too short (minimum is 8 characters)']
 
-    post users_path, user:
-                     @test_info.merge(password: 'longbutwrong',
-                                      password_confirmation: 'wrongandlong')
+    assert_no_difference 'User.count' do
+      post users_path, user:
+                       @test_info.merge(password: 'longbutwrong',
+                                        password_confirmation: 'wrongandlong')
+    end
     assert_response 422, 'should error on mismatched password and confirmation'
-    assert_select '.field_with_errors input#user_password_confirmation', 1,
-                  'should highlight password confirmation field'
+    assert_signup_failed highlights: ['input#user_password_confirmation'],
+                         explanations: [
+                           'Password confirmation doesn\'t match Password']
   end
 end
