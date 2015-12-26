@@ -37,9 +37,14 @@ class UsersControllerTest < ActionController::TestCase
     assert_response 422, 'should error on invalid email'
     assert_select '.field_with_errors input#user_email', 1,
                   'email field should be highlighted'
+
+    post :create, user: test_user.merge(email: 'vader_fan667@hotmail.com')
+    assert_response 422, 'should error on already-taken password'
+    assert_select '.field_with_errors input#user_email', 1,
+                  'email field should be highlighted'
   end
 
-  test 'should error on post with invalid information' do
+  test 'should error on post with invalid password or confirmation' do
     post :create, user: test_user.merge(password: '', password_confirmation: '')
     assert_response 422, 'should error on missing password and confirmation'
 
@@ -51,8 +56,6 @@ class UsersControllerTest < ActionController::TestCase
                                         password_confirmation: 'short')
     assert_response 422, 'should error on too-short password'
 
-    post :create, user: test_user.merge(email: 'vader_fan667@hotmail.com')
-    assert_response 422, 'should error on already-taken password'
   end
 
   # TODO: 'should get show, logged in'
