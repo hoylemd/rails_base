@@ -21,7 +21,8 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
       post_via_redirect users_path, user: { name:  'Example User',
                                             email: 'user@example.com',
                                             password:              'password',
-                                            password_confirmation: 'password' }
+                                            password_confirmation: 'password',
+                                            remember_me: '1' }
     end
     assert_template 'users/show'
 
@@ -30,6 +31,4 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
 
     assert logged_in?, 'User should be logged in'
   end
-
-  # TODO: 'signup with valid info, and remembering'
 end
