@@ -64,8 +64,9 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
       post users_path, user: @test_info.merge(name: '')
     end
     assert_response 422, 'should error on missing name'
-    assert_select '.field_with_errors input#user_name', 1,
-                  'name field should be highlighted'
+    assert_signup_failed highlights: ['input#user_name'],
+                         flash: 'The form contains 1 error.',
+                         explanations: ['Name can\'t be blank']
   end
 
   test 'should error on post with invalid email' do
