@@ -32,6 +32,9 @@ start:
 merge:
 	dev_scripts/merge_me
 
+todo:
+	ack '/TODO/i' ./*
+
 finish: merge deploy
 
 help:
