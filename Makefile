@@ -5,10 +5,8 @@ install: Gemfile
 	bundle Install
 	$(RAKE) db:migrate
 
-unit: FORCE
+test: FORCE
 	$(RAKE) test
-
-test: unit
 
 server:
 	$(EXEC) rails server
