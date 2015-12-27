@@ -6,25 +6,38 @@ class UsersEditTest < ActionDispatch::IntegrationTest
     log_in_as @kylo
   end
 
+  def assert_edit_failed(errors)
+    assert_template 'users/edit', 'Should be on the profile edit page'
+
+    unless errors[:flash]
+      explanations = errors[:explanations].length
+      noun = explanations == 1 ? 'error' : 'errors'
+      errors[:flash] = "The form contains #{explanations} #{noun}."
+    end
+
+    assert_error_messages errors
+  end
+
+  def assert_edit_succeeded
+    assert_template 'users/show', 'Should be on profile page'
+
+    assert_no_error_messages
+
+    assert_flash type: 'success', expected: 'Changes saved.'
+  end
+
   test 'edit with blank fields is rejected' do
-    get edit_user_path(@kylo)
-    assert_template 'users/edit'
-    patch user_path(@kylo), user: { name: '',
-                                    email: '',
-                                    password: '',
-                                    password_confirmation: '' }
+    log_in_as @kylo
+    patch_via_redirect user_path(@kylo),
+                       user: { name: '',
+                               email: '',
+                               password: '',
+                               password_confirmation: '' }
 
-    assert_template 'users/edit'
-
-    assert_select 'li', 'Name can\'t be blank',
-                  'Error messages should call out name'
-    assert_select '.field_with_errors input#user_name', 1,
-                  'Name field should be highlighted'
-
-    assert_select 'li', 'Email can\'t be blank',
-                  'Error messages should call out email'
-    assert_select '.field_with_errors input#user_email', 1,
-                  'Email field should be highlighted'
+    assert_edit_failed(highlights: ['input#user_name', 'input#user_email'],
+                       explanations: ['Name can\'t be blank',
+                                      'Email can\'t be blank',
+                                      'Email is invalid'])
   end
 
   test 'edit with invalid email is rejected' do
