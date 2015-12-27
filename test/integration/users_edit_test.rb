@@ -3,6 +3,7 @@ require 'test_helper'
 class UsersEditTest < ActionDispatch::IntegrationTest
   def setup
     @kylo = users(:kylo)
+    log_in_as @kylo
   end
 
   test 'edit with blank fields is rejected' do
