@@ -3,8 +3,6 @@ RAKE=$(EXEC) rake
 
 install: Gemfile
 	bundle Install
-
-migrate:
 	$(RAKE) db:migrate
 
 unit: FORCE
