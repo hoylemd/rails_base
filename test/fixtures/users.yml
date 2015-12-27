@@ -14,9 +14,8 @@ batman:
   password_digest: <%= User.digest('password') %>
 
 <% 30.times do |n| %>
-  number = n + 2
-  user_<%= number %>:
-    name:  <%= "User #{number}" %>
-    email: <%= "user-#{number}@example.com" %>
-    password_digest: <%= User.digest('password') %>
+user_<%= n %>:
+  name:  <%= "User #{n}" %>
+  email: <%= "user-#{n}@example.com" %>
+  password_digest: <%= User.digest('password') %>
 <% end %>
