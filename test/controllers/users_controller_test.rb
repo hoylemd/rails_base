@@ -4,6 +4,7 @@ class UsersControllerTest < ActionController::TestCase
   def setup
     @kylo = users(:kylo)
     @peaches = users(:peaches)
+    @batman = users(:batman)
   end
 
   test 'should get new' do
@@ -45,6 +46,30 @@ class UsersControllerTest < ActionController::TestCase
   test 'should redirect index when not logged in' do
     get :index
     assert_redirected_to login_url
+  end
+
+  test 'destroy should redirect to index when not logged in' do
+    delete :destroy, id: @batman
+    assert_flash type: :success, expected: false
+    assert_flash type: :danger, expected: 'Please log in.'
+    assert_redirected_to login_path, 'Should be redirected to login page'
+  end
+
+  test 'destroy should redirect to index when not admin' do
+    log_in_as @kylo
+    delete :destroy, id: @batman
+    assert_flash type: :success, expected: false
+    assert_flash type: :danger,
+                 expected: 'Sorry, you don\'t have permission to do that.'
+    assert_redirected_to users_path, 'Should be redirected to user index page'
+  end
+
+  test 'destroy shuld work when admin' do
+    log_in_as @peaches
+    delete :destroy, id: @batman
+    assert_flash type: :success, expected: 'User \'Batman\' deleted'
+    assert_flash type: :danger, expected: false
+    assert_redirected_to users_path, 'Should be redirected to user index page'
   end
 
   # I can't figure out how to go the GET here. Keeps saying:
