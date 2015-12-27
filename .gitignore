@@ -15,7 +15,6 @@
 /log/*
 !/log/.keep
 /tmp
-errors.rubocop
 
 # ignore spring files
 spring/*.pid
