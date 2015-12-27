@@ -65,6 +65,22 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
     # ids are integers - not strings.
   end
 
+  test 'post to create should ignore an admin parameter' do
+    name = 'Finn'
+    email = 'fn2817@firstorder.gal'
+
+    assert_difference 'User.count', 1 do
+      post_via_redirect users_path, user: { name: name,
+                                            email: email,
+                                            password: 'password',
+                                            password_confirmation: 'password',
+                                            admin: true }
+    end
+
+    assert_signup_succeeded name
+    assert_not User.find_by(email: email).admin, 'Should not be an admin'
+  end
+
   test 'should error on post with missing name' do
     assert_no_difference 'User.count' do
       post users_path, user: @test_info.merge(name: '')

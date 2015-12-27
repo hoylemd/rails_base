@@ -141,4 +141,13 @@ class UserTest < ActiveSupport::TestCase
     @batman.forget
     assert @batman.remember_digest.nil?, 'remember_digest should be nil'
   end
+
+  test 'Users are not admins by default' do
+    rey = User.create(name: 'Rey',
+                      email: 'rey@jakku.net',
+                      password: 'password',
+                      password_confirmation: 'password')
+
+    assert_not rey.admin, 'Should not be an admin'
+  end
 end
