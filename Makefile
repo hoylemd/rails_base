@@ -11,24 +11,6 @@ test: FORCE
 server:
 	$(EXEC) rails server
 
-deploy:
-	heroku maintenance:on
-	git co master
-	git push heroku master
-	heroku run rake db:migrate
-	heroku maintenance:off
-
-start:
-	dev_scripts/start_branch
-
-merge:
-	dev_scripts/merge_me
-
-todo:
-	ack -i --nomake 'todo'
-
-finish: merge deploy
-
 help:
 	cat .make_help
 
