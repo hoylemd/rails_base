@@ -83,11 +83,11 @@ class UsersEditTest < ActionDispatch::IntegrationTest
     delete logout_path
 
     post login_path, session: { email: @kylo.email, password: 'password' }
-    assert_template 'sessions/new', 'should be redirected to login page'
+    assert_template 'sessions/new', 'Should be redirected to login page'
     assert_flash type: 'danger', expected: 'Invalid email/password combination'
 
     post login_path, session: { email: new_email, password: 'password' }
-    assert_redirected_to @kylo, 'should be redirected to the profile page'
+    assert_redirected_to @kylo, 'Should be redirected to the profile page'
   end
 
   test 'edit can change password' do
@@ -104,10 +104,17 @@ class UsersEditTest < ActionDispatch::IntegrationTest
     delete logout_path
 
     post login_path, session: { email: @kylo.email, password: 'password' }
-    assert_template 'sessions/new', 'should be redirected to login page'
+    assert_template 'sessions/new', 'Should be redirected to login page'
     assert_flash type: 'danger', expected: 'Invalid email/password combination'
 
     post login_path, session: { email: @kylo.email, password: new_password }
     assert_redirected_to @kylo, 'should be redirected to the profile page'
+  end
+
+  test 'logging in after attempting unauthorized edit redirects to edit page' do
+    get edit_user_path(@kylo)
+    assert_redirected_to login_path, 'Should be redirected to login page'
+    log_in_as(@kylo)
+    assert_redirected_to edit_user_path(@kylo)
   end
 end
