@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  before_action :logged_in_user, only: [:index, :edit, :update]
+  before_action :logged_in_user, only: [:index, :edit, :update, :destroy]
   before_action :correct_user,   only: [:edit, :update]
   before_action :admin_user,     only: [:destroy]
 
@@ -47,6 +47,7 @@ class UsersController < ApplicationController
 
     redirect_to users_url
   end
+
   private
 
   def user_params
@@ -71,7 +72,6 @@ class UsersController < ApplicationController
 
   # Confirms admins only
   def admin_user
-    return if logged_in_user
     return if current_user.admin?
 
     flash[:danger] = 'Sorry, you don\'t have permission to do that.'
