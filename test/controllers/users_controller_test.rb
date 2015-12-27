@@ -42,6 +42,11 @@ class UsersControllerTest < ActionController::TestCase
     assert_redirected_to root_url
   end
 
+  test 'should redirect index when not logged in' do
+    get :index
+    assert_redirected_to login_url
+  end
+
   # I can't figure out how to go the GET here. Keeps saying:
   # ActionController::UrlGenerationError Exception: No route matches
   #   {:action=>"/users/33989797", :controller=>"users"}
