@@ -34,52 +34,41 @@ class UsersEditTest < ActionDispatch::IntegrationTest
                                password: '',
                                password_confirmation: '' }
 
-    assert_edit_failed(highlights: ['input#user_name', 'input#user_email'],
+    assert_edit_failed(highlights: ['input#user_name',
+                                    'input#user_email'],
                        explanations: ['Name can\'t be blank',
                                       'Email can\'t be blank',
                                       'Email is invalid'])
   end
 
   test 'edit with invalid email is rejected' do
-    get edit_user_path(@kylo)
-    assert_template 'users/edit'
+    log_in_as @kylo
     patch user_path(@kylo), user: { name: @kylo.name,
                                     email: 'i am not an email address' }
 
-    assert_template 'users/edit'
-
-    assert_select 'li', 'Email is invalid',
-                  'Error messages should call out email'
-    assert_select '.field_with_errors input#user_email', 1,
-                  'Email field should be highlighted'
+    assert_edit_failed(highlights: ['input#user_email'],
+                       explanations: ['Email is invalid'])
   end
 
   test 'edits with bad password changes are rejected' do
-    get edit_user_path(@kylo)
-    assert_template 'users/edit'
+    log_in_as @kylo
     patch user_path(@kylo), user: { name: @kylo.name,
                                     email: @kylo.email,
                                     password: 'password',
                                     password_confirmation: 'hunter22' }
 
-    assert_template 'users/edit'
-
-    assert_select 'li', 'Password confirmation doesn\'t match Password',
-                  'Error messages should call out password'
-    assert_select '.field_with_errors input#user_password_confirmation', 1,
-                  'Password confirmation field should be highlighted'
+    assert_edit_failed(highlights: ['input#user_password_confirmation'],
+                       explanations:
+                        ['Password confirmation doesn\'t match Password'])
 
     patch user_path(@kylo), user: { name: @kylo.name,
                                     email: @kylo.email,
                                     password: 'short',
                                     password_confirmation: 'short' }
 
-    assert_template 'users/edit'
-
-    assert_select 'li', 'Password is too short (minimum is 8 characters)',
-                  'Error messages should call out password'
-    assert_select '.field_with_errors input#user_password', 1,
-                  'Password field should be highlighted'
+    assert_edit_failed(highlights: ['input@user_password'],
+                       explanations:
+                        ['Password is too short (minimum is 8 characters)'])
   end
 
   test 'edit can change email and name' do
