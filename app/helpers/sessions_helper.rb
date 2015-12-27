@@ -26,6 +26,11 @@ module SessionsHelper
     !current_user.nil?
   end
 
+  # Returns true if the given user is the current user.
+  def current_user_is(user)
+    user == current_user
+  end
+
   # Remembers a user in a persistent session.
   def remember(user)
     user.remember
