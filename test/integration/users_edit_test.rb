@@ -3,7 +3,6 @@ require 'test_helper'
 class UsersEditTest < ActionDispatch::IntegrationTest
   def setup
     @kylo = users(:kylo)
-    log_in_as @kylo
   end
 
   def assert_edit_failed(errors)
@@ -94,7 +93,7 @@ class UsersEditTest < ActionDispatch::IntegrationTest
   test 'edit can change password' do
     new_password = 'f34rm3l0zr'
 
-    get edit_user_path(@kylo)
+    log_in_as @kylo
     patch_via_redirect user_path(@kylo),
                        user: { name: @kylo.name,
                                email: @kylo.email,
