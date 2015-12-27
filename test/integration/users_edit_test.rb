@@ -66,7 +66,7 @@ class UsersEditTest < ActionDispatch::IntegrationTest
                                     password: 'short',
                                     password_confirmation: 'short' }
 
-    assert_edit_failed(highlights: ['input@user_password'],
+    assert_edit_failed(highlights: ['input#user_password'],
                        explanations:
                         ['Password is too short (minimum is 8 characters)'])
   end
@@ -75,19 +75,17 @@ class UsersEditTest < ActionDispatch::IntegrationTest
     new_email = 'i_am_so_powerful@livejournal.com'
     new_name = 'Darth Ren'
 
-    get edit_user_path(@kylo)
-    assert_template 'users/edit'
+    log_in_as @kylo
     patch_via_redirect user_path(@kylo), user: { name: new_name,
                                                  email: new_email }
-    assert_equal 'Changes saved.', flash[:success]
-    assert_select '#user_name', new_name, 'should see new name'
+
+    assert_edit_succeeded
 
     delete logout_path
 
     post login_path, session: { email: @kylo.email, password: 'password' }
     assert_template 'sessions/new', 'should be redirected to login page'
-    assert_select '.alert-danger', 'Invalid email/password combination',
-                  'old email should be rejected'
+    assert_flash type: 'danger', expected: 'Invalid email/password combination'
 
     post login_path, session: { email: new_email, password: 'password' }
     assert_redirected_to @kylo, 'should be redirected to the profile page'
@@ -97,23 +95,20 @@ class UsersEditTest < ActionDispatch::IntegrationTest
     new_password = 'f34rm3l0zr'
 
     get edit_user_path(@kylo)
-    assert_template 'users/edit'
     patch_via_redirect user_path(@kylo),
                        user: { name: @kylo.name,
                                email: @kylo.email,
                                password: new_password,
                                password_confirmation: new_password }
-    assert_equal 'Changes saved.', flash[:success]
+    assert_edit_succeeded
 
     delete logout_path
 
     post login_path, session: { email: @kylo.email, password: 'password' }
     assert_template 'sessions/new', 'should be redirected to login page'
-    assert_select '.alert-danger', 'Invalid email/password combination',
-                  'old password should be rejected'
+    assert_flash type: 'danger', expected: 'Invalid email/password combination'
 
     post login_path, session: { email: @kylo.email, password: new_password }
-
     assert_redirected_to @kylo, 'should be redirected to the profile page'
   end
 end
