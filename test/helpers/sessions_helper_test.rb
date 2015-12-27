@@ -3,6 +3,7 @@ require 'test_helper'
 class SessionsHelperTest < ActionView::TestCase
   def setup
     @kylo = users(:kylo)
+    @peaches = users(:peaches)
   end
 
   test 'log_in stores the passed user_id in the session' do
@@ -71,5 +72,12 @@ class SessionsHelperTest < ActionView::TestCase
     assert cookies[:user_id].nil?, 'cookies should not contain user_id'
     assert cookies[:remember_token].nil?,
            'cookies should not contain remember_token'
+  end
+
+  test 'current_user_is detects the correct user' do
+    session[:user_id] = @kylo.id
+
+    assert current_user_is(@kylo), 'correct user returns true'
+    assert_not current_user_is(@peaches), 'incorrect user returns false'
   end
 end
