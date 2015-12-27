@@ -3,6 +3,7 @@ require 'test_helper'
 class UsersControllerTest < ActionController::TestCase
   def setup
     @kylo = users(:kylo)
+    @peaches = users(:peaches)
   end
 
   test 'should get new' do
@@ -23,6 +24,22 @@ class UsersControllerTest < ActionController::TestCase
 
     assert_flash type: :danger, expected: 'Please log in.'
     assert_redirected_to login_url, 'Should redirect to login page'
+  end
+
+  test 'should redirect edit when logged in as wrong user' do
+    log_in_as(@peaches)
+    get :edit, id: @kylo
+
+    assert_flash type: :danger, expected: false
+    assert_redirected_to root_url
+  end
+
+  test 'should redirect update when logged in as wrong user' do
+    log_in_as(@peaches)
+    patch :update, id: @kylo, user: { name: @kylo.name, email: @kylo.email }
+
+    assert_flash type: :danger, expected: false
+    assert_redirected_to root_url
   end
 
   # I can't figure out how to go the GET here. Keeps saying:
