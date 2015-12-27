@@ -9,7 +9,7 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
     @kylo = users(:kylo)
   end
 
-  def assert_signup_successful(name = nil)
+  def assert_signup_succeeded(name = nil)
     assert_template 'users/show', 'Should be on profile page'
 
     assert_no_error_messages
@@ -45,7 +45,7 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
                                             remember_me: '1' }
     end
 
-    assert_signup_successful name
+    assert_signup_succeeded name
   end
 
   test 'post to create should ignore extra parameters' do
@@ -59,7 +59,7 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
                                             id: 'so lonely :(' }
     end
 
-    assert_signup_successful name
+    assert_signup_succeeded name
     # This tests user_params - the id field will be stripped out, and not cause
     # an error.  If it were not stripped out, an error would be raised because
     # ids are integers - not strings.
