@@ -12,3 +12,11 @@ batman:
   name: 'Batman'
   email: 'batman@wayneenterprises.com'
   password_digest: <%= User.digest('password') %>
+
+<% 30.times do |n| %>
+  number = n + 2
+  user_<%= number %>:
+    name:  <%= "User #{number}" %>
+    email: <%= "user-#{number}@example.com" %>
+    password_digest: <%= User.digest('password') %>
+<% end %>
