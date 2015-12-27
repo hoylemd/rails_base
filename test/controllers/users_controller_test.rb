@@ -49,7 +49,10 @@ class UsersControllerTest < ActionController::TestCase
   end
 
   test 'destroy should redirect to index when not logged in' do
-    delete :destroy, id: @batman
+    assert_no_difference 'User.count', 'Should not change User count' do
+      delete :destroy, id: @batman
+    end
+
     assert_flash type: :success, expected: false
     assert_flash type: :danger, expected: 'Please log in.'
     assert_redirected_to login_path, 'Should be redirected to login page'
@@ -57,7 +60,10 @@ class UsersControllerTest < ActionController::TestCase
 
   test 'destroy should redirect to index when not admin' do
     log_in_as @kylo
-    delete :destroy, id: @batman
+    assert_no_difference 'User.count', 'Should not change User count' do
+      delete :destroy, id: @batman
+    end
+
     assert_flash type: :success, expected: false
     assert_flash type: :danger,
                  expected: 'Sorry, you don\'t have permission to do that.'
@@ -66,7 +72,10 @@ class UsersControllerTest < ActionController::TestCase
 
   test 'destroy shuld work when admin' do
     log_in_as @peaches
-    delete :destroy, id: @batman
+    assert_difference 'User.count', -1, 'Should delete one user' do
+      delete :destroy, id: @batman
+    end
+
     assert_flash type: :success, expected: 'User \'Batman\' deleted'
     assert_flash type: :danger, expected: false
     assert_redirected_to users_path, 'Should be redirected to user index page'
