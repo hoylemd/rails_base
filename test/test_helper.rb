@@ -112,15 +112,20 @@ module ActiveSupport
       end
     end
 
-    # abstract wrapper for assert_flash, assert_highlights, and
-    # assert_explanations
+    # abstract wrapper for flash, highlights, explanations assertions
+    # rubocop:disable Style/GuardClause
     def assert_error_messages(options)
-      assert_highlights(options[:highlights]) if options[:highlights]
+      assert_highlights(options[:highlights]) unless options[:highlights].nil?
 
-      assert_flash(type: 'danger', expected: options[:flash]) if options[:flash]
+      unless options[:flash].nil?
+        assert_flash(type: 'danger', expected: options[:flash])
+      end
 
-      assert_explanations(options[:explanations]) if options[:explanations]
+      unless options[:explanations].nil?
+        assert_explanations(options[:explanations])
+      end
     end
+    # rubocop:enable Style/GuardClause
 
     # assert that no error messages are rendered
     def assert_no_error_messages
