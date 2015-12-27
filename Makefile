@@ -15,10 +15,6 @@ test: unit
 server:
 	$(EXEC) rails server
 
-lint:
-	rubocop > errors.rubocop
-	cat errors.rubocop
-
 deploy:
 	heroku maintenance:on
 	git co master
