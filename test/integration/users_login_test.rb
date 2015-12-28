@@ -2,6 +2,7 @@ require 'test_helper'
 
 class UsersLoginTest < ActionDispatch::IntegrationTest
   def setup
+    @peaches = users(:peaches)
     @kylo = users(:kylo)
     @nobody = User.new(email: '')
   end
@@ -45,5 +46,24 @@ class UsersLoginTest < ActionDispatch::IntegrationTest
   test 'login without remembering' do
     log_in_as(@kylo, remember_me: '0')
     assert_nil cookies['remember_token']
+  end
+
+  test 'index as admin including pagination and delete links' do
+    log_in_as(@peaches)
+    get users_path
+    assert_no_error_messages
+    assert_select 'div.pagination', 2, 'Should see both pagination controls'
+    # it's 29 because one is the current user, so it doesn't have a delete link
+    assert_select '.users li a', { text: 'delete', count: 29 },
+                  'Should see 30 delete links'
+  end
+
+  test 'index as non-admin' do
+    log_in_as @kylo
+    get users_path
+    assert_no_error_messages
+    assert_select '.users li a', { text: 'delete', count: 0 },
+                  'Should not see any delete links'
+    assert_select '.users li', 30, 'Should see 30 users'
   end
 end
