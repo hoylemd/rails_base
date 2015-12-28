@@ -2,21 +2,29 @@ kylo:
   name: 'Kylo Ren'
   email: 'vader_fan667@hotmail.com'
   password_digest: <%= User.digest('password') %>
+  activated: true
+  activated_at: <%= Time.zone.now %>
 
 peaches:
   name: 'Peaches the Friendly Orc'
   email: 'peachesthefriendlyorc@gmail.com'
   password_digest: <%= User.digest('password') %>
   admin: true
+  activated: true
+  activated_at: <%= Time.zone.now %>
 
 batman:
   name: 'Batman'
   email: 'batman@wayneenterprises.com'
   password_digest: <%= User.digest('password') %>
+  activated: true
+  activated_at: <%= Time.zone.now %>
 
 <% 30.times do |n| %>
 user_<%= n %>:
   name:  <%= "User #{n}" %>
   email: <%= "user-#{n}@example.com" %>
   password_digest: <%= User.digest('password') %>
+  activated: true
+  activated_at: <%= Time.zone.now %>
 <% end %>
