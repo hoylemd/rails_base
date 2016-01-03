@@ -5,7 +5,6 @@ This is the sample application for the
 Learn Web Development with Rails*](http://www.railstutorial.org/)
 by [Michael Hartl](http://www.michaelhartl.com/).
 
-todo: Add some unit tests for email verification methods
 todo: refactor ACL into it's own helper
 todo: add messages to all `assert(_no)?_difference` calls
 todo: implement soft-delete for users

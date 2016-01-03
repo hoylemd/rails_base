@@ -95,6 +95,7 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
     follow_redirect!
     assert_template 'users/show', 'Should be on the user profile page'
     assert logged_in?, 'User should be logged in'
+    assert_flash type: 'success', expected: 'Email verified!'
   end
 
   test 'post to create should ignore extra parameters' do

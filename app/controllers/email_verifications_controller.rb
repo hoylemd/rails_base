@@ -1,11 +1,4 @@
 class EmailVerificationsController < ApplicationController
-  def verify_email(user)
-    user.verify_email
-    log_in user
-    flash[:success] = 'Email verified!'
-    redirect_to user
-  end
-
   def edit
     user = User.find_by(email: params[:email])
     if user && !user.verified? &&
@@ -15,5 +8,14 @@ class EmailVerificationsController < ApplicationController
       flash[:danger] = 'Invalid verification link'
       redirect_to root_url
     end
+  end
+
+  private
+
+  def verify_email(user)
+    user.verify_email
+    log_in user
+    flash[:success] = 'Email verified!'
+    redirect_to user
   end
 end
