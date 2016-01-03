@@ -1,0 +1,6 @@
+Hi <%= @user.name %>,
+
+Welcome to the Sample App! Follow the link below to verify your email:
+
+<%= edit_email_verification_url(@user.verification_token,
+                                  email: @user.email) %>

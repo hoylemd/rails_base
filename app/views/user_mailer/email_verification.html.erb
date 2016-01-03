@@ -1,0 +1,11 @@
+<h1>Sample App</h1>
+
+<p>Hi <%= @user.name %>,</p>
+
+<p>
+  Welcome to the Sample App! Click on the link below to verify your email:
+</p>
+
+<%= link_to "Verify Email",
+            edit_email_verification_url(@user.verification_token,
+                                          email: @user.email) %>

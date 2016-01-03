@@ -1,8 +1,8 @@
 class User < ActiveRecord::Base
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@([a-z\d\-]+\.)*([a-z]+)\z/i
-  attr_accessor :remember_token, :activation_token
+  attr_accessor :remember_token, :verification_token
 
-  before_create :create_activation
+  before_create :create_verification
   before_save :downcase_email
 
   validates :name, presence: true, length: { maximum: 50 }
@@ -46,10 +46,10 @@ class User < ActiveRecord::Base
 
   private
 
-  # Creates the activation token
-  def create_activation
-    self.activation_token = User.new_token
-    self.activation_digest = User.digest(activation_token)
+  # Creates the verification token
+  def create_verification
+    self.verification_token = User.new_token
+    self.verification_digest = User.digest(verification_token)
   end
 
   # normalize emails

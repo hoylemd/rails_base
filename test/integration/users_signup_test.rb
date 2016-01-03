@@ -15,7 +15,7 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
     assert_no_error_messages
 
     assert_flash type: 'info',
-                 expected: 'Please check your email to activate your account.'
+                 expected: 'Please check your email to verify your email.'
 
     assert_not logged_in?, 'User should not be logged in'
   end
