@@ -19,7 +19,11 @@ class UsersController < ApplicationController
   end
 
   def index
-    @users = User.paginate(page: params[:page])
+    if @current_user.verified?
+      @users = User.paginate(page: params[:page])
+    else
+      permission_denied
+    end
   end
 
   def show
@@ -70,11 +74,13 @@ class UsersController < ApplicationController
     redirect_to(root_url) unless current_user_is @user
   end
 
+  def permission_denied
+    flash[:danger] = 'Sorry, you don\'t have permission to do that.'
+    redirect_to(@current_user.verified? ? users_path : root_path)
+  end
+
   # Confirms admins only
   def admin_user
-    return if current_user.admin?
-
-    flash[:danger] = 'Sorry, you don\'t have permission to do that.'
-    redirect_to users_path
+    permission_denied unless current_user.admin?
   end
 end
