@@ -6,11 +6,11 @@ class PasswordResetsController < ApplicationController
     user = User.find_by(email: reset_email)
 
     if user
-      # if found, create reset digest and timestamp
-      # and send email
+      user.create_password_reset_digest
+      user.send_password_reset_email
     end
 
-    # redirect to root with (potentially misinformative) flash message
+    # redirect to root with (potentially and intentionally misleading) flash
     show_password_reset_feedback user
     redirect_to root_path
   end
@@ -26,7 +26,7 @@ class PasswordResetsController < ApplicationController
     return unless Rails.env.development?
     if user
       user.reload
-      reset_link = '/password_resets/new'
+      reset_link = edit_password_reset_path user.reset_token
       flash[:info] += ". dev: <a href=\"#{reset_link}\">reset_link</a>"
     else
       flash[:info] += ". dev: No account for #{reset_email} found."
