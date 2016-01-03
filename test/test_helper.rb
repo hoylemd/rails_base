@@ -133,5 +133,14 @@ module ActiveSupport
       assert_flash(type: 'danger', expected: false)
       assert_explanations(false)
     end
+
+    # helper to extract a token from an email object
+    def get_token_from_email(message)
+      token_regex = /[a-zA-Z0-9\-_]{22}/
+
+      text_body = message.text_part.body.raw_source
+
+      token_regex.match(text_body)[0]
+    end
   end
 end

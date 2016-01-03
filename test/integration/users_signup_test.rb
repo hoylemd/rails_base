@@ -10,62 +10,6 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
     ActionMailer::Base.deliveries.clear
   end
 
-  def get_verify_emails_for(email)
-    ActionMailer::Base.deliveries.select do |item|
-      (item.to.include?(email) &&
-       item.subject == 'Email verification')
-    end
-  end
-
-  def get_verify_token_from_email(message)
-    token_regex = /[a-zA-Z0-9\-_]{22}/
-
-    text_body = message.text_part.body.raw_source
-
-    token_regex.match(text_body)[0]
-  end
-
-  def get_user_verify_token(user)
-    messages = get_verify_emails_for user.email
-    get_verify_token_from_email messages[-1]
-  end
-
-  def assert_signup_succeeded(spec = nil)
-    assert_template 'users/show'
-
-    assert_no_error_messages
-
-    if spec
-      flash = "Welcome, #{spec[:name]}! Please check your email to verify it"
-    else
-      flash = true
-    end
-
-    assert_flash type: 'success', expected: flash
-
-    assert logged_in?, 'User should be logged in'
-
-    return unless spec && spec[:email]
-    messages = get_verify_emails_for spec[:email]
-    assert_equal 1, messages.length,
-                 'Should see exactly 1 Email verification sent to ' \
-                   "#{spec[:email]}, saw #{messages.length}"
-  end
-
-  def assert_signup_failed(errors)
-    assert_template 'users/new', 'Should be on signup page'
-
-    unless errors[:flash]
-      explanations = errors[:explanations].length
-      noun = explanations == 1 ? 'error' : 'errors'
-      errors[:flash] = "The form contains #{explanations} #{noun}."
-    end
-
-    assert_error_messages errors
-
-    assert_not logged_in?, 'User should not be logged in'
-  end
-
   test 'full signup flow' do
     spec = { name: 'Maz Kanata',
              email: 'maz@example.com',
@@ -212,5 +156,55 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
 
     get edit_email_verification_path(verify_token, email: user.email)
     assert user.reload.verified?, 'User\'s email should be verified'
+  end
+
+  private
+
+  def get_verify_emails_for(email)
+    ActionMailer::Base.deliveries.select do |item|
+      (item.to.include?(email) &&
+       item.subject == 'Email verification')
+    end
+  end
+
+  def get_user_verify_token(user)
+    messages = get_verify_emails_for user.email
+    get_token_from_email messages[-1]
+  end
+
+  def assert_signup_succeeded(spec = nil)
+    assert_template 'users/show'
+
+    assert_no_error_messages
+
+    if spec
+      flash = "Welcome, #{spec[:name]}! Please check your email to verify it"
+    else
+      flash = true
+    end
+
+    assert_flash type: 'success', expected: flash
+
+    assert logged_in?, 'User should be logged in'
+
+    return unless spec && spec[:email]
+    messages = get_verify_emails_for spec[:email]
+    assert_equal 1, messages.length,
+                 'Should see exactly 1 Email verification sent to ' \
+                   "#{spec[:email]}, saw #{messages.length}"
+  end
+
+  def assert_signup_failed(errors)
+    assert_template 'users/new', 'Should be on signup page'
+
+    unless errors[:flash]
+      explanations = errors[:explanations].length
+      noun = explanations == 1 ? 'error' : 'errors'
+      errors[:flash] = "The form contains #{explanations} #{noun}."
+    end
+
+    assert_error_messages errors
+
+    assert_not logged_in?, 'User should not be logged in'
   end
 end
