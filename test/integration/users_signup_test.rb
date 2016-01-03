@@ -31,14 +31,19 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
   end
 
   def assert_signup_succeeded(spec = nil)
-    assert_template 'static_pages/home', 'Should be on home page'
+    assert_template 'users/show'
 
     assert_no_error_messages
 
-    assert_flash type: 'info',
-                 expected: 'Please check your email to verify your email.'
+    if spec
+      flash = "Welcome, #{spec[:name]}! Please check your email to verify it"
+    else
+      flash = true
+    end
 
-    assert_not logged_in?, 'User should not be logged in'
+    assert_flash type: 'success', expected: flash
+
+    assert logged_in?, 'User should be logged in'
 
     return unless spec && spec[:email]
     messages = get_verify_emails_for spec[:email]
@@ -74,7 +79,9 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
     end
 
     assert_signup_succeeded spec
-    assert_not logged_in?, 'User should not be logged in yet'
+
+    delete logout_path
+    assert_not logged_in?, 'User should be logged out'
 
     user = User.find_by(email: spec[:email])
     verify_token = get_user_verify_token user

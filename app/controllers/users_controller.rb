@@ -11,8 +11,10 @@ class UsersController < ApplicationController
     @user = User.new(user_params)
     if @user.save
       @user.send_verification_email
-      flash[:info] = 'Please check your email to verify your email.'
-      redirect_to root_url
+      flash[:success] = "Welcome, #{@user.name}! " \
+                        'Please check your email to verify it'
+      log_in @user
+      redirect_to @user
     else
       render 'new', status: :unprocessable_entity
     end

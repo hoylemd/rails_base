@@ -70,7 +70,7 @@ class UsersControllerTest < ActionController::TestCase
     assert_redirected_to users_path, 'Should be redirected to user index page'
   end
 
-  test 'destroy shuld work when admin' do
+  test 'destroy should work when admin' do
     log_in_as @peaches
     assert_difference 'User.count', -1, 'Should delete one user' do
       delete :destroy, id: @batman
