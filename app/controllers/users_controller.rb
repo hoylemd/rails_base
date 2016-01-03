@@ -10,7 +10,7 @@ class UsersController < ApplicationController
   def create
     @user = User.new(user_params)
     if @user.save
-      UserMailer.email_verification(@user).deliver_now
+      @user.send_verification_email
       flash[:info] = 'Please check your email to verify your email.'
       redirect_to root_url
     else

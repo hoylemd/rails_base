@@ -1,7 +1,6 @@
 class EmailVerificationsController < ApplicationController
   def verify_email(user)
-    user.update_attribute(:verified, true)
-    user.update_attribute(:verified_at, Time.zone.now)
+    user.verify_email
     log_in user
     flash[:success] = 'Email verified!'
     redirect_to user

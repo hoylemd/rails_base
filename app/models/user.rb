@@ -44,6 +44,17 @@ class User < ActiveRecord::Base
     BCrypt::Password.new(digest).is_password?(token)
   end
 
+  # Activates an account.
+  def verify_email
+    update_attribute(:verified, true)
+    update_attribute(:verified_at, Time.zone.now)
+  end
+
+  # Sends activation email.
+  def send_verification_email
+    UserMailer.email_verification(self).deliver_now
+  end
+
   private
 
   # Creates the verification token
