@@ -33,6 +33,9 @@ guard :minitest, spring: true, all_on_start: false do
     resource_tests('users') +
     ['test/integration/microposts_interface_test.rb']
   end
+  watch('app/controllers/password_resets_controller.rb') do
+    'test/integration/users_reset_password_test.rb'
+  end
 end
 
 # Returns the integration tests corresponding to the given resource.
