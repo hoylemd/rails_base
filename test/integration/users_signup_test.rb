@@ -25,6 +25,11 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
     token_regex.match(text_body)[0]
   end
 
+  def get_user_verify_token(user)
+    messages = get_verify_emails_for user.email
+    get_verify_token_from_email messages[-1]
+  end
+
   def assert_signup_succeeded(spec = nil)
     assert_template 'static_pages/home', 'Should be on home page'
 
@@ -71,11 +76,10 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
     assert_signup_succeeded spec
     assert_not logged_in?, 'User should not be logged in yet'
 
-    verify_emails = get_verify_emails_for spec[:email]
-    verify_token = get_verify_token_from_email verify_emails[0]
+    user = User.find_by(email: spec[:email])
+    verify_token = get_user_verify_token user
     assert verify_token, 'Email should contain a valid token'
 
-    user = User.find_by(email: spec[:email])
     assert_not user.verified?, 'User\'s email should not be verified yet'
 
     get edit_email_verification_path(verify_token, email: user.email)
@@ -183,8 +187,22 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
   end
 
   test 'get to invalid verification links should error' do
-  end
+    spec = { name: 'Knives Chau',
+             email: 'ihartsexbobomb4eva@rogellus.ca',
+             password: 'password',
+             password_confirmation: 'password' }
 
-  test 'get to verification link with wrong email should error' do
+    post_via_redirect users_path, user: spec
+    user = User.find_by(email: spec[:email])
+
+    get edit_email_verification_path('invalid token')
+    assert_not user.reload.verified?, 'User\'s email should not be validated'
+
+    verify_token = get_user_verify_token user
+    get edit_email_verification_path(verify_token, email: 'wrong')
+    assert_not user.reload.verified?, 'User\'s email should not be validated'
+
+    get edit_email_verification_path(verify_token, email: user.email)
+    assert user.reload.verified?, 'User\'s email should be verified'
   end
 end
