@@ -3,6 +3,7 @@ require 'test_helper'
 class UsersIndexTest < ActionDispatch::IntegrationTest
   def setup
     @kylo = users(:kylo)
+    @crichton = users(:crichton)
   end
 
   test 'index has pagination and at least 30 users, with links to profiles' do
@@ -13,5 +14,15 @@ class UsersIndexTest < ActionDispatch::IntegrationTest
     User.paginate(page: 1).each do |user|
       assert_select 'a[href=?]', user_path(user), text: user.name
     end
+  end
+
+  test 'get to users index when unverified redirects to root' do
+    log_in_as @crichton
+
+    get_via_redirect users_path
+
+    assert_template 'static_pages/home', 'Should be on home page'
+    assert_flash(type: 'danger',
+                 expected: 'Sorry, you don\'t have permission to do that')
   end
 end

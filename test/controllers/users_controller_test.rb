@@ -66,7 +66,7 @@ class UsersControllerTest < ActionController::TestCase
 
     assert_flash type: :success, expected: false
     assert_flash type: :danger,
-                 expected: 'Sorry, you don\'t have permission to do that.'
+                 expected: 'Sorry, you don\'t have permission to do that'
     assert_redirected_to users_path, 'Should be redirected to user index page'
   end
 

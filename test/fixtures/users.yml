@@ -20,6 +20,11 @@ batman:
   verified: true
   verified_at: <%= Time.zone.now %>
 
+crichton:
+  name: 'John Crichton'
+  email: 'jchrichton@iasa.gov'
+  password_digest: <%= User.digest('password') %>
+
 <% 30.times do |n| %>
 user_<%= n %>:
   name:  <%= "User #{n}" %>

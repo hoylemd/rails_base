@@ -75,7 +75,7 @@ class UsersController < ApplicationController
   end
 
   def permission_denied
-    flash[:danger] = 'Sorry, you don\'t have permission to do that.'
+    flash[:danger] = 'Sorry, you don\'t have permission to do that'
     redirect_to(@current_user.verified? ? users_path : root_path)
   end
 
