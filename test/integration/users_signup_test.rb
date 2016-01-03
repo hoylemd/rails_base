@@ -57,7 +57,7 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
   end
 
   test 'full signup flow' do
-    spec = { name: 'Max Kanata',
+    spec = { name: 'Maz Kanata',
              email: 'maz@example.com',
              password: 'password',
              password_confirmation: 'password',
@@ -119,7 +119,7 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
     assert_not User.find_by(email: email).admin, 'Should not be an admin'
   end
 
-  test 'should error on post with missing name' do
+  test 'post to create with missing name should error' do
     assert_no_difference 'User.count' do
       post users_path, user: @test_info.merge(name: '')
     end
@@ -128,7 +128,7 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
                          explanations: ['Name can\'t be blank']
   end
 
-  test 'should error on post with invalid email' do
+  test 'post with invalid email should error' do
     assert_no_difference 'User.count' do
       post users_path, user: @test_info.merge(email: '')
     end
@@ -153,7 +153,7 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
                          explanations: ['Email has already been taken']
   end
 
-  test 'should error on post with invalid password or confirmation' do
+  test 'post to create with invalid password or confirmation should error' do
     assert_no_difference 'User.count' do
       post users_path, user: @test_info.merge(password: '',
                                               password_confirmation: '')
