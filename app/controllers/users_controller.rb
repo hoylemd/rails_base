@@ -11,8 +11,7 @@ class UsersController < ApplicationController
     @user = User.new(user_params)
     if @user.save
       @user.send_verification_email
-      flash[:success] = "Welcome, #{@user.name}! " \
-                        'Please check your email to verify it'
+      show_signup_feedback @user
       log_in @user
       redirect_to @user
     else
@@ -55,6 +54,16 @@ class UsersController < ApplicationController
   end
 
   private
+
+  def show_signup_feedback(user)
+    flash[:success] =
+      "Welcome, #{user.name}! Please check your email to verify it"
+    return unless Rails.env.development?
+    verify_link = edit_email_verification_path(user.verification_token,
+                                               email: user.email)
+    message = "<a href=\"#{verify_link}\">Or testers can click here</a>"
+    flash[:info] = message.html_safe
+  end
 
   def user_params
     params.require(:user).permit(:name, :email, :password,
