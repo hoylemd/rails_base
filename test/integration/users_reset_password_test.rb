@@ -51,9 +51,21 @@ class UsersResetPasswordTest < ActionDispatch::IntegrationTest
   test 'get on edit redirects to home on invalid email' do
   end
 
+  test 'get on edit redirects to home on expired token' do
+  end
+
   test 'post on update with invalid token redirects to home' do
   end
 
   test 'post on update with invalid email redirects to home' do
+  end
+
+  test 'post on update on expired token redirects to home' do
+  end
+
+  test 'post on update with bad passwords errors' do
+    # blank
+    # too short
+    # mismatched
   end
 end
