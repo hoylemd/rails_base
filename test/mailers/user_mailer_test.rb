@@ -17,10 +17,13 @@ class UserMailerTest < ActionMailer::TestCase
   end
 
   test 'password_reset' do
-    mail = UserMailer.password_reset
-    assert_equal 'Password reset', mail.subject
-    assert_equal ['to@example.org'], mail.to
+    @kylo.create_password_reset_digest
+    mail = UserMailer.password_reset @kylo
+    assert_equal 'Reset your password', mail.subject
+    assert_equal [@kylo.email], mail.to
     assert_equal ['noreply@example.com'], mail.from
-    assert_match 'Hi', mail.body.encoded
+    assert_match 'This link will expire in two hours.', mail.body.encoded
+    assert_match @kylo.reset_token, mail.body.encoded
+    assert_match CGI.escape(@kylo.email), mail.body.encoded
   end
 end
