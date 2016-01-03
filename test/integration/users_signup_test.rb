@@ -181,4 +181,10 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
                          explanations: [
                            'Password confirmation doesn\'t match Password']
   end
+
+  test 'get to invalid verification links should error' do
+  end
+
+  test 'get to verification link with wrong email should error' do
+  end
 end
