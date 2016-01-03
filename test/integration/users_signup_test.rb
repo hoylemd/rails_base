@@ -7,9 +7,10 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
                    password: 'password',
                    password_confirmation: 'password' }
     @kylo = users(:kylo)
+    ActionMailer::Base.deliveries.clear
   end
 
-  def assert_signup_succeeded
+  def assert_signup_succeeded(spec = nil)
     assert_template 'static_pages/home', 'Should be on home page'
 
     assert_no_error_messages
@@ -34,33 +35,33 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
     assert_not logged_in?, 'User should not be logged in'
   end
 
-  test 'valid signup information is accepted' do
-    name = 'Max Kanata'
+  test 'full signup flow' do
+    spec = { name: 'Max Kanata',
+             email: 'maz@example.com',
+             password: 'password',
+             password_confirmation: 'password',
+             remember_me: '1' }
 
     get signup_path
-    assert_difference 'User.count', 1 do
-      post_via_redirect users_path, user: { name: name,
-                                            email: 'maz@example.com',
-                                            password: 'password',
-                                            password_confirmation: 'password',
-                                            remember_me: '1' }
+    assert_difference 'User.count', 1, 'Users count should increment by one' do
+      post_via_redirect users_path, user: spec
     end
 
     assert_signup_succeeded
   end
 
   test 'post to create should ignore extra parameters' do
-    name = 'Luke Skywalker'
+    spec = { name: 'Luke Skywalker',
+             email: 'the_last_jedi@example.com',
+             password: 'password',
+             password_confirmation: 'password',
+             id: 'so lonely :(' }
 
     assert_difference 'User.count', 1 do
-      post_via_redirect users_path, user: { name: name,
-                                            email: 'the_last_jedi@example.com',
-                                            password: 'password',
-                                            password_confirmation: 'password',
-                                            id: 'so lonely :(' }
+      post_via_redirect users_path, user: spec
     end
 
-    assert_signup_succeeded
+    assert_signup_succeeded spec
     # This tests user_params - the id field will be stripped out, and not cause
     # an error.  If it were not stripped out, an error would be raised because
     # ids are integers - not strings.
