@@ -17,7 +17,7 @@ class UserMailerTest < ActionMailer::TestCase
   end
 
   test 'password_reset' do
-    @kylo.create_password_reset_digest
+    @kylo.reset_token = User.new_token
     mail = UserMailer.password_reset @kylo
     assert_equal 'Reset your password', mail.subject
     assert_equal [@kylo.email], mail.to
