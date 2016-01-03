@@ -24,6 +24,12 @@ class UsersResetPasswordTest < ActionDispatch::IntegrationTest
                  "Should have sent an email to '#{@kylo.email}'"
     assert_equal 'Reset your password', last_email.subject,
                  "Should have sent an email with 'Reset your password' subject"
+
+    # build the reset url
+    # visit the url
+    # change the password
+    # log out
+    # log in with new password
   end
 
   test 'unknown email behaves the same as known email' do
