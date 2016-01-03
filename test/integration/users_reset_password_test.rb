@@ -38,4 +38,10 @@ class UsersResetPasswordTest < ActionDispatch::IntegrationTest
     assert_equal 0, ActionMailer::Base.deliveries.length,
                  'Should not have sent an email'
   end
+
+  test 'get on edit redirects to home on invalid token' do
+  end
+
+  test 'get on edit redirects to home on invalid email' do
+  end
 end

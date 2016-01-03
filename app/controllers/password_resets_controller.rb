@@ -1,4 +1,6 @@
 class PasswordResetsController < ApplicationController
+  before_action :correct_user, only: [:edit, :update]
+
   def new
   end
 
@@ -19,6 +21,13 @@ class PasswordResetsController < ApplicationController
   end
 
   private
+
+  # Confirms a valid user.
+  def correct_user
+    @user = User.find_by(email: params[:email])
+    return unless @user && @user.authenticated?(:reset, params[:id])
+    redirect_to root_url
+  end
 
   def show_password_reset_feedback(user)
     flash[:info] = 'A password reset link has been emailed to you'
