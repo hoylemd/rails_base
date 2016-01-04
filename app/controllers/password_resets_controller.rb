@@ -43,6 +43,7 @@ class PasswordResetsController < ApplicationController
   def correct_user
     @user = User.find_by(email: params[:email])
     return if @user && @user.authenticated?(:reset, params[:id])
+    flash[:danger] = 'Sorry, that password reset link is not valid'
     redirect_to root_url
   end
 
@@ -52,7 +53,7 @@ class PasswordResetsController < ApplicationController
     return unless Rails.env.development?
     if user
       user.reload
-      reset_link = edit_password_reset_path user.reset_token
+      reset_link = edit_password_reset_path user.reset_token, email: user.email
       flash[:info] += ". dev: <a href=\"#{reset_link}\">reset_link</a>"
     else
       flash[:info] += ". dev: No account for #{reset_email} found."
