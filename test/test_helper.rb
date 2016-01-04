@@ -136,11 +136,12 @@ module ActiveSupport
 
     # helper to extract a token from an email object
     def get_token_from_email(message)
-      token_regex = /[a-zA-Z0-9\-_]{22}/
+      token_regex = %r/\/([a-zA-Z0-9\-_]{22})\//
 
       text_body = message.text_part.body.raw_source
 
-      token_regex.match(text_body)[0]
+      matches = token_regex.match(text_body)
+      matches.captures[0]
     end
   end
 end

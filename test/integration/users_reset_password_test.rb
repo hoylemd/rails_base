@@ -25,11 +25,28 @@ class UsersResetPasswordTest < ActionDispatch::IntegrationTest
     assert_equal 'Reset your password', last_email.subject,
                  "Should have sent an email with 'Reset your password' subject"
 
-    # build the reset url
-    # visit the url
-    # change the password
-    # log out
-    # log in with new password
+    token = get_token_from_email last_email
+    assert token, 'Email should contain a token'
+
+    get edit_password_reset_path token, email: @kylo.email
+    assert_template 'password_resets/edit'
+
+    payload = { user: { password: 'wordpass',
+                        password_confirmation: 'wordpass' } }
+    put_via_redirect password_reset_path(token, payload), email: @kylo.email
+
+    assert_response :success, 'Password change should be accepted'
+    assert_template 'users/show'
+    assert_flash type: 'success', expected: 'Password has been reset'
+    assert logged_in?, 'Should be logged in'
+
+    delete logout_path
+    log_in_as @kylo
+    assert_not logged_in?, 'Should reject old password'
+    assert_flash type: 'danger', expect: 'Invalid email/password combination'
+
+    log_in_as @kylo, password: 'wordpass'
+    assert logged_in?, 'Should accept new password'
   end
 
   test 'unknown email behaves the same as known email' do

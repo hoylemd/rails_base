@@ -25,7 +25,7 @@ class PasswordResetsController < ApplicationController
   # Confirms a valid user.
   def correct_user
     @user = User.find_by(email: params[:email])
-    return unless @user && @user.authenticated?(:reset, params[:id])
+    return if @user && @user.authenticated?(:reset, params[:id])
     redirect_to root_url
   end
 
