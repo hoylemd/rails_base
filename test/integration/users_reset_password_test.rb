@@ -3,6 +3,7 @@ require 'test_helper'
 class UsersResetPasswordTest < ActionDispatch::IntegrationTest
   def setup
     @kylo = users(:kylo)
+    @peaches = users(:peaches)
     ActionMailer::Base.deliveries.clear
   end
 
@@ -62,7 +63,7 @@ class UsersResetPasswordTest < ActionDispatch::IntegrationTest
                  'Should not have sent an email'
   end
 
-  test 'get on edit redirects to home on invalid token' do
+  test 'get on edit redirects to home on invalid parameters' do
     get_via_redirect edit_password_reset_path 'sf', email: @kylo.email
     assert_template 'static_pages/home'
     assert_flash type: 'danger',
@@ -73,9 +74,18 @@ class UsersResetPasswordTest < ActionDispatch::IntegrationTest
     assert_template 'static_pages/home'
     assert_flash type: 'danger',
                  expected: 'Sorry, that password reset link is not valid'
-  end
 
-  test 'get on edit redirects to home on invalid email' do
+    @kylo.create_password_reset_digest
+    get_via_redirect edit_password_reset_path @kylo.reset_token, email: ''
+    assert_template 'static_pages/home'
+    assert_flash type: 'danger',
+                 expected: 'Sorry, that password reset link is not valid'
+
+    get_via_redirect edit_password_reset_path @kylo.reset_token,
+                                              email: @peaches.email
+    assert_template 'static_pages/home'
+    assert_flash type: 'danger',
+                 expected: 'Sorry, that password reset link is not valid'
   end
 
   test 'get on edit redirects to home on expired token' do
