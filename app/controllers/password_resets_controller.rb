@@ -1,5 +1,6 @@
 class PasswordResetsController < ApplicationController
   before_action :correct_user, only: [:edit, :update]
+  before_action :token_expired, only: [:edit, :update]
 
   def new
   end
@@ -41,10 +42,17 @@ class PasswordResetsController < ApplicationController
 
   # Confirms a valid user.
   def correct_user
-    @user = User.find_by(email: params[:email])
+    @user ||= User.find_by(email: params[:email])
     return if @user && @user.authenticated?(:reset, params[:id])
     flash[:danger] = 'Sorry, that password reset link is not valid'
     redirect_to root_url
+  end
+
+  def token_expired
+    @user ||= User.find_by(email: params[:email])
+    return unless @user.reset_token_expired?
+    flash[:danger] = 'Sorry, that password reset link has expired'
+    redirect_to new_password_reset_path
   end
 
   def show_password_reset_feedback(user)

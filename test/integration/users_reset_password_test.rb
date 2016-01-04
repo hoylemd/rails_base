@@ -91,13 +91,14 @@ class UsersResetPasswordTest < ActionDispatch::IntegrationTest
   test 'get on edit redirects to forgot password page on expired token' do
     @kylo.create_password_reset_digest
     @kylo.reset_sent_at = 3.hours.ago
+    @kylo.save
 
     get_via_redirect edit_password_reset_path @kylo.reset_token,
                                               email: @kylo.email
 
-    assert_template 'password_resets/new'
     assert_flash type: 'danger',
                  expected: 'Sorry, that password reset link has expired'
+    assert_template 'password_resets/new'
   end
 
   test 'post on update with invalid token redirects to home' do
