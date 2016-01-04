@@ -63,6 +63,16 @@ class UsersResetPasswordTest < ActionDispatch::IntegrationTest
   end
 
   test 'get on edit redirects to home on invalid token' do
+    get_via_redirect edit_password_reset_path 'sf', email: @kylo.email
+    assert_template 'static_pages/home'
+    assert_flash type: 'danger',
+                 expected: 'Sorry, that password reset link is not valid'
+
+    get_via_redirect edit_password_reset_path 'asdgejsHKDNH-23ddfJH6F',
+                                              email: @kylo.email
+    assert_template 'static_pages/home'
+    assert_flash type: 'danger',
+                 expected: 'Sorry, that password reset link is not valid'
   end
 
   test 'get on edit redirects to home on invalid email' do
