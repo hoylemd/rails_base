@@ -159,4 +159,16 @@ class UserTest < ActiveSupport::TestCase
 
     assert_not rey.admin, 'Should not be an admin'
   end
+
+  test 'reset_token_expired? correctly checks for token expiration' do
+    assert_not @batman.reset_token_expired?,
+               'no digest should not count as expired'
+
+    @batman.reset_sent_at = 1.hour.ago
+    assert_not @batman.reset_token_expired?,
+               '1 hour old token should not be expired'
+
+    @batman.reset_sent_at = 3.hours.ago
+    assert @batman.reset_token_expired?, '3 hour old token should be expired'
+  end
 end

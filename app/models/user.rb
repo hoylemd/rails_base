@@ -67,6 +67,10 @@ class User < ActiveRecord::Base
     update_attribute(:reset_sent_at, Time.zone.now)
   end
 
+  def reset_token_expired?
+    reset_sent_at && reset_sent_at < 2.hours.ago
+  end
+
   private
 
   # Creates the verification token
