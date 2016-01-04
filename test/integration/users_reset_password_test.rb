@@ -88,7 +88,16 @@ class UsersResetPasswordTest < ActionDispatch::IntegrationTest
                  expected: 'Sorry, that password reset link is not valid'
   end
 
-  test 'get on edit redirects to home on expired token' do
+  test 'get on edit redirects to forgot password page on expired token' do
+    @kylo.create_password_reset_digest
+    @kylo.reset_sent_at = 3.hours.ago
+
+    get_via_redirect edit_password_reset_path @kylo.reset_token,
+                                              email: @kylo.email
+
+    assert_template 'password_resets/new'
+    assert_flash type: 'danger',
+                 expected: 'Sorry, that password reset link has expired'
   end
 
   test 'post on update with invalid token redirects to home' do
