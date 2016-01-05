@@ -149,9 +149,46 @@ class UsersResetPasswordTest < ActionDispatch::IntegrationTest
     assert_error_messages flash: 'Sorry, that password reset link has expired'
   end
 
-  test 'post on update with bad passwords errors' do
-    # blank
-    # too short
-    # mismatched
+  test 'post on update with blank passwords errors' do
+    @kylo.create_password_reset_digest
+
+    put_via_redirect password_reset_path(@kylo.reset_token, email: @kylo.email),
+                     user: {
+                       password: '',
+                       password_confirmation: ''
+                     }
+    assert_template 'password_resets/edit'
+    assert_error_messages flash: 'The form contains 1 error.',
+                          explanations: ['Password can\'t be empty'],
+                          highlights: ['input#user_password']
+  end
+
+  test 'post on update with too-short passwords errors' do
+    @kylo.create_password_reset_digest
+
+    put_via_redirect password_reset_path(@kylo.reset_token, email: @kylo.email),
+                     user: {
+                       password: 'pass',
+                       password_confirmation: 'pass'
+                     }
+    assert_template 'password_resets/edit'
+    assert_error_messages flash: 'The form contains 1 error.',
+                          explanations: [
+                            'Password is too short (minimum is 8 characters)'],
+                          highlights: ['input#user_password']
+  end
+  test 'post on update with mismatched passwords errors' do
+    @kylo.create_password_reset_digest
+
+    put_via_redirect password_reset_path(@kylo.reset_token, email: @kylo.email),
+                     user: {
+                       password: 'wordpass',
+                       password_confirmation: 'wordpasss'
+                     }
+    assert_template 'password_resets/edit'
+    assert_error_messages flash: 'The form contains 1 error.',
+                          explanations: [
+                            'Password confirmation doesn\'t match Password'],
+                          highlights: ['input#user_password_confirmation']
   end
 end
