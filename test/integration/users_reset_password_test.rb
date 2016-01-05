@@ -112,7 +112,6 @@ class UsersResetPasswordTest < ActionDispatch::IntegrationTest
     assert_error_messages flash: 'Sorry, that password reset link is not valid'
 
     @kylo.create_password_reset_digest
-    @kylo.save
 
     put_via_redirect password_reset_path 'abcDEFghiJKL123pqrSTU-',
                                          email: @kylo.email,
@@ -125,6 +124,15 @@ class UsersResetPasswordTest < ActionDispatch::IntegrationTest
   end
 
   test 'post on update with invalid email redirects to home' do
+    @kylo.create_password_reset_digest
+    put_via_redirect password_reset_path @kylo.reset_token,
+                                         email: 'notkylo@example.com',
+                                         user: {
+                                           password: 'wordpass',
+                                           password_confirmation: 'wordpass'
+                                         }
+    assert_template 'static_pages/home'
+    assert_error_messages flash: 'Sorry, that password reset link is not valid'
   end
 
   test 'post on update on expired token redirects to home' do
