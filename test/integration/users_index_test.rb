@@ -39,4 +39,19 @@ class UsersIndexTest < ActionDispatch::IntegrationTest
                   user_path(@crichton), { count: 1 },
                   'Admin user should see unverified users'
   end
+
+  test 'index only shows delete links to admins, and never a user\'s own' do
+    log_in_as @kylo
+    get users_path
+    assert_select '.users li a.js-delete-user', { count: 0 },
+                  'Regular user should not see delete links'
+
+    log_in_as @peaches
+    get users_path
+    assert_select '.users li a.js-delete-user', { count: 29 },
+                  'Admin user should see delete links'
+    assert_select '.users li a.js-delete-user[href=?]', user_path(@peaches),
+                  { count: 0 },
+                  'Admin user should not see a delete link for themselves'
+  end
 end
