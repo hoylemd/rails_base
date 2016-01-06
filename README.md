@@ -12,3 +12,4 @@ todo: create a default admin user, and a workflow to replace it with a new admin
 todo: redirect user to own profile page on login if email is not verified
 todo: add a 'resend verification' link to profile pages.
 todo: invalidate current password on password reset, and log user out elsewhere.
+todo: allow admins to promote other users to admins
