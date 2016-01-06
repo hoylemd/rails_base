@@ -20,8 +20,13 @@ class UsersController < ApplicationController
   end
 
   def index
-    if @current_user.verified?
-      @users = User.paginate(page: params[:page])
+    if current_user.verified?
+      if @current_user.admin?
+        @users = User.paginate(page: params[:page])
+      else
+        # only show verified users to non-admins
+        @users = User.where(verified: true).paginate(page: params[:page])
+      end
     else
       permission_denied
     end
@@ -29,6 +34,12 @@ class UsersController < ApplicationController
 
   def show
     @user = User.find(params[:id])
+
+    return if @user && (
+      @user.verified? || current_user.admin? || @user == current_user)
+
+    flash[:danger] = "Sorry, user '#{params[:id]}' does not exist"
+    redirect_to users_path
   end
 
   def edit
