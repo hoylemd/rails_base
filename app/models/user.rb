@@ -46,8 +46,7 @@ class User < ActiveRecord::Base
 
   # Activates an account.
   def verify_email
-    update_attribute(:verified, true)
-    update_attribute(:verified_at, Time.zone.now)
+    update_columns(verified: true, verified_at: Time.zone.now)
   end
 
   # Sends activation email.
@@ -63,11 +62,12 @@ class User < ActiveRecord::Base
   # Creates the password reset token
   def create_password_reset_digest
     self.reset_token = User.new_token
-    update_attribute(:reset_digest, User.digest(reset_token))
-    update_attribute(:reset_sent_at, Time.zone.now)
+    update_columns(reset_digest: User.digest(reset_token),
+                   reset_sent_at: Time.zone.now)
   end
 
   def reset_token_expired?
+    # for time, '<' is means 'earlier than'
     reset_sent_at && reset_sent_at < 2.hours.ago
   end
 
