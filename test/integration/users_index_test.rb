@@ -11,7 +11,7 @@ class UsersIndexTest < ActionDispatch::IntegrationTest
     get users_path
     assert_select 'div.pagination', 2, 'Should see 2 pagination controls'
     assert_select '.users li', 30, 'Should see 30 users'
-    User.paginate(page: 1).each do |user|
+    User.where(verified: true).paginate(page: 1).each do |user|
       assert_select 'a[href=?]', user_path(user), text: user.name
     end
   end
@@ -24,5 +24,11 @@ class UsersIndexTest < ActionDispatch::IntegrationTest
     assert_template 'static_pages/home', 'Should be on home page'
     assert_flash(type: 'danger',
                  expected: 'Sorry, you don\'t have permission to do that')
+  end
+
+  test 'index does not display unverified users to non-admin users' do
+    # verify that kylo doesn't see crichton
+
+    # verify that peaches does see crichton
   end
 end
