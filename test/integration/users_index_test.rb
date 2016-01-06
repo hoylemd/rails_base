@@ -4,6 +4,7 @@ class UsersIndexTest < ActionDispatch::IntegrationTest
   def setup
     @kylo = users(:kylo)
     @crichton = users(:crichton)
+    @peaches = users(:peaches)
   end
 
   test 'index has pagination and at least 30 users, with links to profiles' do
@@ -27,8 +28,15 @@ class UsersIndexTest < ActionDispatch::IntegrationTest
   end
 
   test 'index does not display unverified users to non-admin users' do
-    # verify that kylo doesn't see crichton
+    log_in_as @kylo
+    get users_path
+    assert_select '.users li a[href=?]', user_path(@crichton), { count: 0 },
+                  'Regular user should not see an unverified user'
 
-    # verify that peaches does see crichton
+    log_in_as @peaches
+    get users_path
+    assert_select '.users li a.js-user-profile-link[href=?]',
+                  user_path(@crichton), { count: 1 },
+                  'Admin user should see unverified users'
   end
 end
