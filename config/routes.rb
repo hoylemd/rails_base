@@ -14,4 +14,5 @@ Rails.application.routes.draw do
 
   resources :email_verifications, only: [:edit]
   resources :password_resets,     only: [:new, :create, :edit, :update]
+  resources :microposts,          only: [:create, :destroy]
 end
