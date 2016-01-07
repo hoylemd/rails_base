@@ -22,18 +22,29 @@ class MicropostManipulationTest < ActionDispatch::IntegrationTest
 
     log_in_as @kylo
     get root_path
-    # TODO: assert the form is present
+    assert_select 'textarea#micropost_content', true,
+                  'Should see the micropost text box'
+    assert_select 'input.btn.btn-primary[value=?]', 'Post', true,
+                  'Should see the post button'
 
-    msg = "Micropost count shouldn't increase on bad micropost"
+    msg = "Micropost count shouldn't increase on empty micropost"
     assert_no_difference 'Micropost.count', msg do
-      post_via_redirect microposts_path, micropost: { content: 'a' * 141 }
+      post_via_redirect microposts_path, micropost: { content: '' }
     end
     assert_response :unprocessable_entity,
                     'Should get a 422 Unprocessable error'
     assert_template 'static_pages/home',
                     'Should be redirected to home on error'
+    assert_error_messages(explanations: ['Content can\'t be blank'])
+
+    msg = "Micropost count shouldn't increase on too-long micropost"
+    assert_no_difference 'Micropost.count', msg do
+      post_via_redirect microposts_path, micropost: { content: 'a' * 141 }
+    end
+    assert_response :unprocessable_entity,
+                    'Should get a 422 Unprocessable error'
     assert_error_messages(
-      flash: 'Microposts must be 140 characters or less')
+      explanations: ['Content is too long (maximum is 140 characters)'])
 
     msg = 'Micropost count should increase'
     assert_difference 'Micropost.count', 1, msg do

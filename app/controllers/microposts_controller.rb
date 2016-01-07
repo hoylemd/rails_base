@@ -7,7 +7,6 @@ class MicropostsController < ApplicationController
       flash[:success] = 'Micropost created!'
       redirect_to current_user
     else
-      flash[:danger] = 'Microposts must be 140 characters or less'
       render 'static_pages/home', status: :unprocessable_entity
     end
   end
