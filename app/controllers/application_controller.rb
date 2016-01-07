@@ -12,7 +12,7 @@ class ApplicationController < ActionController::Base
     return if logged_in?
 
     store_location
-    flash[:danger] = 'Please log in.'
-    redirect_to login_url
+    flash[:danger] = 'Please log in first'
+    render 'sessions/new', status: :unauthorized
   end
 end

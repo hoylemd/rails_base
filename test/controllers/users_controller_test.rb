@@ -16,15 +16,15 @@ class UsersControllerTest < ActionController::TestCase
   test 'should redirect edit when not logged in' do
     get :edit, id: @kylo
 
-    assert_flash type: :danger, expected: 'Please log in.'
-    assert_redirected_to login_url, 'Should redirect to login page'
+    assert_flash type: :danger, expected: 'Please log in first'
+    assert_template 'sessions/new', 'Should redirect to login page'
   end
 
   test 'should redirect update when not logged in' do
     patch :update, id: @kylo, user: { name: @kylo.name, email: @kylo.email }
 
-    assert_flash type: :danger, expected: 'Please log in.'
-    assert_redirected_to login_url, 'Should redirect to login page'
+    assert_flash type: :danger, expected: 'Please log in first'
+    assert_template 'sessions/new', 'Should redirect to login page'
   end
 
   test 'should redirect edit when logged in as wrong user' do
@@ -32,7 +32,7 @@ class UsersControllerTest < ActionController::TestCase
     get :edit, id: @kylo
 
     assert_flash type: :danger, expected: false
-    assert_redirected_to root_url
+    assert_redirected_to root_url, 'Should be redirected to home page'
   end
 
   test 'should redirect update when logged in as wrong user' do
@@ -40,12 +40,12 @@ class UsersControllerTest < ActionController::TestCase
     patch :update, id: @kylo, user: { name: @kylo.name, email: @kylo.email }
 
     assert_flash type: :danger, expected: false
-    assert_redirected_to root_url
+    assert_redirected_to root_url, 'Should be redirected to home page'
   end
 
   test 'should redirect index when not logged in' do
     get :index
-    assert_redirected_to login_url
+    assert_template 'sessions/new', 'Should be redirected to login page'
   end
 
   test 'destroy should redirect to index when not logged in' do
@@ -54,8 +54,8 @@ class UsersControllerTest < ActionController::TestCase
     end
 
     assert_flash type: :success, expected: false
-    assert_flash type: :danger, expected: 'Please log in.'
-    assert_redirected_to login_path, 'Should be redirected to login page'
+    assert_flash type: :danger, expected: 'Please log in first'
+    assert_template 'sessions/new', 'Should redirect to login page'
   end
 
   test 'destroy should redirect to index when not admin' do

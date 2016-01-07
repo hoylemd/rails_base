@@ -113,7 +113,7 @@ class UsersEditTest < ActionDispatch::IntegrationTest
 
   test 'logging in after attempting unauthorized edit redirects to edit page' do
     get edit_user_path(@kylo)
-    assert_redirected_to login_path, 'Should be redirected to login page'
+    assert_template 'sessions/new', 'Should be redirected to login page'
     assert_equal session[:forwarding_url], edit_user_url(@kylo),
                  'Forwarding url is set to Kylo\'s edit page'
     log_in_as(@kylo)

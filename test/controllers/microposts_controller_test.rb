@@ -9,13 +9,13 @@ class MicropostsControllerTest < ActionController::TestCase
     assert_no_difference 'Micropost.count' do
       post :create, micropost: { content: 'Lorem ipsum' }
     end
-    assert_redirected_to login_url
+    assert_template 'sessions/new', 'Should be redirected to login page'
   end
 
   test 'should redirect destroy when not logged in' do
     assert_no_difference 'Micropost.count' do
       delete :destroy, id: @parsecs
     end
-    assert_redirected_to login_url
+    assert_template 'sessions/new', 'Should be redirected to login page'
   end
 end
