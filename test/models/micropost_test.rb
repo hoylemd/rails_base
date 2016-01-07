@@ -3,9 +3,7 @@ require 'test_helper'
 class MicropostTest < ActiveSupport::TestCase
   def setup
     @kylo = users(:kylo)
-    # This code is not idiomatically correct.
-    @micropost = Micropost.new(
-      user_id: @kylo.id,
+    @micropost = @kylo.microposts.build(
       content: 'i think dad\'s walking carpet resents me for some reason')
   end
 
