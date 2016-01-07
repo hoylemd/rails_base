@@ -41,9 +41,9 @@ class SiteLayoutTest < ActionDispatch::IntegrationTest
     assert_select 'a[href=?]', contact_path, true, 'Should see a contact link'
     assert_select 'a[href=?]', login_path, false, 'Should not see a login link'
     assert_select 'a[href=?]', logout_path, true, 'Should see a logout link'
-    assert_select 'a[href=?]', signup_path, true, 'Should see a signup link'
+    assert_select 'a[href=?]', signup_path, false, 'Should see a signup link'
 
-    assert_template 'shared/user_info', 'Should see user info'
-    assert_template 'shared/micropost_form', 'Should see a micropost form'
+    assert_template 'shared/_user_info', 'Should see user info'
+    assert_template 'shared/_micropost_form', 'Should see a micropost form'
   end
 end
