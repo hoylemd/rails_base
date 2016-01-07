@@ -171,4 +171,15 @@ class UserTest < ActiveSupport::TestCase
     @batman.reset_sent_at = 3.hours.ago
     assert @batman.reset_token_expired?, '3 hour old token should be expired'
   end
+
+  test 'associated microposts should be destroyedr' do
+    @batman.save
+    post =
+     'It\'s not who I am, but how I do, that makes James Cameron James Cameron.'
+    @batman.microposts.create!(
+      content: post)
+    assert_difference 'Micropost.count', -1 do
+      @batman.destroy
+    end
+  end
 end
