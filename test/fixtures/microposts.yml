@@ -1,9 +1,16 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+parsecs:
+  content: "ugh parsecs are units of distance DAD"
+  created_at: <%= 10.minutes.ago %>
 
-one:
-  content: MyText
-  user_id: 
+i_hate_everything:
+  content: "i hate everything https://pbs.twimg.com/media/CX2P18XWwAQeY29.jpg"
+  created_at: <%= 3.years.ago %>
 
-two:
-  content: MyText
-  user_id: 
+spoke_to_a_girl:
+  content: "dear diary\ntoday i spoke to a girl\ni called her m'lady and said I hate sand\nit worked for Darth Vader but i guess he knew something I don't"
+  created_at: <%= 2.hours.ago %>
+
+most_recent:
+  content: "yeah well DARTH VADER never SHOT his PHONE to get out of a conversation with his son, DAD"
+  created_at: <%= Time.zone.now %>
