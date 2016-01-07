@@ -2,15 +2,26 @@
 parsecs:
   content: "ugh parsecs are units of distance DAD"
   created_at: <%= 10.minutes.ago %>
+  user: kylo
 
 i_hate_everything:
   content: "i hate everything https://pbs.twimg.com/media/CX2P18XWwAQeY29.jpg"
   created_at: <%= 3.years.ago %>
+  user: kylo
 
 spoke_to_a_girl:
   content: "dear diary\ntoday i spoke to a girl\ni called her m'lady and said I hate sand\nit worked for Darth Vader but i guess he knew something I don't"
   created_at: <%= 2.hours.ago %>
+  user: kylo
 
 most_recent:
   content: "yeah well DARTH VADER never SHOT his PHONE to get out of a conversation with his son, DAD"
   created_at: <%= Time.zone.now %>
+  user: kylo
+
+<% 50.times do |n| %>
+peaches_<%= n %>:
+  content: <%= Faker::Lorem.sentence(5) %>
+  created_at: <%= 42.days.ago %>
+  user: peaches
+<% end %>

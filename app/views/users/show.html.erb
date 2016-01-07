@@ -19,8 +19,11 @@
           <%= render micropost %>
         <% end %>
       </ol>
+      <%= will_paginate @microposts %>
     <% else %>
-      <%= @user.name %> hasn't posted anything yet!
+      <span class="microposts">
+        <%= @user.name %> hasn't posted anything yet!
+      </span>
     <% end %>
   </div>
 </div>
