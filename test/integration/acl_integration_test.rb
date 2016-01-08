@@ -3,6 +3,7 @@ require 'test_helper'
 class AclIntegrationTest < ActionDispatch::IntegrationTest
   def setup
     @kylo = users(:kylo)
+    @parsecs = microposts(:parsecs)
   end
 
   test 'logged_in_user 401-renders to login page if user not logged in' do
@@ -25,6 +26,11 @@ class AclIntegrationTest < ActionDispatch::IntegrationTest
   end
 
   test 'correct_user_or_go_home 401-renders login page if not logged in' do
+    delete micropost_path @parsecs
+
+    assert_response :unauthorized, 'Should get a 401 UNAUTHORIZED status header'
+    assert_template 'sessions/new', 'Should see the login page'
+    assert_flash type: :danger, expected: 'Please log in first'
   end
 
   test 'correct_user_or_go_home 401-renders home page if wrong user' do
