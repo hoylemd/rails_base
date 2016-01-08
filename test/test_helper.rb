@@ -163,5 +163,9 @@ module ActiveSupport
       assert_select 'input.btn.btn-primary[value=?]', 'Post', true,
                     'Should see the post button'
     end
+
+    def assert_rendered_feed
+      assert_template 'shared/_feed', 'Should see the microposts feed'
+    end
   end
 end

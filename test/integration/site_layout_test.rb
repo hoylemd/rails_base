@@ -44,10 +44,9 @@ class SiteLayoutTest < ActionDispatch::IntegrationTest
     assert_select 'a[href=?]', signup_path, false, 'Should see a signup link'
 
     assert_template 'shared/_user_info', 'Should see user info'
+
     assert_rendered_user_info @kylo
-
-    assert_template 'shared/_micropost_form', 'Should see a micropost form'
-
-    assert_template 'shared/_feed', 'Should see the microposts feed'
+    assert_rendered_micropost_form
+    assert_rendered_feed
   end
 end
