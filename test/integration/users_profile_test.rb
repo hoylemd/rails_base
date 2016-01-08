@@ -14,12 +14,29 @@ class UsersProfileTest < ActionDispatch::IntegrationTest
     assert_template 'users/show', 'Should be on the user profile page'
     assert_select 'title', full_title(@peaches.name),
                   'Title should display user\'s name'
-    assert_select 'h1', { text: @peaches.name },
-                  'User\'s name should appear in a header'
-    assert_select 'h1>img.gravatar', true,
-                  'User\'s gravatar should appear in a header'
-    assert_select '.microposts-count', @peaches.feed.count.to_s,
-                  'Should see the user\'s micropost count badge'
+
+    assert_rendered_user_info @peaches
+
+    assert_select 'div.pagination', true, 'Pagination controls should appear'
+    @peaches.feed.paginate(page: 1).each do |micropost|
+      assert_match micropost.content, response.body,
+                   'Micropost content should be correct'
+    end
+  end
+
+  test 'own profile page' do
+    log_in_as @peaches
+    get user_path(@peaches)
+
+    assert_template 'users/show', 'Should be on the user profile page'
+    assert_select 'title', full_title(@peaches.name),
+                  'Title should display user\'s name'
+
+    assert_rendered_user_info @peaches
+
+    assert_select 'textarea#micropost_content', true,
+                  'Should see the micropost content box'
+
     assert_select 'div.pagination', true, 'Pagination controls should appear'
     @peaches.feed.paginate(page: 1).each do |micropost|
       assert_match micropost.content, response.body,

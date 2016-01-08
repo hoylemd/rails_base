@@ -143,5 +143,16 @@ module ActiveSupport
       matches = token_regex.match(text_body)
       matches.captures[0]
     end
+
+    ## ** assertions to check for partials ** ##
+    def assert_rendered_user_info(user)
+      # assert_template 'shared/_user_info', 'Should see user info'
+      assert_select 'h1', { text: user.name },
+                    'User\'s name should appear in a header'
+      assert_select 'img.gravatar', true,
+                    'User\'s gravatar should appear'
+      assert_select '.microposts-count', user.feed.count.to_s,
+                    'Should see the user\'s micropost count badge'
+    end
   end
 end
