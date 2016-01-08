@@ -13,49 +13,50 @@ class UsersControllerTest < ActionController::TestCase
     assert_select 'title', 'Sign Up | Ruby on Rails Tutorial Sample App'
   end
 
-  test 'should redirect edit when not logged in' do
+  test 'should 401-render login on edit when not logged in' do
     get :edit, id: @kylo
 
-    assert_flash type: :danger, expected: 'Please log in first'
-    assert_template 'sessions/new', 'Should redirect to login page'
+    assert_401_not_logged_in
   end
 
-  test 'should redirect update when not logged in' do
+  test 'should 401-render login on update when not logged in' do
     patch :update, id: @kylo, user: { name: @kylo.name, email: @kylo.email }
 
-    assert_flash type: :danger, expected: 'Please log in first'
-    assert_template 'sessions/new', 'Should redirect to login page'
+    assert_401_not_logged_in
   end
 
-  test 'should redirect edit when logged in as wrong user' do
+  test 'should 401-render home on edit when logged in as wrong user' do
     log_in_as(@peaches)
     get :edit, id: @kylo
 
+    # TODO: assert_permission_denied
     assert_flash type: :danger, expected: false
     assert_redirected_to root_url, 'Should be redirected to home page'
   end
 
-  test 'should redirect update when logged in as wrong user' do
+  test 'should 401-render home on update when logged in as wrong user' do
     log_in_as(@peaches)
     patch :update, id: @kylo, user: { name: @kylo.name, email: @kylo.email }
 
+    # TODO: assert_permission_denied
     assert_flash type: :danger, expected: false
     assert_redirected_to root_url, 'Should be redirected to home page'
   end
 
-  test 'should redirect index when not logged in' do
+  test 'should 401-render login on index when not logged in' do
     get :index
-    assert_template 'sessions/new', 'Should be redirected to login page'
+
+    assert_401_not_logged_in
   end
 
-  test 'destroy should redirect to index when not logged in' do
+  test 'should 401-render login on destroy when not logged in' do
     assert_no_difference 'User.count', 'Should not change User count' do
       delete :destroy, id: @batman
     end
 
-    assert_flash type: :success, expected: false
-    assert_flash type: :danger, expected: 'Please log in first'
-    assert_template 'sessions/new', 'Should redirect to login page'
+    assert_401_not_logged_in
+    assert_not session[:forwarding_url],
+               'Session should not contain a forwarding url'
   end
 
   test 'destroy should redirect to index when not admin' do
@@ -64,7 +65,7 @@ class UsersControllerTest < ActionController::TestCase
       delete :destroy, id: @batman
     end
 
-    assert_flash type: :success, expected: false
+    # TODO: assert_permission_denied 'users/index'
     assert_flash type: :danger,
                  expected: 'Sorry, you don\'t have permission to do that'
     assert_redirected_to users_path, 'Should be redirected to user index page'

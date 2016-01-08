@@ -151,15 +151,15 @@ module ActiveSupport
       assert_response :unauthorized,
                       'Should get a 401 UNAUTHORIZED status header'
       assert_template template, "Should see '#{template}' rendered"
-      assert_flash type: :danger,
-                   expected: 'Sorry, you don\'t have permission to do that'
+      assert_error_messages(
+        flash: 'Sorry, you don\'t have permission to do that')
     end
 
     def assert_401_not_logged_in
-      assert_response :unauthorized, 'Should get a 401 unauthorized error'
+      assert_response :unauthorized,
+                      'Should get a 401 UNAUTHORIZED status header'
       assert_template 'sessions/new',
-                      'Should be redirected to login when not logged in'
-      assert_error_messages(flash: 'Please log in first')
+                      'Should see login form'
     end
 
     ## ** assertions to check for partials ** ##
