@@ -22,6 +22,7 @@ class UsersIndexTest < ActionDispatch::IntegrationTest
 
     get_via_redirect users_path
 
+    # TODO: assert_permission_denied
     assert_template 'static_pages/home', 'Should be on home page'
     assert_flash(type: 'danger',
                  expected: 'Sorry, you don\'t have permission to do that')
