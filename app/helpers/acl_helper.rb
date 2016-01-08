@@ -8,17 +8,30 @@ module AclHelper
     store_location
     flash[:danger] = 'Please log in first'
     render 'sessions/new', status: :unauthorized
+    true # return true to indicate that this triggered things
   end
 
   # untested
   def correct_user_or_go_home(user)
     return if logged_in_user
     return if current_user? user
-    @micropost  = current_user.microposts.build
-    @feed_items = current_user.feed.paginate(page: params[:page])
+
+    permission_denied
   end
 
   def current_user?(user)
     current_user == user
+  end
+
+  private
+
+  def permission_denied(template = 'static_pages/home')
+    flash[:danger] = 'Sorry, you don\'t have permission to do that'
+
+    if template == 'static_pages/home'
+      @micropost  = current_user.microposts.build
+      @feed_items = current_user.feed.paginate(page: params[:page])
+    end
+    render template, status: :unauthorized
   end
 end

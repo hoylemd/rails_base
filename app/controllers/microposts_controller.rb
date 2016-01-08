@@ -23,10 +23,7 @@ class MicropostsController < ApplicationController
   end
 
   def correct_user
-    @micropost = current_user.microposts.find_by(id: params[:id])
-
-    return if @micropost
-    flash[:danger] = 'Sorry, you don\'t have permission to do that'
-    redirect_to root_path
+    @micropost = Micropost.find_by(id: params[:id])
+    correct_user_or_go_home(@micropost.user)
   end
 end
