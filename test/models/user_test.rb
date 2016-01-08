@@ -3,6 +3,7 @@ require 'test_helper'
 class UserTest < ActiveSupport::TestCase
   def setup
     @batman = users(:batman)
+    @kylo = users(:kylo)
   end
 
   test 'should be valid' do
@@ -172,7 +173,7 @@ class UserTest < ActiveSupport::TestCase
     assert @batman.reset_token_expired?, '3 hour old token should be expired'
   end
 
-  test 'associated microposts should be destroyedr' do
+  test 'associated microposts should be destroyed' do
     @batman.save
     post =
      'It\'s not who I am, but how I do, that makes James Cameron James Cameron.'
@@ -181,5 +182,13 @@ class UserTest < ActiveSupport::TestCase
     assert_difference 'Micropost.count', -1 do
       @batman.destroy
     end
+  end
+
+  test 'feed should return user\'s microposts' do
+    posts = @kylo.feed
+
+    assert_equal 4, posts.length, 'Should show all of a user\'s microposts'
+    assert_equal microposts(:most_recent), posts[0],
+                 'Posts should be in reverse-chronological order'
   end
 end

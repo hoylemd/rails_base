@@ -73,6 +73,11 @@ class User < ActiveRecord::Base
     reset_sent_at && reset_sent_at < 2.hours.ago
   end
 
+  # get all of this user's microposts
+  def feed
+    Micropost.where(user_id: id)
+  end
+
   private
 
   # Creates the verification token
