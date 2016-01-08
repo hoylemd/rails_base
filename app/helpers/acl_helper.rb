@@ -13,10 +13,7 @@ module AclHelper
 
   # untested
   def correct_user_or_go_home(user)
-    return if logged_in_user
-    return if current_user? user
-
-    permission_denied
+    permission_denied unless current_user? user
   end
 
   def current_user?(user)
