@@ -21,7 +21,7 @@ class UsersProfileTest < ActionDispatch::IntegrationTest
     assert_select '.microposts-count', @peaches.feed.count.to_s,
                   'Should see the user\'s micropost count badge'
     assert_select 'div.pagination', true, 'Pagination controls should appear'
-    @peaches.microposts.paginate(page: 1).each do |micropost|
+    @peaches.feed.paginate(page: 1).each do |micropost|
       assert_match micropost.content, response.body,
                    'Micropost content should be correct'
     end
