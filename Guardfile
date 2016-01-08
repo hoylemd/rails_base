@@ -23,7 +23,7 @@ guard :minitest, spring: true, all_on_start: false do
     integration_tests << 'test/helpers/sessions_helper_test.rb'
   end
   watch('app/helpers/acl_helper.rb') do
-    integration_tests << 'test/helpers/acl_helper_test.rb'
+    integration_tests << 'test/helpers/acl_helper_test.rb' << controller_tests
   end
   watch('app/controllers/sessions_controller.rb') do
     ['test/controllers/sessions_controller_test.rb',
@@ -53,6 +53,10 @@ end
 # Returns the controller tests corresponding to the given resource.
 def controller_test(resource)
   "test/controllers/#{resource}_controller_test.rb"
+end
+
+def controller_tests
+  Dir["test/controllers/*_test.rb"]
 end
 
 # Returns all tests for the given resource.
