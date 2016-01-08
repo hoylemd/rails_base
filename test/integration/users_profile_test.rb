@@ -18,8 +18,8 @@ class UsersProfileTest < ActionDispatch::IntegrationTest
                   'User\'s name should appear in a header'
     assert_select 'h1>img.gravatar', true,
                   'User\'s gravatar should appear in a header'
-    assert_match @peaches.microposts.count.to_s, response.body,
-                 'Count of user\'s microposts should appear in body'
+    assert_select '.microposts-count', @peaches.feed.count.to_s,
+                  'Should see the user\'s micropost count badge'
     assert_select 'div.pagination', true, 'Pagination controls should appear'
     @peaches.microposts.paginate(page: 1).each do |micropost|
       assert_match micropost.content, response.body,
