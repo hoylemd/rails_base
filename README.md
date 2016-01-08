@@ -14,3 +14,4 @@ todo: add a 'resend verification' link to profile pages.
 todo: invalidate current password on password reset, and log user out elsewhere.
 todo: allow admins to promote other users to admins
 todo: force users to re-verify when changing email
+todo: obfuscate user ids with a configurable, unique slug (with a database index)
