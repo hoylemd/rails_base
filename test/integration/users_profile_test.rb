@@ -34,8 +34,7 @@ class UsersProfileTest < ActionDispatch::IntegrationTest
 
     assert_rendered_user_info @peaches
 
-    assert_select 'textarea#micropost_content', true,
-                  'Should see the micropost content box'
+    assert_rendered_micropost_form
 
     assert_select 'div.pagination', true, 'Pagination controls should appear'
     @peaches.feed.paginate(page: 1).each do |micropost|

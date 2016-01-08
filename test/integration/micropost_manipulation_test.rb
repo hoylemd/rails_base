@@ -22,10 +22,7 @@ class MicropostManipulationTest < ActionDispatch::IntegrationTest
 
     log_in_as @kylo
     get root_path
-    assert_select 'textarea#micropost_content', true,
-                  'Should see the micropost text box'
-    assert_select 'input.btn.btn-primary[value=?]', 'Post', true,
-                  'Should see the post button'
+    assert_rendered_micropost_form
 
     msg = "Micropost count shouldn't increase on empty micropost"
     assert_no_difference 'Micropost.count', msg do

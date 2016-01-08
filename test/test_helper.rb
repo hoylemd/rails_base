@@ -154,5 +154,14 @@ module ActiveSupport
       assert_select '.microposts-count', user.feed.count.to_s,
                     'Should see the user\'s micropost count badge'
     end
+
+    def assert_rendered_micropost_form
+      assert_template 'shared/_micropost_form',
+                      'Micropost form partial should be rendered'
+      assert_select 'textarea#micropost_content', true,
+                    'Should see the micropost text box'
+      assert_select 'input.btn.btn-primary[value=?]', 'Post', true,
+                    'Should see the post button'
+    end
   end
 end
