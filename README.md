@@ -6,7 +6,8 @@ Learn Web Development with Rails*](http://www.railstutorial.org/)
 by [Michael Hartl](http://www.michaelhartl.com/).
 
 todo: refactor ACL into it's own helper
-rodo; ^- specifically, add a helper to App Controller that handles permission denied centrally
+todo; ^- specifically, add a helper to App Controller that handles permission denied centrally
+todo: Why not just get the @micropost and @feed\_items  in the  template?
 todo: add messages to all `assert(_no)?_difference` calls
 todo: implement soft-delete for users
 todo: create a default admin user, and a workflow to replace it with a new admin user.  that workflow should ONLY be available if the default admin is present/active, and completing it should delete the default admin.

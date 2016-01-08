@@ -10,6 +10,7 @@ module AclHelper
     render 'sessions/new', status: :unauthorized
   end
 
+  # untested
   def correct_user_or_go_home(user)
     return if logged_in_user
     return if current_user? user
