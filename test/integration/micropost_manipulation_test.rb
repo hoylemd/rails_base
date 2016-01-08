@@ -15,10 +15,7 @@ class MicropostManipulationTest < ActionDispatch::IntegrationTest
     ) do
       post_via_redirect microposts_path, micropost: { content: poetry }
     end
-    assert_response :unauthorized, 'Should get a 401 unauthorized error'
-    assert_template 'sessions/new',
-                    'Should be redirected to login when not logged in'
-    assert_error_messages(flash: 'Please log in first')
+    assert_401_not_logged_in
 
     log_in_as @kylo
     get root_path
