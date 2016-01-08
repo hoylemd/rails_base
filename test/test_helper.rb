@@ -79,8 +79,10 @@ module ActiveSupport
 
     # assert that a flash message shows up
     def assert_flash(options)
+      options ||= { expected: false }
+
       if integration_test?
-        assert_flash_integration options
+        assert_flash_integration options if options
       else
         assert_flash_unit options
       end
