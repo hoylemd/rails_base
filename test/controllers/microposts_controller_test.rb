@@ -28,9 +28,7 @@ class MicropostsControllerTest < ActionController::TestCase
       delete :destroy, id: @parsecs
     end
 
-    assert_flash type: :danger,
-                 expected: 'Sorry, you don\'t have permission to do that'
-    assert_template 'static_pages/home', 'Should see the home page'
+    assert_permission_denied
   end
 
   test 'should accept destroy when correct user' do
