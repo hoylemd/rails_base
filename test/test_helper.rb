@@ -146,6 +146,22 @@ module ActiveSupport
       matches.captures[0]
     end
 
+    ## ** assertions to check for specific scenarios ** ##
+    def assert_permission_denied(template = 'static_pages/home')
+      assert_response :unauthorized,
+                      'Should get a 401 UNAUTHORIZED status header'
+      assert_template template, "Should see '#{template}' rendered"
+      assert_flash type: :danger,
+                   expected: 'Sorry, you don\'t have permission to do that'
+    end
+
+    def assert_401_not_logged_in
+      assert_response :unauthorized, 'Should get a 401 unauthorized error'
+      assert_template 'sessions/new',
+                      'Should be redirected to login when not logged in'
+      assert_error_messages(flash: 'Please log in first')
+    end
+
     ## ** assertions to check for partials ** ##
     def assert_rendered_user_info(user)
       # assert_template 'shared/_user_info', 'Should see user info'
