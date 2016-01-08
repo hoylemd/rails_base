@@ -22,6 +22,9 @@ guard :minitest, spring: true, all_on_start: false do
   watch('app/helpers/sessions_helper.rb') do
     integration_tests << 'test/helpers/sessions_helper_test.rb'
   end
+  watch('app/helpers/acl_helper.rb') do
+    integration_tests << 'test/helpers/acl_helper_test.rb'
+  end
   watch('app/controllers/sessions_controller.rb') do
     ['test/controllers/sessions_controller_test.rb',
      'test/integration/users_login_test.rb']
