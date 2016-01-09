@@ -64,4 +64,15 @@ class MicropostManipulationTest < ActionDispatch::IntegrationTest
     assert_template 'static_pages/home', 'Should be redirected to home page'
     assert_flashes success: 'Micropost deleted'
   end
+
+  test 'delete to micropost redirects to referrer' do
+    log_in_as @kylo
+    referrer = user_path @kylo
+    get referrer
+
+    # the referrer is put in :referer because there is a typo on the HTTP spec
+    delete micropost_path(@parsecs), {}, referer: referrer
+
+    assert_redirected_to referrer, 'Should be redirected to profile page'
+  end
 end
