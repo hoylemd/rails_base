@@ -56,23 +56,25 @@ class MicropostManipulationTest < ActionDispatch::IntegrationTest
   test 'delete to micropost deletes it' do
     log_in_as @kylo
 
-    msg = 'Should decrease micropost count'
-    assert_difference 'Micropost.count', -1, msg do
-      delete_via_redirect micropost_path @parsecs
-    end
-
-    assert_template 'static_pages/home', 'Should be redirected to home page'
-    assert_flashes success: 'Micropost deleted'
-  end
-
-  test 'delete to micropost redirects to referrer' do
-    log_in_as @kylo
     referrer = user_path @kylo
     get referrer
-
-    # the referrer is put in :referer because there is a typo on the HTTP spec
-    delete micropost_path(@parsecs), {}, referer: referrer
+    msg = 'Should decrease micropost count'
+    assert_difference 'Micropost.count', -1, msg do
+      # the referrer is put in :referer because there is a typo on the HTTP spec
+      delete micropost_path(@parsecs), {}, referer: referrer
+    end
 
     assert_redirected_to referrer, 'Should be redirected to profile page'
+    follow_redirect!
+    assert_flashes success: 'Micropost deleted'
+
+    get root_path
+    assert_difference 'Micropost.count', -1, msg do
+      delete micropost_path microposts(:i_hate_everything)
+    end
+
+    assert_redirected_to root_path, 'Should be redirected to home page'
+    follow_redirect!
+    assert_flashes success: 'Micropost deleted'
   end
 end
