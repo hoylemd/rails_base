@@ -3,6 +3,7 @@ require 'test_helper'
 class MicropostManipulationTest < ActionDispatch::IntegrationTest
   def setup
     @kylo = users(:kylo)
+    @parsecs = microposts(:parsecs)
   end
 
   test 'create new micropost' do
@@ -52,7 +53,15 @@ class MicropostManipulationTest < ActionDispatch::IntegrationTest
                   'New post should appear on user profile page'
   end
 
-  # TODO: implement this
   test 'delete to micropost deletes it' do
+    log_in_as @kylo
+
+    msg = 'Should decrease micropost count'
+    assert_difference 'Micropost.count', -1, msg do
+      delete_via_redirect micropost_path @parsecs
+    end
+
+    assert_template 'static_pages/home', 'Should be redirected to home page'
+    assert_flashes success: 'Micropost deleted'
   end
 end

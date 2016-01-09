@@ -88,6 +88,16 @@ module ActiveSupport
       end
     end
 
+    # assert flash messages with more intuitive syntax
+    # TODO: replace existing assert_flash with this
+    def assert_flashes(flashes)
+      assert_flash type: :danger, expected: flashes[:danger] if flashes[:danger]
+      if flashes[:success]
+        assert_flash type: :success, expected: flashes[:success]
+      end
+      assert_flash type: :info, expected: flashes[:info] if flashes[:info]
+    end
+
     # assert that some input fields are highlighted
     def assert_highlights(highlights)
       if highlights == false
