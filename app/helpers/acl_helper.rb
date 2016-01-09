@@ -12,8 +12,14 @@ module AclHelper
   end
 
   # untested
-  def correct_user_or_go_home(user)
-    permission_denied unless current_user? user
+  def correct_user_or_go_home(options)
+    options = {
+      test: (proc do |user|
+        current_user? user
+      end)
+    }.merge options
+
+    permission_denied options unless options[:test].call options[:user]
   end
 
   def current_user?(user)
@@ -22,13 +28,22 @@ module AclHelper
 
   private
 
-  def permission_denied(template = 'static_pages/home')
-    flash[:danger] = 'Sorry, you don\'t have permission to do that'
-
-    if template == 'static_pages/home'
+  def render_unauthorized(template)
+    if template == 'static_pages/home' && current_user
       @micropost  = current_user.microposts.build
       @feed_items = current_user.feed.paginate(page: params[:page])
     end
     render template, status: :unauthorized
+  end
+
+  def permission_denied(options)
+    options = {
+      template: 'static_pages/home',
+      flash: 'Sorry, you don\'t have permission to do that'
+    }.merge options
+
+    flash[:danger] = options[:flash]
+
+    render_unauthorized options[:template]
   end
 end

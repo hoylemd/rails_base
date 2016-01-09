@@ -43,9 +43,9 @@ class PasswordResetsController < ApplicationController
   # Confirms a valid user.
   def correct_user
     @user ||= User.find_by(email: params[:email])
-    return if @user && @user.authenticated?(:reset, params[:id])
-    flash[:danger] = 'Sorry, that password reset link is not valid'
-    redirect_to root_url
+    correct_user_or_go_home user: @user, test: (proc do |user|
+      user && user.authenticated?(:reset, params[:id])
+    end)
   end
 
   def token_expired

@@ -24,6 +24,6 @@ class MicropostsController < ApplicationController
 
   def correct_user
     @micropost = Micropost.find_by(id: params[:id])
-    correct_user_or_go_home(@micropost.user)
+    correct_user_or_go_home user: @micropost.user
   end
 end
