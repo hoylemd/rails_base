@@ -34,6 +34,12 @@ class MicropostsControllerTest < ActionController::TestCase
   end
 
   test 'should accept destroy when correct user' do
+    log_in_as users(:kylo)
+
+    delete :destroy, id: @parsecs
+
+    assert_redirected_to root_path
+    assert_flashes success: 'Micropost deleted'
   end
 
   test 'should accept destroy when admin' do

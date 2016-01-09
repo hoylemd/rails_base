@@ -53,7 +53,7 @@ class MicropostManipulationTest < ActionDispatch::IntegrationTest
                   'New post should appear on user profile page'
   end
 
-  test 'delete to micropost deletes it' do
+  test 'delete to micropost deletes it and redirects correctly' do
     log_in_as @kylo
 
     referrer = user_path @kylo
