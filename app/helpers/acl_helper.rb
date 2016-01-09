@@ -12,7 +12,7 @@ module AclHelper
   end
 
   # untested
-  def correct_user_or_go_home(options)
+  def correct_user_or_render_401(options)
     options = {
       test: (proc do |user|
         current_user? user

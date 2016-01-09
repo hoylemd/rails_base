@@ -43,7 +43,7 @@ class PasswordResetsController < ApplicationController
   # Confirms a valid user.
   def correct_user
     @user ||= User.find_by(email: params[:email])
-    correct_user_or_go_home user: @user, test: (proc do |user|
+    correct_user_or_render_401 user: @user, test: (proc do |user|
       user && user.authenticated?(:reset, params[:id])
     end)
   end

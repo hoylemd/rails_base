@@ -24,13 +24,14 @@ class AclIntegrationTest < ActionDispatch::IntegrationTest
     assert_flash false
   end
 
-  test 'correct_user_or_go_home 401-renders home page if wrong user' do
+  test 'correct_user_or_render_401 401-renders home page if wrong user' do
     log_in_as @peaches
     delete micropost_path @parsecs
 
     assert_permission_denied
   end
 
-  test 'correct_user_or_go_home passes if correct user' do
+  # TODO: implement this
+  test 'correct_user_or_render_401 passes if correct user' do
   end
 end
