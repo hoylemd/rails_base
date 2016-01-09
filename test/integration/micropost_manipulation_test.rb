@@ -52,6 +52,7 @@ class MicropostManipulationTest < ActionDispatch::IntegrationTest
                   'New post should appear on user profile page'
   end
 
+  # TODO: implement this
   test 'delete to micropost deletes it' do
   end
 end
