@@ -3,6 +3,7 @@ require 'test_helper'
 class MicropostManipulationTest < ActionDispatch::IntegrationTest
   def setup
     @kylo = users(:kylo)
+    @peaches = users(:peaches)
     @parsecs = microposts(:parsecs)
   end
 
@@ -76,5 +77,14 @@ class MicropostManipulationTest < ActionDispatch::IntegrationTest
     assert_redirected_to root_path, 'Should be redirected to home page'
     follow_redirect!
     assert_flashes success: 'Micropost deleted'
+  end
+
+  test 'users don\'t see delete links for other user\'s microposts' do
+    log_in_as @kylo
+
+    get user_path @peaches
+
+    assert_select 'a', { text: 'delete', count: 0 },
+                  'Should not see any delete links'
   end
 end
