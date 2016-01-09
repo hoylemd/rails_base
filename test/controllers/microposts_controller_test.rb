@@ -38,10 +38,16 @@ class MicropostsControllerTest < ActionController::TestCase
 
     delete :destroy, id: @parsecs
 
-    assert_redirected_to root_path
+    assert_redirected_to root_path, 'Should be redirected to home page'
     assert_flashes success: 'Micropost deleted'
   end
 
   test 'should accept destroy when admin' do
+    log_in_as users(:peaches)
+
+    delete :destroy, id: @parsecs
+
+    assert_redirected_to root_path, 'Should be redirected to home page'
+    assert_flashes success: 'Micropost deleted'
   end
 end
