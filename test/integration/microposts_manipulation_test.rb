@@ -87,4 +87,12 @@ class MicropostManipulationTest < ActionDispatch::IntegrationTest
     assert_select 'a', { text: 'delete', count: 0 },
                   'Should not see any delete links'
   end
+
+  test 'admins see delete links for other user\'s microposts' do
+    log_in_as @peaches
+
+    get user_path @kylo
+
+    assert_select 'a', 'delete', 'Should see delete links'
+  end
 end
