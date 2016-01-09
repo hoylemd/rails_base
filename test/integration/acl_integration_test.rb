@@ -3,6 +3,7 @@ require 'test_helper'
 class AclIntegrationTest < ActionDispatch::IntegrationTest
   def setup
     @kylo = users(:kylo)
+    @batman = users(:batman)
     @peaches = users(:peaches)
     @parsecs = microposts(:parsecs)
   end
@@ -20,18 +21,26 @@ class AclIntegrationTest < ActionDispatch::IntegrationTest
     get users_path
 
     assert_response :success, 'Should get 200 OK when logged in'
-    assert_template 'users/index', 'Should see the users page'
-    assert_flash false
   end
 
   test 'correct_user_or_render_401 401-renders home page if wrong user' do
-    log_in_as @peaches
+    log_in_as @batman
     delete micropost_path @parsecs
 
     assert_permission_denied
   end
 
-  # TODO: implement this
   test 'correct_user_or_render_401 passes if correct user' do
+    log_in_as @kylo
+    delete micropost_path @parsecs
+
+    assert_redirected_to root_path, 'Should redirect to root'
+  end
+
+  test 'correct_user_or_render_401 passes if admin user' do
+    log_in_as @peaches
+    delete micropost_path @parsecs
+
+    assert_redirected_to root_path, 'Should redirect to root'
   end
 end

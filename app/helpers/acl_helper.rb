@@ -15,7 +15,7 @@ module AclHelper
   def correct_user_or_render_401(options)
     options = {
       test: (proc do |user|
-        current_user? user
+        current_user?(user) || current_user.admin?
       end)
     }.merge options
 
