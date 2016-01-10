@@ -190,6 +190,8 @@ module ActiveSupport
                     'Should see the micropost text box'
       assert_select 'input.btn.btn-primary[value=?]', 'Post', true,
                     'Should see the post button'
+      assert_select 'input#micropost_picture', true,
+                    'Should see the upload control'
     end
 
     def assert_rendered_feed
