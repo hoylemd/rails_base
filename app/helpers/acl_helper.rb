@@ -12,8 +12,8 @@ module AclHelper
   end
 
   # untested
-  def correct_user_or_render_401(options)
-    permission_denied options unless correct_user? options[:user], options
+  def correct_user_or_render_401(user, options = {})
+    permission_denied options unless correct_user? user, options
   end
 
   # Actual helper functions

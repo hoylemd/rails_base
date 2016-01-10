@@ -44,7 +44,7 @@ class PasswordResetsController < ApplicationController
   def correct_user
     @user ||= User.find_by(email: params[:email])
     correct_user_or_render_401(
-      user: @user,
+      @user,
       flash: 'Sorry, that password reset link is not valid',
       test: (proc do |user|
         user && user.authenticated?(:reset, params[:id])
