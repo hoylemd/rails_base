@@ -23,8 +23,8 @@ module AclHelper
 
   def correct_user?(expected_user, options = {})
     options = {
-      test: (proc do |user|
-        current_user && (current_user?(user) || current_user.admin?)
+      test: (proc do
+        current_user && (current_user?(expected_user) || current_user.admin?)
       end)
     }.merge options
 
