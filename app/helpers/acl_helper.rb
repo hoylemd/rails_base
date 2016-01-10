@@ -13,7 +13,7 @@ module AclHelper
 
   # untested
   def correct_user_or_render_401(options)
-    permission_denied options unless correct_user? options
+    permission_denied options unless correct_user? options[:user], options
   end
 
   # Actual helper functions
@@ -21,14 +21,14 @@ module AclHelper
     current_user == user
   end
 
-  def correct_user?(options)
+  def correct_user?(user, options = {})
     options = {
-      test: (proc do |user|
-        current_user && (current_user?(user) || current_user.admin?)
+      test: (proc do |expected_user|
+        current_user && (current_user?(expected_user) || current_user.admin?)
       end)
     }.merge options
 
-    options[:test].call options[:user]
+    options[:test].call user
   end
 
   private

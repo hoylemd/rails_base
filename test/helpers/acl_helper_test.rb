@@ -31,28 +31,28 @@ class AclHelperTest < ActionView::TestCase
   test 'correct_user? passes for correct current user' do
     log_in_as @kylo
 
-    assert correct_user? user: @kylo
+    assert correct_user? @kylo
   end
 
   test 'correct_user? passes for admin current user' do
     log_in_as @peaches
 
-    assert correct_user? user: @kylo
+    assert correct_user? @kylo
   end
 
   test 'correct_user? fails for no user' do
-    assert_not correct_user? user: @kylo
+    assert_not correct_user? @kylo
   end
 
   test 'correct_user? fails for wrong user' do
     log_in_as @batman
-    assert_not correct_user? user: @kylo
+    assert_not correct_user? @kylo
   end
 
   test 'correct_user? uses passed test' do
     test = proc { |user| user == @kylo }
 
-    assert correct_user? user: @kylo, test: test
-    assert_not correct_user? user: @peaches, test: test
+    assert correct_user? @kylo, test: test
+    assert_not correct_user? @peaches, test: test
   end
 end
