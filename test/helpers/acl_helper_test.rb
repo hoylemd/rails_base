@@ -14,4 +14,19 @@ class AclHelperTest < ActionView::TestCase
     assert_not current_user?(@kylo), 'Wrong user should be false'
     assert current_user?(@peaches), 'Correct user should be true'
   end
+
+  test 'correct_user? passes for correct current user' do
+  end
+
+  test 'correct_user? passes for admin current user' do
+  end
+
+  test 'correct_user? fails for no user' do
+  end
+
+  test 'correct_user? fails for wrong user' do
+  end
+
+  test 'correct_user? uses passed test' do
+  end
 end
