@@ -10,17 +10,17 @@ class AclHelperTest < ActionView::TestCase
   end
 
   test 'current_user? fails for no user' do
-    assert_not current_user?(@kylo), 'Not logged in should be false'
+    assert_not current_user? @kylo
   end
 
   test 'current_user? fails for wrong user' do
     log_in_as @batman
-    assert_not current_user?(@kylo), 'Wrong user should be false'
+    assert_not current_user? @kylo
   end
 
   test 'current_user? fails for wrong user, even if they are admin' do
     log_in_as @peaches
-    assert_not current_user?(@kylo), 'Wrong (admin) user should be false'
+    assert_not current_user? @kylo
   end
 
   test 'current_user? passes for the current user' do
