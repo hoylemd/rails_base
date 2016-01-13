@@ -5,7 +5,7 @@ class StaticPagesControllerTest < ActionController::TestCase
     @kylo = users(:kylo)
   end
 
-  # TODO: fill these out with layout assertions
+  # TODO: Move these layout tests to integration tests - split up by controller
   test 'should get home' do
     get :home
     assert_response :success, 'Should receive a 200 OK on GET to home'
