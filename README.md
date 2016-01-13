@@ -6,6 +6,16 @@
 - git
 - imagemaagick
 
+# Setting up a prod server on heroku
+- provision a heroku app
+- set up postgresql (TODO: more details)
+- Add the SendGrid addon to heroku
+- You need an AWS account, with an S3 bucket, and an AWS user with access to said bucket
+- put the user's access key in the `S3_ACCESS_KEY` ENV variable
+- put the user's secret key in the `S3_SECRET_KEY` ENV variable
+- put the aws bucket's name in `S3_BUCKET` ENV variable
+- put the aws bucket's region on the `S3_REGION` ENV variable
+
 This is the sample application for the
 [*Ruby on Rails Tutorial:
 Learn Web Development with Rails*](http://www.railstutorial.org/)
