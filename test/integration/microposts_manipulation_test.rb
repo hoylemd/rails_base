@@ -95,4 +95,21 @@ class MicropostManipulationTest < ActionDispatch::IntegrationTest
 
     assert_select 'a', 'delete', 'Should see delete links'
   end
+
+  test 'user uploads an image in a micropost' do
+    log_in_as(@kylo)
+    get root_path
+    # Valid submission
+    content = '@hux Check out my sweet lightsaber'
+    picture = fixture_file_upload('test/fixtures/lightsaber.jpg', 'image/jpeg')
+    assert_difference 'Micropost.count', 1 do
+      post microposts_path, micropost: { content: content, picture: picture }
+    end
+
+    assert Micropost.first.picture?
+    follow_redirect!
+    assert_match content, response.body
+    assert_select '.microposts li .content img', true,
+                  'Should see an image in a micropost'
+  end
 end
