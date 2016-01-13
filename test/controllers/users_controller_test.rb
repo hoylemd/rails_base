@@ -7,10 +7,17 @@ class UsersControllerTest < ActionController::TestCase
     @batman = users(:batman)
   end
 
-  test 'should get new' do
+  test 'get to new displays the signup page' do
     get :new
     assert_response :success, 'Should receive 200 OK on GET to new'
-    assert_select 'title', 'Sign Up | Ruby on Rails Tutorial Sample App'
+    assert_select 'title', 'Sign Up | Ruby on Rails Tutorial Sample App',
+                  'Should see the correct title'
+
+    assert_select 'input#user_name', true, 'Should see the name field'
+    assert_select 'input#user_email', true, 'Should see the email field'
+    assert_select 'input#user_password', true, 'Should see the password field'
+    assert_select 'input#user_password_confirmation', true,
+                  'Should see the password confirmation field'
   end
 
   test 'should 401-render login on edit when not logged in' do
