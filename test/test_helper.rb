@@ -197,5 +197,14 @@ module ActiveSupport
     def assert_rendered_feed
       assert_template 'shared/_feed', 'Should see the microposts feed'
     end
+
+    def assert_rendered_follower_stats(user = nil)
+      assert_template 'shared/_user_follower_stats',
+                      'Should render the follower stats partial'
+      assert_select '#followers', (user.nil? ? true : user.followers.count),
+                    'Should see the followers badge'
+      assert_select '#following', (user.nil? ? true : user.following.count),
+                    'Should see the following badge'
+    end
   end
 end
