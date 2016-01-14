@@ -44,6 +44,7 @@ class StaticPagesControllerTest < ActionController::TestCase
 
     assert_rendered_user_info @kylo
     assert_rendered_micropost_form
+    assert_rendered_follower_stats @kylo
     assert_rendered_feed
   end
 
