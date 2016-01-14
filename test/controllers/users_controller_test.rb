@@ -138,4 +138,14 @@ class UsersControllerTest < ActionController::TestCase
     assert_rendered_micropost_form
     assert_select '.microposts li', 4, 'Should see 4 microposts'
   end
+
+  test 'get to followers when unauthenticated should redirect to login' do
+    get :following, id: @kylo
+    assert_401_not_logged_in
+  end
+
+  test 'get to following when unauthenticated should redirect to login' do
+    get :followers, id: @kylo
+    assert_401_not_logged_in
+  end
 end
