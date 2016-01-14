@@ -89,9 +89,53 @@ class UsersControllerTest < ActionController::TestCase
     assert_redirected_to users_path, 'Should be redirected to user index page'
   end
 
-  test 'should get show' do
+  test 'should get show, unauthenticated' do
     get :show, id: @kylo.id
     assert_response :success, 'should return 200 OK'
     assert_select 'title', 'Kylo Ren | Ruby on Rails Tutorial Sample App'
+
+    assert_rendered_user_info @kylo
+    assert_rendered_follower_stats @kylo
+
+    assert_select '#follow_form', false,
+                  'Should not see the follow form when unauthenticated'
+    assert_select '.microposts li', 4, 'Should see 4 microposts'
+  end
+
+  test 'should get show, logged in' do
+    log_in_as @kylo
+    get :show, id: @peaches.id
+    assert_response :success, 'should return 200 OK'
+    assert_select 'title',
+                  'Peaches the Friendly Orc | Ruby on Rails Tutorial Sample App'
+
+    assert_rendered_user_info @peaches
+    assert_rendered_follower_stats @peaches
+
+    assert_select '#follow_form input[value=?]', 'Follow', true,
+                  'Should see the follow button when logged in'
+    assert_select '.microposts li', 30, 'Should see 30 microposts'
+
+    @kylo.follow @peaches
+    get :show, id: @peaches.id
+
+    assert_select '#follow_form input[value=?]', 'Unfollow', true,
+                  'Should see the unfollow button when logged in and following'
+  end
+
+  test 'should get show, self' do
+    log_in_as @kylo
+
+    get :show, id: @kylo.id
+    assert_response :success, 'should return 200 OK'
+    assert_select 'title', 'Kylo Ren | Ruby on Rails Tutorial Sample App'
+
+    assert_rendered_user_info @kylo
+    assert_rendered_follower_stats @kylo
+    assert_select '#follow_form', false,
+                  'Should not see the follow form when viewing own profile'
+
+    assert_rendered_micropost_form
+    assert_select '.microposts li', 4, 'Should see 4 microposts'
   end
 end

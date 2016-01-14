@@ -1,6 +1,7 @@
 <% provide(:title, @user.name) %>
 <div class="row">
   <aside class="col-md-4">
+    <% # TODO: move this into the user_info partial %>
     <section class="user_info">
       <h1>
         <%= gravatar_for @user %>
@@ -10,6 +11,7 @@
       <% if current_user == @user %>
         <%= link_to "Edit", edit_user_path(current_user) %>
       <% end %>
+      <%= render 'shared/user_follower_stats' %>
     </section>
     <% if @user == current_user %>
       <%= render 'shared/micropost_form' %>
@@ -17,6 +19,7 @@
   </aside>
   <div class="col-md-8">
     <%= render 'follow_form' if logged_in? %>
+    <% # TODO: merge this with the feed partial %>
     <% if @microposts.any? %>
       <h3>Microposts by <%= @user.name %></h3>
       <ol class="microposts">
