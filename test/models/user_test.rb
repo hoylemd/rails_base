@@ -193,10 +193,13 @@ class UserTest < ActiveSupport::TestCase
   end
 
   test 'should follow and unfollow a user' do
-    assert_not @kylo.following?(@batman)
+    assert_not @kylo.following?(@batman), 'no relationship by default'
     @kylo.follow(@batman)
-    assert @kylo.following?(@batman)
+    assert @kylo.following?(@batman), 'following? is true after follow'
     @kylo.unfollow(@batman)
-    assert_not @kylo.following?(@batman)
+    assert_not @kylo.following?(@batman), 'following? is false after unfollow'
+    assert_raise NoMethodError, 'unfollow on not-followed user errors' do
+      @kylo.unfollow(@batman)
+    end
   end
 end

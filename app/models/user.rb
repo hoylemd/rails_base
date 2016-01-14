@@ -14,9 +14,11 @@ class User < ActiveRecord::Base
   validates :password, presence: true, length: { minimum: 8 }, allow_nil: true
 
   has_many :microposts, dependent: :destroy
+
   has_many :active_relationships, class_name: 'Relationship',
                                   foreign_key: 'follower_id',
                                   dependent: :destroy
+  has_many :following, through: :active_relationships, source: :followed
 
   # Returns the hash digest of the given string.
   def self.digest(string)
@@ -79,6 +81,19 @@ class User < ActiveRecord::Base
   # get all of this user's microposts
   def feed
     Micropost.where(user_id: id)
+  end
+
+  # follow a user
+  def follow(user)
+    active_relationships.create(followed_id: user.id)
+  end
+
+  def unfollow(user)
+    active_relationships.find_by(followed_id: user.id).destroy
+  end
+
+  def following?(user)
+    following.include? user
   end
 
   private
