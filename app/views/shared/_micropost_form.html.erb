@@ -1,3 +1,4 @@
+<% @micropost ||= current_user.microposts.build %>
 <%= form_for(@micropost, html: { multipart: true }) do |f| %>
   <%= render 'shared/error_messages', object: f.object %>
   <div class="field">

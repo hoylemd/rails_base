@@ -35,7 +35,6 @@ class UsersController < ApplicationController
 
   def show
     @microposts = @user.feed.paginate(page: params[:page])
-    @micropost = @user.microposts.build if @user == current_user
   end
 
   def edit
