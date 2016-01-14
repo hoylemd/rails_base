@@ -191,4 +191,12 @@ class UserTest < ActiveSupport::TestCase
     assert_equal microposts(:most_recent), posts[0],
                  'Posts should be in reverse-chronological order'
   end
+
+  test 'should follow and unfollow a user' do
+    assert_not @kylo.following?(@batman)
+    @kylo.follow(@batman)
+    assert @kylo.following?(@batman)
+    @kylo.unfollow(@batman)
+    assert_not @kylo.following?(@batman)
+  end
 end
