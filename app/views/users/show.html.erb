@@ -16,6 +16,7 @@
     <% end %>
   </aside>
   <div class="col-md-8">
+    <%= render 'follow_form' if logged_in? %>
     <% if @microposts.any? %>
       <h3>Microposts by <%= @user.name %></h3>
       <ol class="microposts">
