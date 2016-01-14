@@ -34,10 +34,6 @@ module AclHelper
   private
 
   def render_unauthorized(template)
-    if template == 'static_pages/home' && current_user
-      @micropost  = current_user.microposts.build
-      @feed_items = current_user.feed.paginate(page: params[:page])
-    end
     render template, status: :unauthorized
   end
 
@@ -49,6 +45,6 @@ module AclHelper
 
     flash[:danger] = options[:flash]
 
-    render_unauthorized options[:template]
+    render options[:template], status: :unauthorized
   end
 end

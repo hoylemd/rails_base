@@ -1,3 +1,4 @@
+<% @feed_items ||= current_user.feed.paginate(page: params[:page]) %>
 <% if @feed_items.any? %>
   <ol class="microposts">
     <% for item in @feed_items %>
