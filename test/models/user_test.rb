@@ -175,10 +175,6 @@ class UserTest < ActiveSupport::TestCase
 
   test 'associated microposts should be destroyed' do
     @batman.save
-    post =
-     'It\'s not who I am, but how I do, that makes James Cameron James Cameron.'
-    @batman.microposts.create!(
-      content: post)
     assert_difference 'Micropost.count', -1 do
       @batman.destroy
     end
@@ -206,6 +202,26 @@ class UserTest < ActiveSupport::TestCase
                'follower is not in followed user\'s followers after unfollow'
     assert_raise NoMethodError, 'unfollow on not-followed user errors' do
       @kylo.unfollow(@batman)
+    end
+  end
+
+  test 'feed should have the right posts' do
+    ross = users(:ross)
+
+    # Posts from followed user
+    @kylo.microposts.each do |post_following|
+      assert @batman.feed.include?(post_following),
+             "Should see post '#{post_following.content}'"
+    end
+    # Posts from self
+    @batman.microposts.each do |post_self|
+      assert @batman.feed.include?(post_self),
+             "Should see post '#{post_self.content}'"
+    end
+    # Posts from unfollowed user
+    ross.microposts.each do |post_unfollowed|
+      assert_not @batman.feed.include?(post_unfollowed),
+                 "Should not see post '#{post_unfollowed.content}'"
     end
   end
 end

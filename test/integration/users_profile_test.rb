@@ -6,7 +6,7 @@ class UsersProfileTest < ActionDispatch::IntegrationTest
   def setup
     @kylo = users(:kylo)
     @peaches = users(:peaches)
-    @batman = users(:batman)
+    @quiet = users(:quiet)
   end
 
   test 'profile display' do
@@ -53,9 +53,9 @@ class UsersProfileTest < ActionDispatch::IntegrationTest
     assert_select '.microposts li', { count: 4 },
                   'Should see all microposts for user with < 30 microposts'
 
-    get user_path @batman
+    get user_path @quiet
 
-    assert_select '.microposts', "#{@batman.name} hasn't posted anything yet!",
+    assert_select '.microposts', "#{@quiet.name} hasn't posted anything yet!",
                   'Should see \'no posts\' message for user with no microposts'
   end
 end

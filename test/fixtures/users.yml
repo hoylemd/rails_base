@@ -20,6 +20,20 @@ batman:
   verified: true
   verified_at: <%= Time.zone.now %>
 
+ross:
+  name: 'Ross Gellar'
+  email: 'rgellar@museumofnaturalhistory.edu.gov'
+  password_digest: <%= User.digest('password') %>
+  verified: true
+  verified_at: <%= Time.zone.now %>
+
+quiet:
+  name: 'Quiet'
+  email: 'quiet@foxhound.gov'
+  password_digest: <%= User.digest('password') %>
+  verified: true
+  verified_at: <%= Time.zone.now %>
+
 crichton:
   name: 'John Crichton'
   email: 'jcrichton@iasa.gov'

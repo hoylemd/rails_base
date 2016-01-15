@@ -19,6 +19,16 @@ most_recent:
   created_at: <%= Time.zone.now %>
   user: kylo
 
+joker:
+  content: "Sometimes, I just want to shoot the Joker in the face, but I'm batman."
+  created_at: <%= 2.hours.ago %>
+  user: batman
+
+wrong_name:
+  content: "I just said Rachel's name when marrying Emily. FML. At least none of my friends are sleeping with my sister."
+  created_at: <%= 2.hours.ago %>
+  user: ross
+
 <% 50.times do |n| %>
 peaches_<%= n %>:
   content: <%= Faker::Lorem.sentence(5) %>
