@@ -211,7 +211,7 @@ module ActiveSupport
       assert_template 'users/show_follow',
                       'Should render the show follow patial'
       list.each do |user|
-        assert_select '.users.follow li', user.name,
+        assert_select '.users.follow li a', user.name,
                       'Should see all listed users'
       end
     end
