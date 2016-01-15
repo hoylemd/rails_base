@@ -148,4 +148,16 @@ class UsersControllerTest < ActionController::TestCase
     get :followers, id: @kylo
     assert_401_not_logged_in
   end
+
+  test 'get to followers' do
+    log_in_as @kylo
+    get :followers, id: @batman
+    assert_rendered_show_follow @batman.followers
+  end
+
+  test 'get to following' do
+    log_in_as @kylo
+    get :following, id: @batman
+    assert_rendered_show_follow @batman.following
+  end
 end

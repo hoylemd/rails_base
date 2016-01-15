@@ -206,5 +206,14 @@ module ActiveSupport
       assert_select '#following', user.nil? ? true : user.following.count.to_s,
                     'Should see the following badge'
     end
+
+    def assert_rendered_show_follow(list)
+      assert_template 'users/show_follow',
+                      'Should render the show follow patial'
+      list.each do |user|
+        assert_select 'users.follow li', user.name,
+                      'Should see all listed users'
+      end
+    end
   end
 end
