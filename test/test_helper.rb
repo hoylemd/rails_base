@@ -210,8 +210,9 @@ module ActiveSupport
     def assert_rendered_show_follow(list)
       assert_template 'users/show_follow',
                       'Should render the show follow patial'
+      assert_not list.empty?, 'Follow list should not be empty'
       list.each do |user|
-        assert_select '.users.follow li a', user.name,
+        assert_select '.users.follow li a[href=?]', user_path(user), user.name,
                       'Should see all listed users'
       end
     end
