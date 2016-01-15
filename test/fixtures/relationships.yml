@@ -1,0 +1,11 @@
+batmankylo:
+  follower: batman
+  followed: kylo
+
+batmanpeaches:
+  follower: batman
+  followed: peaches
+
+peachesbatman:
+  follower: peaches
+  followed: batman
