@@ -7,7 +7,7 @@
         <%= gravatar_for @user %>
         <span id='user_name'><%= @user.name %></span>
       </h1>
-      <span class='badge microposts-count'><%= @user.feed.count %></span>
+      <span class='badge microposts-count'><%= @user.microposts.count %></span>
       <% if current_user == @user %>
         <%= link_to "Edit", edit_user_path(current_user) %>
       <% end %>

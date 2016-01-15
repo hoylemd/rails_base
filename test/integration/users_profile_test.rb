@@ -18,7 +18,7 @@ class UsersProfileTest < ActionDispatch::IntegrationTest
     assert_rendered_user_info @peaches
 
     assert_select 'div.pagination', true, 'Pagination controls should appear'
-    @peaches.feed.paginate(page: 1).each do |micropost|
+    @peaches.microposts.paginate(page: 1).each do |micropost|
       assert_match micropost.content, response.body,
                    'Micropost content should be correct'
     end
@@ -37,7 +37,7 @@ class UsersProfileTest < ActionDispatch::IntegrationTest
     assert_rendered_micropost_form
 
     assert_select 'div.pagination', true, 'Pagination controls should appear'
-    @peaches.feed.paginate(page: 1).each do |micropost|
+    @peaches.microposts.paginate(page: 1).each do |micropost|
       assert_match micropost.content, response.body,
                    'Micropost content should be correct'
     end

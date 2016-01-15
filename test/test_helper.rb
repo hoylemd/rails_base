@@ -179,7 +179,7 @@ module ActiveSupport
                     'User\'s name should appear in a header'
       assert_select 'img.gravatar', true,
                     'User\'s gravatar should appear'
-      assert_select '.microposts-count', user.feed.count.to_s,
+      assert_select '.microposts-count', user.microposts.count.to_s,
                     'Should see the user\'s micropost count badge'
     end
 

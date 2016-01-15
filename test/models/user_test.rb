@@ -180,8 +180,8 @@ class UserTest < ActiveSupport::TestCase
     end
   end
 
-  test 'feed should return user\'s microposts' do
-    posts = @kylo.feed
+  test 'microposrs should return user\'s microposts' do
+    posts = @kylo.microposts
 
     assert_equal 4, posts.length, 'Should show all of a user\'s microposts'
     assert_equal microposts(:most_recent), posts[0],
@@ -223,5 +223,8 @@ class UserTest < ActiveSupport::TestCase
       assert_not @batman.feed.include?(post_unfollowed),
                  "Should not see post '#{post_unfollowed.content}'"
     end
+
+    assert_equal microposts(:most_recent), @kylo.microposts[0],
+                 'Posts should be in reverse-chronological order'
   end
 end
