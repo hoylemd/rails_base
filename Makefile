@@ -8,6 +8,12 @@ install: Gemfile
 test: FORCE
 	$(RAKE) test
 
+integration-tests: FORCE
+
+smoke: FORCE
+
+test-all: FORCE
+
 server:
 	$(EXEC) rails server
 
