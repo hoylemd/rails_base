@@ -24,7 +24,7 @@ group :development, :test do
   gem 'spring',      '1.1.3'
   gem 'poltergeist'
   gem 'capybara'
-  gem 'cucumber-rails'
+  gem 'cucumber-rails', require: false
   gem 'guard-cucumber'
 end
 

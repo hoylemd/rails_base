@@ -64,3 +64,15 @@ end
 def resource_tests(resource)
   integration_tests(resource) << controller_test(resource)
 end
+
+guard 'cucumber', cli:  '--tags ~@skip' do
+  watch(%r{^features/(.+\.feature)$}) do |m|
+    "features/#{m[1]}"
+  end
+  #watch(%r{^features/support/.+$}) do
+  #  'features'
+  #end
+  #watch(%r{^features/step_definitions/(.+)_steps\.rb$}) do |m|
+  #  Dir[File.join("**/#{m[1]}.feature")][0] || 'features'
+  #end
+end
