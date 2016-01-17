@@ -76,3 +76,15 @@ guard 'cucumber', cli:  '--tags ~@skip' do
   #  Dir[File.join("**/#{m[1]}.feature")][0] || 'features'
   #end
 end
+
+guard 'cucumber', cli:  '--tags @smoke --tags ~@skip', keep_failed: false do
+  watch('features/step_definitions/common.rb') do
+    'features'
+  end
+end
+
+guard 'cucumber', cli: '--tags @meta_test', keep_failed: false do
+  watch ('features/support/helpers.rb') do
+    'features'
+  end
+end
