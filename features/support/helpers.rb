@@ -1,41 +1,14 @@
 # condition assertions
-def assert(test, message = nil)
-  message = "assertion failed [#{test}]" if message.nil?
-  fail Minitest::Assertion, message unless test
-  true
-end
-
-# TODO: flip the operands around
-def assert_equal(test, expected, message = nil)
-  message = "[#{test}] was not equal to [#{expected}]" if message.nil?
-  assert test == expected, message
-end
-
-def assert_not(test, message = nil)
-  message = "negative assertion failed [#{test}]" if message.nil?
-  assert !test, message
-end
-
 def assert_not_equal(test, unexpected, message = nil)
   message = "[#{test}] was equal to [#{unexpected}]" if message.nil?
   assert test != unexpected, message
 end
 
-def assert_empty(test, message = nil)
-  message = "passed object was not empty [#{test}]" if message.nil?
-  begin
-    assert((test.nil? || test.empty?), message)
-  rescue NoMethodError
-    # if the test object isn't nil, and has no empty? method, it's probably not
-    raise Minitest::Assertion, message
-  end
-end
-
 def assert_not_empty(test, message = nil)
   message = 'passed object was empty' if message.nil?
-  assert_not test.nil?
+  refute test.nil?
   begin
-    assert_not test.empty?, message
+    refute test.empty?, message
   rescue NoMethodError
     # if the test object isn't nil, and has no empty? method, it's probably not
     true

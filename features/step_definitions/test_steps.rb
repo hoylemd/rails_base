@@ -1,67 +1,6 @@
-# assert helpers
-Then(/I test assert/) do
-  assert true, 'true passes'
-  assert 5, '5 passes'
-  assert 'yes', "'yes' passes"
-
-  begin
-    assert false, 'false does not pass'
-  rescue Minitest::Assertion
-    true
-  end
-
-  begin
-    assert nil, 'nil does not pass'
-  rescue Minitest::Assertion
-    true
-  end
-end
-
-Then(/I test my assert_not helper/) do
-  assert_not(false)
-  assert_not(nil)
-
-  begin
-    assert_not(true)
-  rescue Minitest::Assertion
-    true
-  end
-  begin
-    assert_not(5)
-  rescue Minitest::Assertion
-    true
-  end
-  begin
-    assert_not(0)
-  rescue Minitest::Assertion
-    true
-  end
-  begin
-    assert_not('hi')
-  rescue Minitest::Assertion
-    true
-  end
-end
-
 Then(/I test my assert_element_present helper/) do
   # TODO: write this test. I'll leave it till later, because there's little
   # value in testing it now, and I'm not quite sure how I'll do it.
-end
-
-Then(/I test my assert_equal helper/) do
-  assert_equal(-3, -3)
-  assert_equal('hi', 'hi')
-
-  begin
-    assert_equal('hi', 'bye')
-  rescue Minitest::Assertion
-    true
-  end
-  begin
-    assert_equal(0.5, 0.55)
-  rescue Minitest::Assertion
-    true
-  end
 end
 
 Then(/I test my assert_not_equal helper/) do
@@ -75,38 +14,6 @@ Then(/I test my assert_not_equal helper/) do
   end
   begin
     assert_not_equal('boy', 'boy')
-  rescue Minitest::Assertion
-    true
-  end
-end
-
-Then(/I test my assert_empty helper$/) do
-  assert_empty ''
-  assert_empty []
-  empty_hash = {}
-  assert_empty(empty_hash)
-  assert_empty(nil)
-
-  begin
-    assert_empty 'blah'
-  rescue Minitest::Assertion
-    true
-  end
-
-  begin
-    assert_empty [5]
-  rescue Minitest::Assertion
-    true
-  end
-
-  begin
-    assert_empty key: 23
-  rescue Minitest::Assertion
-    true
-  end
-
-  begin
-    assert_empty 5
   rescue Minitest::Assertion
     true
   end
