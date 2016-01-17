@@ -3,22 +3,6 @@ Then(/I test my assert_element_present helper/) do
   # value in testing it now, and I'm not quite sure how I'll do it.
 end
 
-Then(/I test my assert_not_equal helper/) do
-  assert_not_equal(17, 2)
-  assert_not_equal('hi', 'bye')
-
-  begin
-    assert_not_equal(3, 3)
-  rescue Minitest::Assertion
-    true
-  end
-  begin
-    assert_not_equal('boy', 'boy')
-  rescue Minitest::Assertion
-    true
-  end
-end
-
 Then(/I test my assert_not_empty helper$/) do
   assert_not_empty 'hello'
   assert_not_empty [42]

@@ -1,9 +1,3 @@
-# condition assertions
-def assert_not_equal(test, unexpected, message = nil)
-  message = "[#{test}] was equal to [#{unexpected}]" if message.nil?
-  assert test != unexpected, message
-end
-
 def assert_not_empty(test, message = nil)
   message = 'passed object was empty' if message.nil?
   refute test.nil?
