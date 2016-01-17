@@ -2,15 +2,21 @@ Given(/I am viewing the app$/) do
   visit '/'
 end
 
-def visit_page(page)
-  page_mappings = {
+def page_mappings
+  @page_mappings ||= {
     'signup' => '/signup',
     'home' => '/',
     'login' => '/login'
   }
+end
 
-  assert page_mappings.has_key?(page),
-    "the specified page '#{page}' is not known to the test suite"
+def assert_page_known(page)
+ assert page_mappings.key?(page),
+         "the specified page '#{page}' is not known to the test suite"
+end
+
+def visit_page(page)
+  assert_page_known page
   visit page_mappings[page]
 end
 
@@ -28,6 +34,12 @@ end
 
 Then(/I should see "(.*)"$/) do |text|
   expect(page).to have_content(text)
+end
+
+Then(/I should see a link to the (.*) page$/) do |page|
+  assert_page_known page
+  assert_selector 'a[href=?]', page_mappings(page),
+                  "Should see a linke to the #{page} page"
 end
 
 def field_name_to_css(name)
