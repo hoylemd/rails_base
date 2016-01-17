@@ -3,6 +3,6 @@ Feature: home page
   Background:
     Given I am viewing the app
 
-  @smoke @skip
-  Scenario: Home page shows the grid
-    Then I should see the home grid
+  @smoke
+  Scenario: Home page, unauthenticated
+    Then I should see "Welcome to the Sample App"
