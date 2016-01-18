@@ -3,38 +3,6 @@ Then(/I test my assert_element_present helper/) do
   # value in testing it now, and I'm not quite sure how I'll do it.
 end
 
-Then(/I test my assert_not_empty helper$/) do
-  assert_not_empty 'hello'
-  assert_not_empty [42]
-  assert_not_empty key: 'a thing'
-  assert_not_empty 5
-
-  begin
-    assert_not_empty ''
-  rescue Minitest::Assertion
-    true
-  end
-
-  begin
-    assert_not_empty []
-  rescue Minitest::Assertion
-    true
-  end
-
-  begin
-    empty_hash = {}
-    assert_not_empty empty_hash
-  rescue Minitest::Assertion
-    true
-  end
-
-  begin
-    assert_not_empty nil
-  rescue Minitest::Assertion
-    true
-  end
-end
-
 Then(/I test my assert_gt helper$/) do
   assert_gt 5, 2
 

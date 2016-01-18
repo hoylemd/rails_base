@@ -1,7 +1,6 @@
 @meta_test
 Feature: Test my test helpers
   Scenario: test assertions
-    And I test my assert_not_empty helper
     And I test my assert_gt helper
     And I test my assert_lt helper
     And I test my assert_gte helper

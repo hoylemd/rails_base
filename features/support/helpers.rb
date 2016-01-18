@@ -1,15 +1,3 @@
-def assert_not_empty(test, message = nil)
-  message = 'passed object was empty' if message.nil?
-  refute test.nil?
-  begin
-    refute test.empty?, message
-  rescue NoMethodError
-    # if the test object isn't nil, and has no empty? method, it's probably not
-    true
-  end
-  true
-end
-
 def assert_gt(left, right, message = nil)
   if message.nil?
     message = "greater-than assertion failed. [#{left}] !> [#{right}]"
