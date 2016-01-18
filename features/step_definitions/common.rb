@@ -42,6 +42,10 @@ Then(/I should see a link to the (.*) page$/) do |page_name|
                        "Should see a link to the #{page_name} page"
 end
 
+Then(/The page title should be "(.*)"$/) do |page_title|
+  assert_equal page.title, page_title
+end
+
 def field_name_to_css(name)
   ".form-field.form-field-#{string_to_slug name}"
 end

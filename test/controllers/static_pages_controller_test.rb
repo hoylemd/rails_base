@@ -5,13 +5,11 @@ class StaticPagesControllerTest < ActionController::TestCase
     @kylo = users(:kylo)
   end
 
-  # TODO: Move these layout tests to integration tests - split up by controller
-  test 'should get home' do
+  test 'get to home should respond with 200 OK and render home template' do
     get :home
-    assert_response :success, 'Should receive a 200 OK on GET to home'
-    assert_select 'title', 'Ruby on Rails Tutorial Sample App'
 
     assert_template 'static_pages/home', 'Should be on home page'
+
     assert_select 'a[href=?]', root_path, { count: 2 },
                   'Should see 2 home links'
     assert_select 'a[href=?]', help_path, true, 'Should see a help link'
