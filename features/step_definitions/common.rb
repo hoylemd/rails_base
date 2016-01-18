@@ -11,7 +11,7 @@ def page_mappings
 end
 
 def assert_page_known(page)
- assert page_mappings.key?(page),
+  assert page_mappings.key?(page),
          "the specified page '#{page}' is not known to the test suite"
 end
 
@@ -33,7 +33,7 @@ When(/I click "(.*)"$/) do |text|
 end
 
 Then(/I should see "(.*)"$/) do |text|
-  expect(page).to have_content(text)
+  assert page.has_content? text
 end
 
 Then(/I should see a link to the (.*) page$/) do |page|
@@ -53,11 +53,11 @@ Then(/I should see a "(.+)" field$/) do |field_name|
 end
 
 Then(/I should see a success flash$/) do
-  expect(page).to have_selector('.alert.alert-success')
+  assert page.has_selector? '.alert.alert-success'
 end
 
 Then(/I should not see any error messages$/) do
-  expect(page).not_to have_selector('.alert.alert-danger')
+  assert page.has_no_selector? '.alert.alert-danger'
 end
 
 Then(/I should see an error message that says "(.*)"$/) do |message|
