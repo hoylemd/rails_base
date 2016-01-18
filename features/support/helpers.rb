@@ -1,4 +1,16 @@
 # Capybara-driven DOM assertions
+def _assert_find_fail_ambiguous_message(selector, options)
+  message = "found multiple elements '#{selector}'"
+  message += " with content '#{options[:text]}'" if options[:text]
+  message
+end
+
+def _assert_find_fail_not_found(selector, options)
+  message = "failed to find element '#{selector}'"
+  message += " with content '#{options[:text]}'" if options[:text]
+  message
+end
+
 def assert_find(parent, selector, options = {})
   # options are passed directly to Capybara::Session#find
   # generally, it'll just be {text: 'text you are looking for'}
@@ -6,15 +18,9 @@ def assert_find(parent, selector, options = {})
   begin
     found = parent.find(selector, options)
   rescue Capybara::Ambiguous
-    unless message
-      message = "found multiple elements '#{selector}'" \
-        " with content '#{message}'"
-    end
+    message = _assert_find_ambiguous_message selector, options
   rescue Capybara::ElementNotFound
-    unless message
-      message = "failed to find element '#{selector}'"
-      message += " with content '#{options[:text]}'" if options[:text]
-    end
+    message = _assert_find_ambiguous_message selector, options
   end
   fail Minitest::Assertion, message if found.nil?
   found
@@ -35,6 +41,15 @@ def assert_element_has_content(selector, options = {})
   assert_not_empty(content, "element #{selector} was found, but is empty.")
 end
 
+def _random_string_build_characters(use)
+  characters = []
+  characters += ('a'..'z').map { |i| i } if use[:lower_case]
+  characters += ('A'..'Z').map { |i| i } if use[:upper_case]
+  characters += ('0'..'9').map { |i| i } if use[:numbers]
+  characters += [' ', '_', '?', '&'] if use[:special]
+  characters
+end
+
 def random_string(options = {})
   # Generates a random string of `length` length
   # options:
@@ -53,11 +68,7 @@ def random_string(options = {})
   }
   use = default_classes.merge(options || {})
 
-  characters = []
-  characters += ('a'..'z').map { |i| i } if use[:lower_case]
-  characters += ('A'..'Z').map { |i| i } if use[:upper_case]
-  characters += ('0'..'9').map { |i| i } if use[:numbers]
-  characters += [' ', '_', '?', '&'] if use[:special]
+  characters = _random_string_build_characters use
 
   if characters.empty?
     fail Exception, 'you need to choose at least one character class!'
