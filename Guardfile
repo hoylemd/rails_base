@@ -78,7 +78,6 @@ guard 'cucumber', cli: cuke_flags do
   #end
 end
 
-cuke_flags = '--no-profile --color --format progress --strict --tags ~@skip '
 guard 'cucumber', cli: "#{cuke_flags} --tags @smoke", keep_failed: false do
   watch('features/step_definitions/common.rb') do
     'features'

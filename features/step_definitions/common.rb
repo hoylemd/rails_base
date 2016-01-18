@@ -36,10 +36,10 @@ Then(/I should see "(.*)"$/) do |text|
   page.assert_text text
 end
 
-Then(/I should see a link to the (.*) page$/) do |page|
-  assert_page_known page
-  assert_selector 'a[href=?]', page_mappings(page),
-                  "Should see a linke to the #{page} page"
+Then(/I should see a link to the (.*) page$/) do |page_name|
+  assert_page_known page_name
+  page.assert_selector 'a', page_mappings[page_name],
+                       "Should see a link to the #{page_name} page"
 end
 
 def field_name_to_css(name)
