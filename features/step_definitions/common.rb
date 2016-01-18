@@ -33,7 +33,7 @@ When(/I click "(.*)"$/) do |text|
 end
 
 Then(/I should see "(.*)"$/) do |text|
-  assert page.has_content? text
+  page.assert_text text
 end
 
 Then(/I should see a link to the (.*) page$/) do |page|
