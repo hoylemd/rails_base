@@ -65,7 +65,8 @@ def resource_tests(resource)
   integration_tests(resource) << controller_test(resource)
 end
 
-guard 'cucumber', cli:  '--tags ~@skip' do
+cuke_flags = '--no-profile --color --format progress --strict --tags ~@skip '
+guard 'cucumber', cli: cuke_flags do
   watch(%r{^features/(.+\.feature)$}) do |m|
     "features/#{m[1]}"
   end
