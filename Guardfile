@@ -77,13 +77,14 @@ guard 'cucumber', cli:  '--tags ~@skip' do
   #end
 end
 
-guard 'cucumber', cli:  '--tags @smoke --tags ~@skip', keep_failed: false do
+cuke_flags = '--tags ~@skip --no-profile --color --format progress --strict'
+guard 'cucumber', cli: "#{cuke_flags} --tags @smoke", keep_failed: false do
   watch('features/step_definitions/common.rb') do
     'features'
   end
 end
 
-guard 'cucumber', cli: '--tags @meta_test', keep_failed: false do
+guard 'cucumber', cli: "#{cuke_flags} --tags @meta_test" do
   watch ('features/support/helpers.rb') do
     'features'
   end
