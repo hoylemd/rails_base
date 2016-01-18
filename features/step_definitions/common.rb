@@ -36,10 +36,19 @@ Then(/I should see "(.*)"$/) do |text|
   page.assert_text text
 end
 
-Then(/I should see a link to the (.*) page$/) do |page_name|
+def assert_see_links(page_name, count = nil)
   assert_page_known page_name
-  page.assert_selector 'a', page_mappings[page_name],
-                       "Should see a link to the #{page_name} page"
+  options = { href: page_mappings[page_name] }
+  options[:count] = count if count
+  page.has_link? 'a', options
+end
+
+Then(/I should see a link to the (.*) page$/) do |page_name|
+  assert_see_links(page_name)
+end
+
+Then(/I should see ([0-9]+) links to the (.*) page$/) do |count, page_name|
+  assert_see_links(page_name, count)
 end
 
 Then(/The page title should be "(.*)"$/) do |page_title|
