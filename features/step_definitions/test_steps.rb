@@ -3,60 +3,6 @@ Then(/I test my assert_element_present helper/) do
   # value in testing it now, and I'm not quite sure how I'll do it.
 end
 
-Then(/I test my assert_gt helper$/) do
-  assert_gt 5, 2
-
-  begin
-    assert_gt 4, 4
-  rescue Minitest::Assertion
-    true
-  end
-
-  begin
-    assert_gt 2, 18
-  rescue Minitest::Assertion
-    true
-  end
-end
-
-Then(/I test my assert_lt helper$/) do
-  assert_lt 5, 9
-
-  begin
-    assert_lt 4, 4
-  rescue Minitest::Assertion
-    true
-  end
-
-  begin
-    assert_lt 13, 2
-  rescue Minitest::Assertion
-    true
-  end
-end
-
-Then(/I test my assert_gte helper$/) do
-  assert_gte 5, 2
-  assert_gte 4, 4
-
-  begin
-    assert_gte 2, 18
-  rescue Minitest::Assertion
-    true
-  end
-end
-
-Then(/I test my assert_lte helper$/) do
-  assert_lte 5, 9
-  assert_lte 4, 4
-
-  begin
-    assert_lte 13, 2
-  rescue Minitest::Assertion
-    true
-  end
-end
-
 # random helpers
 When(/I seed the rand method with "([\d]+)"/) do |seed|
   srand(Integer(seed))

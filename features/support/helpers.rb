@@ -1,31 +1,3 @@
-def assert_gt(left, right, message = nil)
-  if message.nil?
-    message = "greater-than assertion failed. [#{left}] !> [#{right}]"
-  end
-  assert left > right, message
-end
-
-def assert_lt(left, right, message = nil)
-  if message.nil?
-    message = "less-than assertion failed. [#{left}] !> [#{right}]"
-  end
-  assert_gt right, left, message
-end
-
-def assert_gte(left, right, message = nil)
-  if message.nil?
-    message = "greater-than-or-equal assertion failed. [#{left}] !> [#{right}]"
-  end
-  assert left >= right, message
-end
-
-def assert_lte(left, right, message = nil)
-  if message.nil?
-    message = "less-than-or-equal assertion failed. [#{left}] !> [#{right}]"
-  end
-  assert_gte right, left, message
-end
-
 # Capybara-driven DOM assertions
 def assert_find(parent, selector, options = {})
   # options are passed directly to Capybara::Session#find
