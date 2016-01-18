@@ -41,23 +41,15 @@ Then(/I should see "(.*)"$/) do |text|
 end
 
 def assert_see_links(page_name, count)
-  if page_known? page_name
-    href = page_mappings[page_name]
-    message = "Should see exactly #{count} links to the #{page_name} page"
-  else
-    href = page_name
-    message = "Should see exactly #{count} links to #{href}"
+  href = page_known?(page_name) ? page_mappings[page_name] : page_name
+
+  begin
+    assert page.has_link?('', href: href, count: count)
+  rescue Minitest::Assertion => e
+    message = "Should see exactly #{count} links to #{href}" \
+              "#{message}, found #{page.find_all(:link, '', href: href).count}"
+    raise e, message
   end
-
-  assert page.has_link?('', href: href, count: count), message
-end
-
-def link_type_to_locator(type)
-  type.chomp! 's'
-  {
-    'link' => '',
-    'CTA' => '.btn.btn-primary'
-  }[type]
 end
 
 Then(/I should see a link to the (.*) page$/) do |page_name|
