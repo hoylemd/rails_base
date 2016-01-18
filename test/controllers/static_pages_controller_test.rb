@@ -10,8 +10,6 @@ class StaticPagesControllerTest < ActionController::TestCase
 
     assert_template 'static_pages/home', 'Should be on home page'
 
-    assert_select 'a[href=?]', root_path, { count: 2 },
-                  'Should see 2 home links'
     assert_select 'a[href=?]', help_path, true, 'Should see a help link'
     assert_select 'a[href=?]', about_path, true, 'Should see an about link'
     assert_select 'a[href=?]', users_path, false, 'Should not see a users link'

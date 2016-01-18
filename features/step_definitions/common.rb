@@ -10,22 +10,26 @@ def page_mappings
   }
 end
 
-def assert_page_known(page)
-  assert page_mappings.key?(page),
-         "the specified page '#{page}' is not known to the test suite"
+def page_known?(page_name)
+  page_mappings.key?(page_name)
 end
 
-def visit_page(page)
-  assert_page_known page
-  visit page_mappings[page]
+def assert_page_known(page_name)
+  assert page_known?(page_name),
+         "the specified page '#{page_name}' is not known to the test suite"
 end
 
-Given(/I am on the (.*) page$/) do |page|
-  visit_page(page)
+def visit_page(page_name)
+  assert_page_known page_name
+  visit page_mappings[page_name]
 end
 
-When(/I visit the (.*) page$/) do |page|
-  visit_page(page)
+Given(/I am on the (.*) page$/) do |page_name|
+  visit_page(page_name)
+end
+
+When(/I visit the (.*) page$/) do |page_name|
+  visit_page(page_name)
 end
 
 When(/I click "(.*)"$/) do |text|
@@ -36,19 +40,32 @@ Then(/I should see "(.*)"$/) do |text|
   page.assert_text text
 end
 
-def assert_see_links(page_name, count = nil)
-  assert_page_known page_name
-  options = { href: page_mappings[page_name] }
-  options[:count] = count if count
-  page.has_link? 'a', options
+def assert_see_links(page_name, count)
+  if page_known? page_name
+    href = page_mappings[page_name]
+    message = "Should see exactly #{count} links to the #{page_name} page"
+  else
+    href = page_name
+    message = "Should see exactly #{count} links to #{href}"
+  end
+
+  assert page.has_link?('', href: href, count: count), message
+end
+
+def link_type_to_locator(type)
+  type.chomp! 's'
+  {
+    'link' => '',
+    'CTA' => '.btn.btn-primary'
+  }[type]
 end
 
 Then(/I should see a link to the (.*) page$/) do |page_name|
-  assert_see_links(page_name)
+  assert_see_links page_name, 1
 end
 
 Then(/I should see ([0-9]+) links to the (.*) page$/) do |count, page_name|
-  assert_see_links(page_name, count)
+  assert_see_links page_name, count.to_s
 end
 
 Then(/The page title should be "(.*)"$/) do |page_title|
