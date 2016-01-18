@@ -41,6 +41,7 @@ Learn Web Development with Rails*](http://www.railstutorial.org/)
 by [Michael Hartl](http://www.michaelhartl.com/).
 
 todo: Finish porting pretty-pictures test files
+todo: set up guard to run interface tests on template changes
 todo: add an 'assert\_permission\_denied' helper for tests
 todo: Why not just get the @micropost and @feed\_items  in the  template?
 todo: add messages to all `assert(_no)?_difference` calls
