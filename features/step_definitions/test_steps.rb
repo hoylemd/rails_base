@@ -1,8 +1,3 @@
-Then(/I test my assert_element_present helper/) do
-  # TODO: write this test. I'll leave it till later, because there's little
-  # value in testing it now, and I'm not quite sure how I'll do it.
-end
-
 # random helpers
 When(/I seed the rand method with "([\d]+)"/) do |seed|
   srand(Integer(seed))
