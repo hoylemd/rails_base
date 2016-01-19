@@ -3,23 +3,22 @@ Feature: Login
   Background:
     Given I am on the login page
 
-  @smoke @skip
+  @smoke
   Scenario: Normal login flow
-    When I enter my username
+    When I enter my email
     And I enter my password
-    And I click "Log in"
-    Then I should see a success flash
-    And I should not see any error messages
+    And I click the "Log in" button
+    Then I should not see an error flash
     And I should be logged in
     And I should see my user profile
     When I click "Log Out"
     Then I should see "Log in"
     And I should not be logged in
-    When I enter my username
+    When I enter my email
     And I enter my password
     And I click "Log in"
     Then I should see a success flash
-    And I should not see any error messages
+    And I should not see an error flash
     And I should be logged in
 
   @not_implemented

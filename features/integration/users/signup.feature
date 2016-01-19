@@ -15,18 +15,21 @@ Feature: Signup
     And I should not see any error messages
     And I should see "Connected to 500px? No"
 
+@skip
   Scenario: All signup fields are present
     Then I should see a "Username" field
     And I should see a "Password" field
     And I should see a "Confirmation" field
     And I should see a "Bio" field
 
+@skip
   Scenario: Omit all fields
     When I click "Create my account"
     Then I should see an error message that says "Username can't be blank"
     And I should see an error message that says "Password can't be blank"
     And I should see an error message that says "Password is too short (minimum is 6 characters)"
 
+@skip
   Scenario: Signup with duplicate username
     When I complete the signup form
     And I click "Log Out"
@@ -37,6 +40,7 @@ Feature: Signup
     And I click "Create my account"
     Then I should see an error message that says "Username has already been taken"
 
+@skip
   Scenario: Signup with bad passwords
     When I enter a random username
     And I enter a random password

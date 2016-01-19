@@ -37,6 +37,10 @@ When(/I click "(.*)"$/) do |text|
   click_on text
 end
 
+When(/I click the "(.*)" button$/) do |label|
+  click_button label
+end
+
 Then(/I should see "(.*)"$/) do |text|
   page.assert_text text
 end
@@ -52,11 +56,12 @@ Then(/I should see a "(.+)" field$/) do |field_name|
 end
 
 Then(/I should see a success flash$/) do
-  assert page.has_selector? '.alert.alert-success'
+  assert_selector '.alert.alert-success',
+                  'Did not see an expected success flash'
 end
 
-Then(/I should not see any error messages$/) do
-  assert page.has_no_selector? '.alert.alert-danger'
+Then(/I should not see an error flash$/) do
+  assert_no_selector '.alert.alert-danger', 'Saw an unexpected error flash'
 end
 
 Then(/I should see an error message that says "(.*)"$/) do |message|

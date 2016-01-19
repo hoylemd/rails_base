@@ -14,9 +14,8 @@ Then(/I should see my user profile/) do
 end
 
 Then(/I should be logged in/) do
-  assert_not @username.empty?
-  expect(page).to have_content("Welcome, #{@username}")
-  expect(page).to have_selector('.btn.btn-session-action', text: 'Log Out')
+  assert_see_links('users', 1)
+  assert page.html.include? 'Log out'
 end
 
 Then(/I should not be logged in/) do
