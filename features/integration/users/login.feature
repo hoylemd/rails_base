@@ -22,6 +22,13 @@ Feature: Login
     And I should not see any error messages
     And I should be logged in
 
+  @not_implemented
+  Scenario: Log in as admin
+
+  @not_implemented
+  Scenario: Log in as unverified user
+
+  @skip
   Scenario: Both login fields are present
     Then I should see a "Username" field
     And I should see a "Password" field

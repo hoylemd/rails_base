@@ -1,13 +1,25 @@
-def user_credentials
-  { email: 'leia@rebelalliance.org', password: 'password' }
+def user_identity
+  {
+    name: 'Leia Organa',
+    email: 'leia@rebelalliance.org',
+    password: 'password'
+  }
 end
 
-def admin_credentials
-  { email: 'darth_vader@galacticempire.gov', password: 'password' }
+def admin_identity
+  {
+    name: 'Darth Vader',
+    email: 'darth_vader@galacticempire.gov',
+    password: 'password'
+  }
 end
 
-def unverified_credentials
-  { email: 'potus@not.us.gov', password: 'hunter2' }
+def unverified_identity
+  {
+    name: 'Barack Obama',
+    email: 'potus@not.us.gov',
+    password: 'hunter2'
+  }
 end
 
 def log_in(credentials)
@@ -23,9 +35,17 @@ def log_in(credentials)
 end
 
 Given(/I am logged into the app$/) do
-  log_in user_credentials
+  @identity ||= user_identity
+  log_in @identity
 end
 
-Given(/I am logged in as a( regular user|n admin|n unverified user)$/
-     ) do |as_whom|
+Given(/I am a( regular user|n admin|n unverified user)$/) do |identity|
+  case identity
+  when ' regular user'
+    @identity = user_identity
+  when 'n admin'
+    @identity = admin_identity
+  when 'n unverified user'
+    @identity = unverified_identity
+  end
 end
