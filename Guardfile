@@ -65,25 +65,34 @@ def resource_tests(resource)
   integration_tests(resource) << controller_test(resource)
 end
 
+# general cucumber tests
 cuke_flags = '--no-profile --color --format progress --strict --tags ~@skip --tags ~@not_implemented'
 guard 'cucumber', cli: cuke_flags do
+  # if a feature file changes, run it
   watch(%r{^features/(.+\.feature)$}) do |m|
     "features/#{m[1]}"
   end
-  #watch(%r{^features/support/.+$}) do
-  #  'features'
-  #end
-  #watch(%r{^features/step_definitions/(.+)_steps\.rb$}) do |m|
-  #  Dir[File.join("**/#{m[1]}.feature")][0] || 'features'
-  #end
+  # if a steps file changes, run the matching integration features
+  watch(%r{^features/step_definitions/(.*)_steps\.rb$}) do |matches|
+    "features/integration/#{matches[1]}.feature"
+  end
+  # if a top-level steps file changes, run all integration tests for that feature
+  watch(%r{^features/step_definitions/([a-zA-Z_]+)_steps\.rb$}) do |matches|
+    "features/integration/#{matches[1]}"
+  end
 end
 
+# smoke tests
 guard 'cucumber', cli: "#{cuke_flags} --tags @smoke", keep_failed: false do
   watch('features/step_definitions/common.rb') do
     'features'
   end
+  watch(%r{^features/support/.+$}) do
+    'features'
+  end
 end
 
+# meta tests
 guard 'cucumber', cli: "#{cuke_flags} --tags @meta_test" do
   watch('features/support/helpers.rb') do
     'features'
