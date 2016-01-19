@@ -1,7 +1,7 @@
 Feature: home page
 
   Background:
-    Given I am viewing the app
+    Given I am on the home page
 
   @smoke
   Scenario: Home page, unauthenticated
