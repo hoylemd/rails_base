@@ -1,11 +1,9 @@
-@skip
 Feature: Login
 
   Background:
-    Given I have an account
-    And I am on the login page
+    Given I am on the login page
 
-  @smoke
+  @smoke @skip
   Scenario: Normal login flow
     When I enter my username
     And I enter my password
