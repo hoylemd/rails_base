@@ -14,3 +14,9 @@ Feature: home page
     And I should see a link to the contact page
     And I should not see a link to the users page
     And I should not see a link to the logout page
+
+  @smoke
+  Scenario: Home page, authenticated
+    Given I am logged into the app
+    And I am on the home page
+    Then I should see my gravatar
