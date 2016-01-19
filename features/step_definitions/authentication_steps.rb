@@ -1,13 +1,13 @@
 def user_credentials
-  { email: 'test_user@example.com', password: 'password' }
+  { email: 'leia@rebelalliance.org', password: 'password' }
 end
 
 def admin_credentials
-  { email: 'test_admin@example.com', password: 'password' }
+  { email: 'darth_vader@galacticempire.gov', password: 'password' }
 end
 
 def unverified_credentials
-  { email: 'potus@us.gov', password: 'hunter2' }
+  { email: 'potus@not.us.gov', password: 'hunter2' }
 end
 
 def log_in(credentials)

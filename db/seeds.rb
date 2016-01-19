@@ -6,7 +6,23 @@ User.create!(name: 'Leia Organa',
              verified: true,
              verified_at: Time.zone.now)
 
-99.times do |n|
+puts 'Adding Darth Vader'
+User.create!(name: 'Darth Vader',
+             email: 'darth_vader@galacticempire.gov',
+             password: 'password',
+             password_confirmation: 'password',
+             verified: true,
+             verified_at: Time.zone.now,
+             admin: true)
+
+puts 'Adding Barack Obama'
+User.create!(name: 'Barack Obama',
+             email: 'potus@not.us.gov',
+             password: 'password',
+             password_confirmation: 'password',
+             verified: false)
+
+96.times do |n|
   name = Faker::Name.name
   puts "Adding #{name}"
   email = "example-#{n + 1}@railstutorial.org"
