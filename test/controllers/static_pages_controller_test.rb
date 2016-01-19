@@ -9,14 +9,6 @@ class StaticPagesControllerTest < ActionController::TestCase
     get :home
 
     assert_template 'static_pages/home', 'Should be on home page'
-
-    assert_select 'a[href=?]', help_path, true, 'Should see a help link'
-    assert_select 'a[href=?]', about_path, true, 'Should see an about link'
-    assert_select 'a[href=?]', users_path, false, 'Should not see a users link'
-    assert_select 'a[href=?]', contact_path, true, 'Should see a contact link'
-    assert_select 'a[href=?]', login_path, true, 'Should see a login link'
-    assert_select 'a[href=?]', logout_path, false, "Shouldn't see a logout link"
-    assert_select 'a[href=?]', signup_path, true, 'Should see a signup link'
   end
 
   test 'get to home while logged in' do

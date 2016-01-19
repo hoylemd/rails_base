@@ -6,7 +6,12 @@ def page_mappings
   @page_mappings ||= {
     'signup' => '/signup',
     'home' => '/',
-    'login' => '/login'
+    'login' => '/login',
+    'logout' => '/logout',
+    'help' => '/help',
+    'about' => '/about',
+    'contact' => '/contact',
+    'users' => '/users'
   }
 end
 
@@ -52,8 +57,8 @@ def assert_see_links(page_name, count)
   end
 end
 
-Then(/I should see a link to the (.*) page$/) do |page_name|
-  assert_see_links page_name, 1
+Then(/I should( not)? see a link to the (.*) page$/) do |negate, page_name|
+  assert_see_links(page_name, negate ? 0 : 1)
 end
 
 Then(/I should see ([0-9]+) links to the (.*) page$/) do |count, page_name|
