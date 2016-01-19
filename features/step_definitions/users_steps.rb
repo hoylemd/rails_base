@@ -36,6 +36,14 @@ def enter_password(password = identity[:password])
   fill_in 'Password', with: @current_password
 end
 
+When(/I enter my email$/) do
+  enter_email
+end
+
+When(/I enter my password$/) do
+  enter_password
+end
+
 def log_in(credentials = identity)
   visit_page('login')
 
@@ -60,13 +68,6 @@ Given(/I am a( regular user|n admin|n unverified user)$/) do |who|
   end
 end
 
-When(/I enter my email$/) do
-  enter_email
-end
-
-When(/I enter my password$/) do
-  enter_password
-end
 Then(/I should see my gravatar$/) do
   gravatar_id = Digest::MD5.hexdigest(@current_email.downcase)
   url = "https://secure.gravatar.com/avatar/#{gravatar_id}?size=50"
