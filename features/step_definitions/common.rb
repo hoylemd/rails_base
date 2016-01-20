@@ -9,7 +9,7 @@ def page_mappings
     'about' => '/about',
     'contact' => '/contact',
     'users' => '/users',
-    'user profile' => %r{/user/[0-9]+$}
+    'user profile' => %r{/users/[0-9]+$}
   }
 end
 # rubocop:enable Style/MethodLength
@@ -21,6 +21,13 @@ end
 def assert_page_known(page_name)
   assert page_known?(page_name),
          "the specified page '#{page_name}' is not known to the test suite"
+end
+
+def assert_at_page(page_name)
+  assert_page_known page_name
+  path = page_mappings[page_name]
+  assert path.match(current_path), "Expected to be at #{path}, " \
+                                   "but was actually at #{current_path}"
 end
 
 def visit_page(page_name)
