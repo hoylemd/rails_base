@@ -71,7 +71,7 @@ end
 def should_see_gravatar(size = 50)
   gravatar_id = Digest::MD5.hexdigest(@current_email.downcase)
   url = "https://secure.gravatar.com/avatar/#{gravatar_id}?size=#{size}"
-  assert_see_img '.gravatar', src: url
+  assert_see_img_with_src url, selector: '.gravatar'
 end
 
 Then(/I should see my gravatar$/) do
@@ -80,6 +80,6 @@ end
 
 Then(/I should see my user info$/) do
   should_see_gravatar
-  assert_selector 'h1', text: identiy[:name]
-  assert_see_links
+  assert_selector 'h1', text: identity[:name]
+  # assert_see_links 'user profile',
 end

@@ -8,24 +8,31 @@ def _count_elements_with_attributes_msg(selector, atts, found, count = nil)
   end
 end
 
-def count_elements_with_attributes(elements, attributes)
-  count = 0
-  elements.each do |element|
-    attributes.each do |attribute|
-      count += 1 if element[attribute[0]].end_with? attribute[1]
-    end
+def test_element_has_attributes(element, attributes)
+  passing = true
+  attributes.each do |attribute|
+    break unless passing
+    key, val = attribute
+    value = element[key]
+    passing = false unless val.is_a?(Regexp) ? val.match(value) : val == value
   end
-  count
+  passing
 end
 
-def assert_elements_with_attributes(selector, count = nil, attributes)
-  matches = find_with_assert(selector,
-                             "No elements matching #{selector} were found")
-  found = count_elements_with_attributes matches, attributes
+def find_all_with_attributes(selector, attributes, options = {})
+  candidates = find_all(selector, options)
+  candidates.select do |candidate|
+    test_element_has_attributes(candidate, attributes)
+  end
+end
 
-  test = count ? found == count : found > 0
-  msg = _count_elements_with_attributes_msg selector, attribues, found, count
-  assert test, msg
+def find_with_assert(*args)
+  message = args.last.is_a?(String) ? args.pop : nil
+
+  matches = find_all(*args)
+  assert(matches && !matches.empty?,
+         message || "No element matching #{selector} was found")
+  matches
 end
 
 def assert_see_links(page_name, count)
@@ -49,20 +56,11 @@ Then(/I should( not)? see a link to the (.*) page$/) do |negate, page_name|
 end
 
 Then(/I should see ([0-9]+) links to the (.*) page$/) do |count, page_name|
-  assert_see_links page_name, count.to_s
+  assert_see_links page_name, count.to_i
 end
 
 Then(/The page title should be "(.*)"$/) do |page_title|
   assert_equal page.title, page_title
-end
-
-def find_with_assert(*args)
-  message = args.last.is_a?(String) ? args.pop : nil
-
-  matches = find_all(*args)
-  assert(matches && !matches.empty?,
-         message || "No element matching #{selector} was found")
-  matches
 end
 
 def _attributes_hash_to_str(attributes)
@@ -85,15 +83,13 @@ end
 #   src: expected src of the expected img
 #   count: expected number of specified img tags. If omitted, will pass for any
 #     number > 0
-def assert_see_img(selector, options)
-  used_selector = selector.start_with?('img') ? selector : "img#{selector}"
-  src = options[:src]
+def assert_see_img_with_src(src, options = {})
+  selector = options[:selector] ? options.delete(:selector) : 'img'
+
   count = options[:count]
 
-  matches = find_with_assert(used_selector,
-                             "No img tag matching #{selector} was found")
-
-  found = count_elements_with_attributes(matches, src ? { src: src } : {})
+  matches = find_all_with_attributes(selector, { src: src }, options)
+  found = matches.length
 
   msg = _assert_see_img_message selector, src, count, found
   assert(count ? found == count : found > 0, msg)
@@ -102,5 +98,5 @@ end
 # TODO: this is a bad step definition, but I can't think of a better way to do
 #  it.
 Then(/I should see an img with src="(.*)"$/) do |src|
-  assert_see_img '', src: src
+  assert_see_img_with_src src
 end
