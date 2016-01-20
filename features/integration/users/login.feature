@@ -4,6 +4,12 @@ Feature: Login
     Given I am on the login page
 
   @smoke
+  Scenario: Login smoke test
+    When I enter my email
+    And I enter my password
+    And I click the "Log in" button
+    Then I should be logged in
+
   Scenario: Normal login flow
     When I enter my email
     And I enter my password
