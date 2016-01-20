@@ -77,9 +77,17 @@ def random_string(options = {})
   (0...use[:length]).map { characters[rand(characters.length)] }.join
 end
 
-def fill_in_random(field, prefix = nil, string_options = nil)
-  random = random_string string_options
-  string = prefix.nil? ? "#{random}" : "#{prefix}:#{random}"
+# options:
+#  prefix: string to prepend to the random string
+#  suffix: string to append to the random string
+# remaining options will be passed to random_string()
+def fill_in_random(field, options = {})
+  prefix = options[:prefix] ? options.delete(:prefix) : ''
+  suffix = options[:suffix] ? options.delete(:suffix) : ''
+
+  random = random_string options
+
+  string = "#{prefix}#{random}#{suffix}"
   fill_in field, with: string
   string
 end
