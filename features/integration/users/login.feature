@@ -10,7 +10,7 @@ Feature: Login
     And I click the "Log in" button
     Then I should not see an error flash
     And I should be logged in
-    And I should see my user profile
+    And I should see my user info
     When I click "Log Out"
     Then I should see "Log in"
     And I should not be logged in

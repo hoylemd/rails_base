@@ -1,3 +1,4 @@
+# rubocop:disable Style/MethodLength
 def page_mappings
   @page_mappings ||= {
     'signup' => '/signup',
@@ -7,9 +8,11 @@ def page_mappings
     'help' => '/help',
     'about' => '/about',
     'contact' => '/contact',
-    'users' => '/users'
+    'users' => '/users',
+    'user profile' => %r{/user/[0-9]+$}
   }
 end
+# rubocop:enable Style/MethodLength
 
 def page_known?(page_name)
   page_mappings.key?(page_name)
@@ -64,7 +67,7 @@ Then(/I should not see an error flash$/) do
   assert_no_selector '.alert.alert-danger', 'Saw an unexpected error flash'
 end
 
-Then(/I should see an error message that says "(.*)"$/) do |message|
+Then(/I should see an error flash that says "(.*)"$/) do |message|
   locator = '.alert.alert-danger, .error-message'
   assert_element_present(locator, text: message)
 end

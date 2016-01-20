@@ -68,8 +68,18 @@ Given(/I am a( regular user|n admin|n unverified user)$/) do |who|
   end
 end
 
-Then(/I should see my gravatar$/) do
+def should_see_gravatar(size = 50)
   gravatar_id = Digest::MD5.hexdigest(@current_email.downcase)
-  url = "https://secure.gravatar.com/avatar/#{gravatar_id}?size=50"
+  url = "https://secure.gravatar.com/avatar/#{gravatar_id}?size=#{size}"
   assert_see_img '.gravatar', src: url
+end
+
+Then(/I should see my gravatar$/) do
+  should_see_gravatar
+end
+
+Then(/I should see my user info$/) do
+  should_see_gravatar
+  assert_selector 'h1', text: identiy[:name]
+  assert_see_links
 end
