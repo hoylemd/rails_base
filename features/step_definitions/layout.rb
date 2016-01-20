@@ -1,30 +1,3 @@
-def test_element_has_attributes(element, attributes)
-  passing = true
-  attributes.each do |attribute|
-    break unless passing
-    key, val = attribute
-    value = element[key]
-    passing = false unless val.is_a?(Regexp) ? val.match(value) : val == value
-  end
-  passing
-end
-
-def find_all_with_attributes(selector, attributes, options = {})
-  candidates = find_all(selector, options)
-  candidates.select do |candidate|
-    test_element_has_attributes(candidate, attributes)
-  end
-end
-
-def find_with_assert(*args)
-  message = args.last.is_a?(String) ? args.pop : nil
-
-  matches = find_all(*args)
-  assert(matches && !matches.empty?,
-         message || "No element matching #{selector} was found")
-  matches
-end
-
 def assert_see_links(page_name, count)
   href = page_known?(page_name) ? page_mappings[page_name] : page_name
 
@@ -43,6 +16,25 @@ end
 
 Then(/The page title should be "(.*)"$/) do |page_title|
   assert_equal page.title, page_title
+end
+
+def test_element_has_attributes(element, attributes)
+  passing = true
+  attributes.each do |attribute|
+    break unless passing
+    key, val = attribute
+    value = element[key]
+    passing = false unless val.is_a?(Regexp) ? val.match(value) : val == value
+  end
+  passing
+end
+
+def find_all_with_attributes(selector, attributes, options = {})
+  candidates = find_all(selector, options)
+
+  candidates.select do |candidate|
+    test_element_has_attributes(candidate, attributes)
+  end
 end
 
 def _attributes_hash_to_str(attributes)
