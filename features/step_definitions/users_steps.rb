@@ -26,6 +26,17 @@ def identity
   @identity ||= user_identity
 end
 
+Given(/I am a( regular user|n admin|n unverified user)$/) do |who|
+  case who
+  when ' regular user'
+    @identity = user_identity
+  when 'n admin'
+    @identity = admin_identity
+  when 'n unverified user'
+    @identity = unverified_identity
+  end
+end
+
 def enter_email(email = identity[:email])
   @current_email = email
   fill_in 'Email', with: @current_email
@@ -54,20 +65,12 @@ def log_in(credentials = identity)
 end
 
 Given(/I am logged into the app$/) do
-  log_in identity
+  log_in
 end
 
-Given(/I am a( regular user|n admin|n unverified user)$/) do |who|
-  case who
-  when ' regular user'
-    @identity = user_identity
-  when 'n admin'
-    @identity = admin_identity
-  when 'n unverified user'
-    @identity = unverified_identity
-  end
+When(/I log in$/) do
+  log_in
 end
-
 # valid options:
 #  size: the size of the gravatar. default: 50
 #  selector: custom selector to use. default: '.gravatar'

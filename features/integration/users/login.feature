@@ -10,11 +10,14 @@ Feature: Login
     And I click the "Log in" button
     Then I should not see an error flash
     And I should see my user profile
-    #When I click "Log Out"
-    #Then I should see "Log in"
-    #And I should not be logged in
-    #When I log in
-    #And I should be logged in
+    When I visit the users page
+    Then I should not see an error flash
+    When I click "Account"
+    And I click "Log out"
+    Then I should see "Log in"
+    And I should not be logged in
+    When I log in
+    Then I should be logged in
 
   @not_implemented
   Scenario: Log in as admin

@@ -36,6 +36,10 @@ When(/I visit the (.*) page$/) do |page_name|
   visit_page(page_name)
 end
 
+When(/I hover over "(.*)"$/) do |text|
+  find('.js-hoverable', text: text).hover
+end
+
 When(/I click "(.*)"$/) do |text|
   click_on text
 end
