@@ -69,12 +69,12 @@ Given(/I am a( regular user|n admin|n unverified user)$/) do |who|
 end
 
 # valid options:
-#  size: the size of the gravatar. default: 80
+#  size: the size of the gravatar. default: 50
 #  selector: custom selector to use. default: '.gravatar'
 #  email: email address for the expected gravatar. defaults to current user
 # extra options
 def should_see_gravatar(options = {})
-  size = options.delete(:size) || 80
+  size = options.delete(:size) || 50
   options[:selector] ||= '.gravatar'
   email = options.delete(:email) || identity[:email]
 
@@ -87,8 +87,7 @@ Then(/I should see my gravatar$/) do
   should_see_gravatar
 end
 
-Then(/I should see my user info$/) do
-  should_see_gravatar selector: '.user_info .gravatar', count: 1
+Then(/I should see my user profile$/) do
+  should_see_gravatar selector: '.user_info .gravatar', size: 80
   assert_selector 'h1', text: identity[:name]
-  # assert_see_links 'user profile',
 end

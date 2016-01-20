@@ -29,6 +29,7 @@ def test_element_has_attributes(element, attributes)
   passing
 end
 
+# options are passed directly to find_all()
 def find_all_with_attributes(selector, attributes, options = {})
   candidates = find_all(selector, options)
 
@@ -53,6 +54,7 @@ end
 
 # valid options:
 #   selector: custom css selector to select candidate elements by. default 'img'
+# remaining options are passed to find_all
 def assert_see_img_with_src(src, options = {})
   selector = options[:selector] ? options.delete(:selector) : 'img'
   count = options[:count]
@@ -63,10 +65,4 @@ def assert_see_img_with_src(src, options = {})
 
   msg = count_elements_with_attributes_msg(selector, attributes, found, count)
   assert(count ? found == count : found > 0, msg)
-end
-
-# TODO: this is a bad step definition, but I can't think of a better way to do
-#  it.
-Then(/I should see an img with src="(.*)"$/) do |src|
-  assert_see_img_with_src src
 end
