@@ -9,17 +9,12 @@ Feature: Login
     And I enter my password
     And I click the "Log in" button
     Then I should not see an error flash
-    And I should be logged in
-    And I should see my user info
-    When I click "Log Out"
-    Then I should see "Log in"
-    And I should not be logged in
-    When I enter my email
-    And I enter my password
-    And I click "Log in"
-    Then I should see a success flash
-    And I should not see an error flash
-    And I should be logged in
+    And I should see my user profile
+    #When I click "Log Out"
+    #Then I should see "Log in"
+    #And I should not be logged in
+    #When I log in
+    #And I should be logged in
 
   @not_implemented
   Scenario: Log in as admin
