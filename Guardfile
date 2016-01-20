@@ -80,6 +80,10 @@ guard 'cucumber', cli: cuke_flags do
   watch(%r{^features/step_definitions/([a-zA-Z_]+)_steps\.rb$}) do |matches|
     "features/integration/#{matches[1]}"
   end
+  # run all layout tests if layut.rb changes
+  watch('features/step_definitions/layout.rb') do
+    'features/layout'
+  end
 end
 
 # smoke tests
