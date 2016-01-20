@@ -69,18 +69,39 @@ Then(/I should see a "(.+)" field$/) do |field_name|
   assert_find(field, 'input.form-control')
 end
 
+# options
+#  type: String for the type of alert to look for.
+#         Will select any flash if omitted
+#         currently used: 'success' and 'danger'
+#  Remaining options will be passed to assert_selector.
+#    The following ones are especially useful:
+#  text: String or regexp for the content of the message
+#  count/minimum/maximum: bounds on the number of matches
+def assert_flash(options)
+  locator = '.alert'
+  locator += ".alert-#{options.delete(:type)}" if options[:type]
+
+  assert_selector locator, options
+end
+
 Then(/I should see a success flash$/) do
-  assert_selector '.alert.alert-success',
-                  'Did not see an expected success flash'
+  assert_flash type: 'success'
 end
 
 Then(/I should not see an error flash$/) do
-  assert_no_selector '.alert.alert-danger', 'Saw an unexpected error flash'
+  assert_flash type: 'success', count: 0
 end
 
 Then(/I should see an error flash that says "(.*)"$/) do |message|
-  locator = '.alert.alert-danger, .error-message'
-  assert_element_present(locator, text: message)
+  assert_flash type: 'danger', text: message
+end
+
+Then(/I should not see any validation errors$/) do
+  assert_selector('#error_explanation', count: 0)
+end
+
+Then(/I should see an validation error that says "(.*)"$/) do |message|
+  assert_selector('#error_explanation li', text: message)
 end
 
 Then(/I should be on the (.*) pagei$/) do |page|
