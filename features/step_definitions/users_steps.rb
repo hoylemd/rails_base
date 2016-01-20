@@ -2,7 +2,8 @@ def user_identity
   {
     name: 'Leia Organa',
     email: 'leia@rebelalliance.org',
-    password: 'password'
+    password: 'password',
+    id: 1
   }
 end
 
@@ -10,7 +11,8 @@ def admin_identity
   {
     name: 'Darth Vader',
     email: 'darth_vader@galacticempire.gov',
-    password: 'password'
+    password: 'password',
+    id: 2
   }
 end
 
@@ -18,7 +20,8 @@ def unverified_identity
   {
     name: 'Barack Obama',
     email: 'potus@not.us.gov',
-    password: 'password'
+    password: 'password',
+    id: 3
   }
 end
 
@@ -26,7 +29,7 @@ def identity
   @identity ||= user_identity
 end
 
-Given(/I am a( regular user|n admin|n unverified user)$/) do |who|
+Given(/I am a( regular user|n admin|n unverified user| new user)$/) do |who|
   case who
   when ' regular user'
     @identity = user_identity
@@ -34,6 +37,8 @@ Given(/I am a( regular user|n admin|n unverified user)$/) do |who|
     @identity = admin_identity
   when 'n unverified user'
     @identity = unverified_identity
+  when ' new user'
+    @identity = {}
   end
 end
 
@@ -90,7 +95,16 @@ Then(/I should see my gravatar$/) do
   should_see_gravatar
 end
 
+When(/I visit my profile page$/) do
+  visit "/users/#{identity[:id]}"
+end
+
 Then(/I should see my user profile$/) do
   should_see_gravatar selector: '.user_info .gravatar', size: 80
   assert_selector 'h1', text: identity[:name]
+end
+
+Then(/I should see a permission denied flash message$/) do
+  assert_flash type: 'danger',
+               text: "Sorry, you don't have permission to do that"
 end
