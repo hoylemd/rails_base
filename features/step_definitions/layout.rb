@@ -38,17 +38,9 @@ end
 def assert_see_links(page_name, count)
   href = page_known?(page_name) ? page_mappings[page_name] : page_name
 
-  begin
-    if href.is_a? Regexp
-      assert_elements_with_attributes('a', count)
-    else
-      assert page.has_link?('', href: href, count: count)
-    end
-  rescue Minitest::Assertion => e
-    message = "Should see exactly #{count} links to #{href}" \
-              "#{message}, found #{page.find_all(:link, '', href: href).count}"
-    raise e, message
-  end
+  found = page.find_all(:link, '', href: href).count
+  assert found == count, "Should see exactly #{count} links to #{href} " \
+                         ", found #{found}"
 end
 
 Then(/I should( not)? see a link to the (.*) page$/) do |negate, page_name|
