@@ -1,13 +1,3 @@
-def _count_elements_with_attributes_msg(selector, atts, found, count = nil)
-  if count
-    "Expected exactly #{count} #{selector} elements with " \
-      "#{_attributes_hash_to_str(atts)} specified, but found #{found}"
-  else
-    "Did not find any #{selector} elements with " \
-      "#{_attributes_hash_to_str(atts)} specified"
-  end
-end
-
 def test_element_has_attributes(element, attributes)
   passing = true
   attributes.each do |attribute|
@@ -59,31 +49,27 @@ def _attributes_hash_to_str(attributes)
   attributes.keys.join ', '
 end
 
-def _assert_see_img_message(selector, src, count, found)
+def count_elements_with_attributes_msg(selector, atts, found, count = nil)
   if count
-    msg += "Expected exactly #{count} img tags with #{selector}"
-    msg += ' and specified src' if src
-    msg += ", but found #{found}"
+    "Expected exactly #{count} #{selector} elements with " \
+      "specified #{_attributes_hash_to_str(atts)}, but found #{found}"
   else
-    msg = "Did not find any img tags with #{selector}"
-    msg += ' and specified src' if src
+    "Did not find any #{selector} elements with " \
+      "specified #{_attributes_hash_to_str(atts)}"
   end
-  msg
 end
 
 # valid options:
-#   src: expected src of the expected img
-#   count: expected number of specified img tags. If omitted, will pass for any
-#     number > 0
+#   selector: custom css selector to select candidate elements by. default 'img'
 def assert_see_img_with_src(src, options = {})
   selector = options[:selector] ? options.delete(:selector) : 'img'
-
   count = options[:count]
+  attributes = { src: src }
 
-  matches = find_all_with_attributes(selector, { src: src }, options)
+  matches = find_all_with_attributes(selector, attributes, options)
   found = matches.length
 
-  msg = _assert_see_img_message selector, src, count, found
+  msg = count_elements_with_attributes_msg(selector, attributes, found, count)
   assert(count ? found == count : found > 0, msg)
 end
 

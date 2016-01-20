@@ -68,10 +68,19 @@ Given(/I am a( regular user|n admin|n unverified user)$/) do |who|
   end
 end
 
-def should_see_gravatar(size = 50)
-  gravatar_id = Digest::MD5.hexdigest(@current_email.downcase)
+# valid options:
+#  size: the size of the gravatar. default: 80
+#  selector: custom selector to use. default: '.gravatar'
+#  email: email address for the expected gravatar. defaults to current user
+# extra options
+def should_see_gravatar(options = {})
+  size = options.delete(:size) || 80
+  options[:selector] ||= '.gravatar'
+  email = options.delete(:email) || identity[:email]
+
+  gravatar_id = Digest::MD5.hexdigest(email.downcase)
   url = "https://secure.gravatar.com/avatar/#{gravatar_id}?size=#{size}"
-  assert_see_img_with_src url, selector: '.gravatar'
+  assert_see_img_with_src url, options
 end
 
 Then(/I should see my gravatar$/) do
@@ -79,7 +88,7 @@ Then(/I should see my gravatar$/) do
 end
 
 Then(/I should see my user info$/) do
-  should_see_gravatar
+  should_see_gravatar selector: '.user_info .gravatar', count: 1
   assert_selector 'h1', text: identity[:name]
   # assert_see_links 'user profile',
 end
