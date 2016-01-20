@@ -1,8 +1,42 @@
+def _count_elements_with_attributes_msg(selector, atts, found, count = nil)
+  if count
+    "Expected exactly #{count} #{selector} elements with " \
+      "#{_attributes_hash_to_str(atts)} specified, but found #{found}"
+  else
+    "Did not find any #{selector} elements with " \
+      "#{_attributes_hash_to_str(atts)} specified"
+  end
+end
+
+def count_elements_with_attributes(elements, attributes)
+  count = 0
+  elements.each do |element|
+    attributes.each do |attribute|
+      count += 1 if element[attribute[0]].end_with? attribute[1]
+    end
+  end
+  count
+end
+
+def assert_elements_with_attributes(selector, count = nil, attributes)
+  matches = find_with_assert(selector,
+                             "No elements matching #{selector} were found")
+  found = count_elements_with_attributes matches, attributes
+
+  test = count ? found == count : found > 0
+  msg = _count_elements_with_attributes_msg selector, attribues, found, count
+  assert test, msg
+end
+
 def assert_see_links(page_name, count)
   href = page_known?(page_name) ? page_mappings[page_name] : page_name
 
   begin
-    assert page.has_link?('', href: href, count: count)
+    if href.is_a? Regexp
+      assert_elements_with_attributes('a', count)
+    else
+      assert page.has_link?('', href: href, count: count)
+    end
   rescue Minitest::Assertion => e
     message = "Should see exactly #{count} links to #{href}" \
               "#{message}, found #{page.find_all(:link, '', href: href).count}"
@@ -31,15 +65,8 @@ def find_with_assert(*args)
   matches
 end
 
-def count_elements_with_attributes(elements, attributes)
-  count = 0
-  elements.each do |element|
-    attributes.each do |attribute|
-      count += 1 if element[attribute[0]].end_with? attribute[1]
-    end
-  end
-
-  count
+def _attributes_hash_to_str(attributes)
+  attributes.keys.join ', '
 end
 
 def _assert_see_img_message(selector, src, count, found)
