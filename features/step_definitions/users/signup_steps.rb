@@ -35,6 +35,7 @@ When(/I confirm my password( incorrectly)?$/) do |incorrect|
 end
 
 def complete_signup_form
+  # TODO: this should fill out the form with data in @identity, not generate it
   assert_element_present('form.new_user')
   enter_random_name
   enter_random_email
@@ -52,8 +53,13 @@ def note_new_user_info
   @identity[:verification_token] = find('.v_token').text
 end
 
+When(/I note my user information$/) do
+  note_new_user_info
+end
+
 def sign_up
   visit_page 'signup'
+  # TODO: this should instantiate a new identity hash first
   complete_signup_form
   note_new_user_info
 end
