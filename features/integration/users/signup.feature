@@ -16,7 +16,7 @@ Feature: Signup
     And I should see "Please check your email to verify it."
     And I should be logged in
 
-    @skip
+  @skip
   Scenario: User is unverified after signup
     When I sign up
     And I remember my user id
