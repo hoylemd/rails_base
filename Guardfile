@@ -87,7 +87,7 @@ guard 'cucumber', cli: cuke_flags do
 end
 
 # smoke tests
-guard 'cucumber', cli: "#{cuke_flags} --tags @smoke", keep_failed: false do
+guard 'cucumber', cli: "#{cuke_flags} --tags @smoke" do
   watch('features/step_definitions/common.rb') do
     'features'
   end
