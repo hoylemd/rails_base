@@ -49,7 +49,6 @@ Feature: Signup
     And I click "Create my Account"
     Then I should see a validation error that says "Email has already been taken"
 
-  @skip
   Scenario: Signup with bad passwords
     When I enter a random email
     And I enter a random password
@@ -59,4 +58,4 @@ Feature: Signup
     When I enter a random short password
     And I confirm my password
     And I click "Create my Account"
-    Then I should see a validation error that says "Password is too short (minimum is 6 characters)"
+    Then I should see a validation error that says "Password is too short (minimum is 8 characters)"
