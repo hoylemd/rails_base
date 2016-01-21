@@ -78,6 +78,10 @@ Then(/I should see a "(.+)" field$/) do |field_name|
   assert_selector "input##{label[:for]}"
 end
 
+Then(/I should see a "(.*)" button$/) do |label|
+  assert has_button?(label), "No '#{label}' button found."
+end
+
 # options
 #  type: String for the type of alert to look for.
 #         Will select any flash if omitted

@@ -32,12 +32,6 @@ Feature: Signup
       | Darth Vader |
     And I should not see "Barack Obama"
 
-  Scenario: All signup fields are present
-    Then I should see a "Name" field
-    And I should see a "Email" field
-    And I should see a "Password" field
-    And I should see a "Confirmation" field
-
   @skip
   Scenario: Omit all fields
     When I click "Create my account"
