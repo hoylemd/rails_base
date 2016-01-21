@@ -76,6 +76,11 @@ end
 When(/I log in$/) do
   log_in
 end
+
+When(/I log out$/) do
+  visit_page('logout')
+end
+
 # valid options:
 #  size: the size of the gravatar. default: 50
 #  selector: custom selector to use. default: '.gravatar'

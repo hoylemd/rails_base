@@ -39,12 +39,11 @@ Feature: Signup
       | Email can't be blank |
       | Password can't be blank |
 
-  @skip
   Scenario: Signup with duplicate email
     When I complete the signup form
-    And I click "Log Out"
+    And I log out
     And I visit the signup page
-    And I enter my email into "Email"
+    And I enter my email
     And I enter a random password
     And I confirm my password
     And I click "Create my Account"
