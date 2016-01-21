@@ -113,8 +113,18 @@ Then(/I should not see any validation errors$/) do
   assert_selector('#error_explanation', count: 0)
 end
 
+def assert_validation_error(text)
+  assert_selector('#error_explanation li', text: text)
+end
+
 Then(/I should see a validation error that says "(.*)"$/) do |message|
-  assert_selector('#error_explanation li', text: message)
+  assert_validation_error message
+end
+
+Then(/I should see the following validation errors:$/) do |errors|
+  errors.raw.each do |row|
+    assert_validation_error row.first
+  end
 end
 
 Then(/I should be on the (.*) pagei$/) do |page|
