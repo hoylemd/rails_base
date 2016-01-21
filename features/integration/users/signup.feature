@@ -34,9 +34,10 @@ Feature: Signup
 
   Scenario: Omit all fields
     When I click "Create my Account"
-    Then I should see a validation error that says "Name can't be blank"
-    Then I should see a validation error that says "Email can't be blank"
-    And I should see a validation error that says "Password can't be blank"
+    Then I should see the following validation errors:
+      | Name can't be blank |
+      | Email can't be blank |
+      | Password can't be blank |
 
   @skip
   Scenario: Signup with duplicate email
