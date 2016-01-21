@@ -40,7 +40,7 @@ def complete_signup_form
   enter_random_email
   enter_random_password
   confirm_password
-  click_on 'Create my account'
+  click_on 'Create my Account'
 end
 
 When(/I complete the signup form$/) do

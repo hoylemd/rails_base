@@ -55,8 +55,22 @@ When(/I click the "(.*)" button$/) do |label|
   click_button label
 end
 
-Then(/I should see "(.*)"$/) do |text|
-  page.assert_text text
+def should_see(text, negate = false)
+  if negate
+    assert_no_text text
+  else
+    assert_text text
+  end
+end
+
+Then(/I should( not)? see "(.*)"$/) do |negate, text|
+  should_see text, negate
+end
+
+Then(/I should( not)? see the following phrases:$/) do |negate, phrases|
+  phrases.raw.each do |phrase|
+    should_see phrase.first, negate
+  end
 end
 
 def field_name_to_css(name)
@@ -92,15 +106,15 @@ Then(/I should not see an error flash$/) do
   assert_flash type: 'success', count: 0
 end
 
-Then(/I should see an error flash that says "(.*)"$/) do |message|
-  assert_flash type: 'danger', text: message
+Then(/I should see a ([a-z]+) flash that says "(.*)"$/) do |type, message|
+  assert_flash type: type, text: message
 end
 
 Then(/I should not see any validation errors$/) do
   assert_selector('#error_explanation', count: 0)
 end
 
-Then(/I should see an validation error that says "(.*)"$/) do |message|
+Then(/I should see a validation error that says "(.*)"$/) do |message|
   assert_selector('#error_explanation li', text: message)
 end
 

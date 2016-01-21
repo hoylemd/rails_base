@@ -26,21 +26,21 @@ Feature: Signup
     And I click "dev verify"
     Then I should se a success flash message that says "Email verified"
 
-@skip
+  @skip
   Scenario: All signup fields are present
     Then I should see a "Email" field
     And I should see a "Password" field
     And I should see a "Confirmation" field
     And I should see a "Bio" field
 
-@skip
+  @skip
   Scenario: Omit all fields
     When I click "Create my account"
-    Then I should see an validation error that says "Email can't be blank"
-    And I should see an validation error that says "Password can't be blank"
-    And I should see an validation error that says "Password is too short (minimum is 6 characters)"
+    Then I should see a validation error that says "Email can't be blank"
+    And I should see a validation error that says "Password can't be blank"
+    And I should see a validation error that says "Password is too short (minimum is 6 characters)"
 
-@skip
+  @skip
   Scenario: Signup with duplicate email
     When I complete the signup form
     And I click "Log Out"
@@ -49,16 +49,16 @@ Feature: Signup
     And I enter a random password
     And I confirm my password
     And I click "Create my account"
-    Then I should see an validation error that says "Email has already been taken"
+    Then I should see a validation error that says "Email has already been taken"
 
-@skip
+  @skip
   Scenario: Signup with bad passwords
     When I enter a random email
     And I enter a random password
     And I confirm my password incorrectly
     And I click "Create my account"
-    Then I should see an validation error that says "Password confirmation doesn't match Password"
+    Then I should see a validation error that says "Password confirmation doesn't match Password"
     When I enter a random short password
     And I confirm my password
     And I click "Create my account"
-    Then I should see an validation error that says "Password is too short (minimum is 6 characters)"
+    Then I should see a validation error that says "Password is too short (minimum is 6 characters)"
