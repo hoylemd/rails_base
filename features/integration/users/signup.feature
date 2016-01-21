@@ -32,12 +32,11 @@ Feature: Signup
       | Darth Vader |
     And I should not see "Barack Obama"
 
-  @skip
   Scenario: All signup fields are present
-    Then I should see a "Email" field
+    Then I should see a "Name" field
+    And I should see a "Email" field
     And I should see a "Password" field
     And I should see a "Confirmation" field
-    And I should see a "Bio" field
 
   @skip
   Scenario: Omit all fields

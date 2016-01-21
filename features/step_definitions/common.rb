@@ -73,14 +73,9 @@ Then(/I should( not)? see the following phrases:$/) do |negate, phrases|
   end
 end
 
-def field_name_to_css(name)
-  ".form-field.form-field-#{string_to_slug name}"
-end
-
 Then(/I should see a "(.+)" field$/) do |field_name|
-  field = page.find("#{field_name_to_css field_name}")
-  assert_find(field, 'label', text: field_name)
-  assert_find(field, 'input.form-control')
+  label = page.find('label', text: field_name)
+  assert_selector "input##{label[:for]}"
 end
 
 # options
