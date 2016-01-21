@@ -74,15 +74,19 @@ class UsersController < ApplicationController
 
   private
 
+  def new_user_info_flash(user)
+    verify_link = edit_email_verification_path(user.verification_token,
+                                               email: user.email)
+    ". <a class=\"v_link\" href=\"#{verify_link}\">dev verify</a>" \
+    " token: '<span class=\"v_token\">#{user.verification_token}</span>'" \
+    " id: '<span class=\"user_id\">#{user.id}</span>'"
+  end
+
   def show_signup_feedback(user)
     message = "Welcome, #{user.name}! Please check your email to verify it"
-    if Rails.env.development?
-      verify_link = edit_email_verification_path(user.verification_token,
-                                                 email: user.email)
-      message += ". <a href=\"#{verify_link}\">dev verify</a> token: "\
-                 "'<span class=\"v_token\">#{user.verification_token}</span>'" \
-                 " id: '<span class=\"user_id\">#{user.id}</span>'"
-    end
+
+    message += new_user_info_flash user if Rails.env.development?
+
     flash[:success] = message
   end
 
