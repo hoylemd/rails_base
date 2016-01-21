@@ -13,6 +13,7 @@ Feature: Signup
     And I click "Create my Account"
     And I note my user information
     Then I should not see any validation errors
+    And I should not see an error flash
     And I should see a success flash
     And I should see "Please check your email to verify it."
     And I should be logged in

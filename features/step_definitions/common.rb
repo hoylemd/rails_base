@@ -97,12 +97,10 @@ def assert_flash(options)
   assert_selector locator, options
 end
 
-Then(/I should see a success flash$/) do
-  assert_flash type: 'success'
-end
-
-Then(/I should not see an error flash$/) do
-  assert_flash type: 'success', count: 0
+Then(/I should( not)? see a([a-z ]+) flash$/) do |negate, type_string|
+  options = { type: type_string == 'n error' ? 'danger' : type_string.strip }
+  options[:count] = 0 if negate
+  assert_flash options
 end
 
 Then(/I should see a ([a-z]+) flash that says "(.*)"$/) do |type, message|
