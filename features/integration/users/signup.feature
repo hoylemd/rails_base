@@ -32,12 +32,11 @@ Feature: Signup
       | Darth Vader |
     And I should not see "Barack Obama"
 
-  @skip
   Scenario: Omit all fields
-    When I click "Create my account"
+    When I click "Create my Account"
+    Then I should see a validation error that says "Name can't be blank"
     Then I should see a validation error that says "Email can't be blank"
     And I should see a validation error that says "Password can't be blank"
-    And I should see a validation error that says "Password is too short (minimum is 6 characters)"
 
   @skip
   Scenario: Signup with duplicate email
@@ -47,7 +46,7 @@ Feature: Signup
     And I enter my email into "Email"
     And I enter a random password
     And I confirm my password
-    And I click "Create my account"
+    And I click "Create my Account"
     Then I should see a validation error that says "Email has already been taken"
 
   @skip
@@ -55,9 +54,9 @@ Feature: Signup
     When I enter a random email
     And I enter a random password
     And I confirm my password incorrectly
-    And I click "Create my account"
+    And I click "Create my Account"
     Then I should see a validation error that says "Password confirmation doesn't match Password"
     When I enter a random short password
     And I confirm my password
-    And I click "Create my account"
+    And I click "Create my Account"
     Then I should see a validation error that says "Password is too short (minimum is 6 characters)"
