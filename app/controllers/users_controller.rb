@@ -79,7 +79,9 @@ class UsersController < ApplicationController
     if Rails.env.development?
       verify_link = edit_email_verification_path(user.verification_token,
                                                  email: user.email)
-      message += ". <a href=\"#{verify_link}\">dev verify</a>"
+      message += ". <a href=\"#{verify_link}\">dev verify</a> token: "\
+                 "'<span class=\"v_token\">#{user.verification_token}</span>'" \
+                 " id: '<span class=\"user_id\">#{user.id}</span>'"
     end
     flash[:success] = message
   end
