@@ -16,15 +16,18 @@ Feature: Signup
     And I should see "Please check your email to verify it."
     And I should be logged in
 
-  @skip
   Scenario: User is unverified after signup
     When I sign up
-    And I remember my user id
     And I visit the users page
     Then I should see a permission denied flash message
-    When I visit my profile page
-    And I click "dev verify"
-    Then I should se a success flash message that says "Email verified"
+    When I verify my email
+    Then I should see a success flash that says "Email verified"
+    When I visit the users page
+    Then I should not see an error flash
+    And I should see the following phrases:
+      | Leia Organa |
+      | Darth Vader |
+    And I should not see "Barack Obama"
 
   @skip
   Scenario: All signup fields are present

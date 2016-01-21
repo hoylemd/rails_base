@@ -47,20 +47,31 @@ When(/I complete the signup form$/) do
   complete_signup_form
 end
 
-Then(/I should see my email$/) do
-  assert_text @identity[:email]
+def note_new_user_info
+  @identity[:id] = find('.user_id').text.to_i
+  @identity[:verification_token] = find('.v_token').text
 end
 
 def sign_up
   visit_page 'signup'
   complete_signup_form
+  note_new_user_info
 end
 
 When(/I sign up$/) do
   sign_up
 end
 
-When(/I remember my user id$/) do
-  assert_at_page 'user profile'
-  @identity[:id] = current_url.split('/').last.to_i
+def verify_email
+  url = "/email_verifications/#{identity[:verification_token]}/edit" \
+        "?email=#{identity[:email]}"
+  visit url
+end
+
+When(/I verify my email$/) do
+  verify_email
+end
+
+Then(/I should see my email$/) do
+  assert_text @identity[:email]
 end
