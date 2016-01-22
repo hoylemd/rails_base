@@ -80,28 +80,21 @@ guard 'cucumber', cli: cuke_flags do
   watch(%r{^features/step_definitions/([a-zA-Z_]+)_steps\.rb$}) do |matches|
     "features/integration/#{matches[1]}"
   end
-  # run all layout tests if layut.rb changes
+  # run all layout tests if layout.rb changes
   watch('features/step_definitions/layout.rb') do
     'features/layout'
   end
-  # smoke tests!
+
+  # run smoke tests if common.rb or support files change
   watch('features/step_definitions/common.rb') do
     'features/smoke'
   end
   watch(%r{^features/support/.+$}) do
-    'features/smoke'
+    ['features/tests.feature', 'features/smoke']
   end
-end
 
-# meta tests
-guard 'cucumber', cli: "#{cuke_flags} --tags @meta_test" do
-  watch('features/support/helpers.rb') do
-    'features'
-  end
+  # meta tests
   watch('features/step_definitions/test_steps.rb') do
-    'features'
-  end
-  watch('features/tests.feature') do
-    'features'
+    'features/tests.feature'
   end
 end
