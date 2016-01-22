@@ -1,19 +1,18 @@
 Feature: Signup
-
   Background:
     Given I am a new user
     And I am on the signup page
 
   @smoke
   Scenario: Normal signup flow
-    When I enter a random name
-    And I enter a random email
-    And I enter a random password
+    When I enter my name
+    And I enter my email
+    And I enter my password
     And I confirm my password
     And I click "Create my Account"
-    And I note my user information
     Then I should not see any validation errors
-    And I should not see an error flash
+    When I note my user information
+    Then I should not see an error flash
     And I should see a success flash
     And I should see "Please check your email to verify it."
     And I should be logged in
@@ -45,18 +44,29 @@ Feature: Signup
     And I log out
     And I visit the signup page
     And I enter my email
-    And I enter a random password
+    And I enter my password
     And I confirm my password
     And I click "Create my Account"
     Then I should see a validation error that says "Email has already been taken"
 
+  Scenario: Signup with bad email
+    When I enter my name
+    And I enter my password
+    And I enter gibberish into "Email"
+    And I confirm my password
+    And I click "Create my Account"
+    Then I should see a validation error that says "Email is invalid"
+    Then I should not see a validation error that says "Name can't be blank"
+
   Scenario: Signup with bad passwords
-    When I enter a random email
-    And I enter a random password
+    When I enter my name
+    And I enter my email
+    And I enter my password
     And I confirm my password incorrectly
     And I click "Create my Account"
     Then I should see a validation error that says "Password confirmation doesn't match Password"
-    When I enter a random short password
-    And I confirm my password
+    When I enter "pass" into "Password"
+    And I enter "pass" into "Confirmation"
     And I click "Create my Account"
     Then I should see a validation error that says "Password is too short (minimum is 8 characters)"
+

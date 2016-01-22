@@ -111,17 +111,19 @@ Then(/I should not see any validation errors$/) do
   assert_selector('#error_explanation', count: 0)
 end
 
-def assert_validation_error(text)
-  assert_selector('#error_explanation li', text: text)
+def assert_validation_error(text, negate = false)
+  options = { text: text }
+  options[:count] = 0 if negate
+  assert_selector('#error_explanation li', options)
 end
 
-Then(/I should see a validation error that says "(.*)"$/) do |message|
-  assert_validation_error message
+Then(/I should( not)? see a validation error that says "(.*)"$/) do |neg, text|
+  assert_validation_error text, neg
 end
 
-Then(/I should see the following validation errors:$/) do |errors|
+Then(/I should( not)? see the following validation errors:$/) do |neg, errors|
   errors.raw.each do |row|
-    assert_validation_error row.first
+    assert_validation_error row.first, neg
   end
 end
 
@@ -131,4 +133,8 @@ end
 
 When(/I enter "(.+)" into "(.+)"$/) do |text, label|
   fill_in label, with: text
+end
+
+When(/I enter gibberish into "(.+)"$/) do |label|
+  fill_in label, with: random_string
 end

@@ -10,38 +10,6 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
     ActionMailer::Base.deliveries.clear
   end
 
-  test 'full signup flow' do
-    spec = { name: 'Maz Kanata',
-             email: 'maz@example.com',
-             password: 'password',
-             password_confirmation: 'password',
-             remember_me: '1' }
-
-    get signup_path
-    assert_difference 'User.count', 1, 'Users count should increment by one' do
-      post_via_redirect users_path, user: spec
-    end
-
-    assert_signup_succeeded spec
-
-    delete logout_path
-    assert_not logged_in?, 'User should be logged out'
-
-    user = User.find_by(email: spec[:email])
-    verify_token = get_user_verify_token user
-    assert verify_token, 'Email should contain a valid token'
-
-    assert_not user.verified?, 'User\'s email should not be verified yet'
-
-    get edit_email_verification_path(verify_token, email: user.email)
-
-    assert user.reload.verified?, 'User\'s email should be verified'
-    follow_redirect!
-    assert_template 'users/show', 'Should be on the user profile page'
-    assert logged_in?, 'User should be logged in'
-    assert_flash type: 'success', expected: 'Email verified!'
-  end
-
   test 'post to create should ignore extra parameters' do
     spec = { name: 'Luke Skywalker',
              email: 'the_last_jedi@example.com',
@@ -73,15 +41,6 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
 
     assert_signup_succeeded
     assert_not User.find_by(email: email).admin, 'Should not be an admin'
-  end
-
-  test 'post to create with missing name should error' do
-    assert_no_difference 'User.count' do
-      post users_path, user: @test_info.merge(name: '')
-    end
-    assert_response 422, 'should error on missing name'
-    assert_signup_failed highlights: ['input#user_name'],
-                         explanations: ['Name can\'t be blank']
   end
 
   test 'post with invalid email should error' do

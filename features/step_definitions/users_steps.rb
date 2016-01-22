@@ -29,6 +29,15 @@ def identity
   @identity ||= user_identity
 end
 
+def random_name
+  random_string numbers: false, special: false
+end
+
+def random_email
+  random_string(upper_case: false, numbers: false, special: false) +
+    '@example.com'
+end
+
 Given(/I am a( regular user|n admin|n unverified user| new user)$/) do |who|
   case who
   when ' regular user'
@@ -38,13 +47,18 @@ Given(/I am a( regular user|n admin|n unverified user| new user)$/) do |who|
   when 'n unverified user'
     @identity = unverified_identity
   when ' new user'
-    @identity = {}
+    @identity = {
+      name: random_name,
+      email: random_email,
+      password: 'password'
+    }
   end
 end
 
 def enter_email(email = identity[:email])
   @current_email = email
   fill_in 'Email', with: @current_email
+  page.save_screenshot 'email.png'
 end
 
 def enter_password(password = identity[:password])
@@ -58,6 +72,10 @@ end
 
 When(/I enter my password$/) do
   enter_password
+end
+
+When(/I enter my name$/) do
+  fill_in 'Name', with: identity[:name]
 end
 
 def log_in(credentials = identity)
