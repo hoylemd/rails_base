@@ -7,10 +7,11 @@ class UsersControllerTest < ActionController::TestCase
     @batman = users(:batman)
   end
 
+  # TODO: move this to cuke tests
   test 'get to new displays the signup page' do
     get :new
     assert_response :success, 'Should receive 200 OK on GET to new'
-    assert_select 'title', 'Sign Up | Ruby on Rails Tutorial Sample App',
+    assert_select 'title', 'Sign Up | Rails Base',
                   'Should see the correct title'
 
     assert_select 'input#user_name', true, 'Should see the name field'
@@ -92,7 +93,7 @@ class UsersControllerTest < ActionController::TestCase
   test 'should get show, unauthenticated' do
     get :show, id: @kylo.id
     assert_response :success, 'should return 200 OK'
-    assert_select 'title', 'Kylo Ren | Ruby on Rails Tutorial Sample App'
+    assert_select 'title', 'Kylo Ren | Rails Base'
 
     assert_rendered_user_info @kylo
     assert_rendered_follower_stats @kylo
@@ -107,7 +108,7 @@ class UsersControllerTest < ActionController::TestCase
     get :show, id: @peaches.id
     assert_response :success, 'should return 200 OK'
     assert_select 'title',
-                  'Peaches the Friendly Orc | Ruby on Rails Tutorial Sample App'
+                  'Peaches the Friendly Orc | Rails Base'
 
     assert_rendered_user_info @peaches
     assert_rendered_follower_stats @peaches
@@ -128,7 +129,7 @@ class UsersControllerTest < ActionController::TestCase
 
     get :show, id: @kylo.id
     assert_response :success, 'should return 200 OK'
-    assert_select 'title', 'Kylo Ren | Ruby on Rails Tutorial Sample App'
+    assert_select 'title', 'Kylo Ren | Rails Base'
 
     assert_rendered_user_info @kylo
     assert_rendered_follower_stats @kylo

@@ -11,6 +11,7 @@ class StaticPagesControllerTest < ActionController::TestCase
     assert_template 'static_pages/home', 'Should be on home page'
   end
 
+  # TODO: move this to a cuke layout test
   test 'get to home while logged in' do
     log_in_as @kylo
     get :home
@@ -39,18 +40,18 @@ class StaticPagesControllerTest < ActionController::TestCase
   test 'should get help' do
     get :help
     assert_response :success, 'Should receive a 200 OK on GET to help'
-    assert_select 'title', 'Help | Ruby on Rails Tutorial Sample App'
+    assert_select 'title', 'Help | Rails Base'
   end
 
   test 'should get about' do
     get :about
     assert_response :success, 'Should receive a 200 OK on GET to help'
-    assert_select 'title', 'About | Ruby on Rails Tutorial Sample App'
+    assert_select 'title', 'About | Rails Base'
   end
 
   test 'should get contact' do
     get :contact
     assert_response :success, 'Should receive a 200 OK on GET to contact'
-    assert_select 'title', 'Contact | Ruby on Rails Tutorial Sample App'
+    assert_select 'title', 'Contact | Rails Base'
   end
 end

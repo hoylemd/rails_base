@@ -38,7 +38,9 @@ and extensive tests
 This is the sample application for the
 [*Ruby on Rails Tutorial:
 Learn Web Development with Rails*](http://www.railstutorial.org/)
-by [Michael Hartl](http://www.michaelhartl.com/).
+by [Michael Hartl](http://www.michaelhartl.com/). but modified by
+[Michael Hoyle](http://www.michaelhoyle.com/) to be used as a starting point
+for any rails app.
 
 todo: Finish porting pretty-pictures test files
 todo: set up guard to run interface tests on template changes
