@@ -84,15 +84,12 @@ guard 'cucumber', cli: cuke_flags do
   watch('features/step_definitions/layout.rb') do
     'features/layout'
   end
-end
-
-# smoke tests
-guard 'cucumber', cli: "#{cuke_flags} --tags @smoke" do
+  # smoke tests!
   watch('features/step_definitions/common.rb') do
-    'features'
+    'features/smoke'
   end
   watch(%r{^features/support/.+$}) do
-    'features'
+    'features/smoke'
   end
 end
 
