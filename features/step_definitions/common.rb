@@ -127,10 +127,6 @@ Then(/I should( not)? see the following validation errors:$/) do |neg, errors|
   end
 end
 
-Then(/I should be on the (.*) pagei$/) do |page|
-  assert_element_present(".id-#{page}")
-end
-
 When(/I enter "(.+)" into "(.+)"$/) do |text, label|
   fill_in label, with: text
 end

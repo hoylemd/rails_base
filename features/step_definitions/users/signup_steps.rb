@@ -9,7 +9,6 @@ end
 
 def complete_signup_form
   # TODO: this should fill out the form with data in @identity, not generate it
-  assert_element_present('form.new_user')
   enter_name
   enter_email
   enter_password

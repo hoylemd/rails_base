@@ -1,46 +1,3 @@
-# Capybara-driven DOM assertions
-def _assert_find_fail_ambiguous_message(selector, options)
-  message = "found multiple elements '#{selector}'"
-  message += " with content '#{options[:text]}'" if options[:text]
-  message
-end
-
-def _assert_find_fail_not_found(selector, options)
-  message = "failed to find element '#{selector}'"
-  message += " with content '#{options[:text]}'" if options[:text]
-  message
-end
-
-def assert_find(parent, selector, options = {})
-  # options are passed directly to Capybara::Session#find
-  # generally, it'll just be {text: 'text you are looking for'}
-  found = nil
-  begin
-    found = parent.find(selector, options)
-  rescue Capybara::Ambiguous
-    message = _assert_find_ambiguous_message selector, options
-  rescue Capybara::ElementNotFound
-    message = _assert_find_ambiguous_message selector, options
-  end
-  fail Minitest::Assertion, message if found.nil?
-  found
-end
-
-def assert_element_present(selector, options = {})
-  assert_find(page, selector, options)
-end
-
-def assert_element_has_content(selector, options = {})
-  element = assert_element_present(selector, options)
-  content = ''
-  if element.tag_name == 'img'
-    content = element[:src]
-  else
-    content = element.text
-  end
-  assert_not_empty(content, "element #{selector} was found, but is empty.")
-end
-
 def _random_string_build_characters(use)
   characters = []
   characters += ('a'..'z').map { |i| i } if use[:lower_case]
@@ -75,21 +32,6 @@ def random_string(options = {})
   end
 
   (0...use[:length]).map { characters[rand(characters.length)] }.join
-end
-
-# options:
-#  prefix: string to prepend to the random string
-#  suffix: string to append to the random string
-# remaining options will be passed to random_string()
-def fill_in_random(field, options = {})
-  prefix = options[:prefix] ? options.delete(:prefix) : ''
-  suffix = options[:suffix] ? options.delete(:suffix) : ''
-
-  random = random_string options
-
-  string = "#{prefix}#{random}#{suffix}"
-  fill_in field, with: string
-  string
 end
 
 def string_to_slug(string)
