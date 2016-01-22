@@ -1,30 +1,3 @@
-def enter_random_email
-  @identity[:email] = fill_in_random('Email', prefix: 'email',
-                                              suffix: '@example.com',
-                                              upper_case: false)
-end
-
-When(/I enter a random email$/) do
-  enter_random_email
-end
-
-def enter_random_password(short = false)
-  pw = fill_in_random('Password', short ? { length: 4 } : { prefix: 'pw' })
-  @identity[:password] = pw
-end
-
-When(/I enter a random (short )?password$/) do |short|
-  enter_random_password short
-end
-
-def enter_random_name
-  @identity[:name] = fill_in_random 'Name', numbers: false, special: false
-end
-
-When(/I enter a random name$/) do
-  enter_random_name
-end
-
 def confirm_password(incorrect = false)
   pw = incorrect ? 'wroooong!!!' : @identity[:password]
   fill_in 'Confirmation', with: pw
@@ -37,9 +10,9 @@ end
 def complete_signup_form
   # TODO: this should fill out the form with data in @identity, not generate it
   assert_element_present('form.new_user')
-  enter_random_name
-  enter_random_email
-  enter_random_password
+  enter_name
+  enter_email
+  enter_password
   confirm_password
   click_on 'Create my Account'
 end

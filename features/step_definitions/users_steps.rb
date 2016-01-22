@@ -56,14 +56,15 @@ Given(/I am a( regular user|n admin|n unverified user| new user)$/) do |who|
 end
 
 def enter_email(email = identity[:email])
-  @current_email = email
-  fill_in 'Email', with: @current_email
-  page.save_screenshot 'email.png'
+  fill_in 'Email', with: email
 end
 
 def enter_password(password = identity[:password])
-  @current_password = password
-  fill_in 'Password', with: @current_password
+  fill_in 'Password', with: password
+end
+
+def enter_name(name = identity[:name])
+  fill_in 'Name', with: name
 end
 
 When(/I enter my email$/) do
@@ -75,7 +76,7 @@ When(/I enter my password$/) do
 end
 
 When(/I enter my name$/) do
-  fill_in 'Name', with: identity[:name]
+  enter_name
 end
 
 def log_in(credentials = identity)
